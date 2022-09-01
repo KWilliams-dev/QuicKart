@@ -4,5 +4,5 @@ This is the GitHub repo for the team working on the QuicKart mobile android appl
 
 # Roles
  
-Abdullahi Munye - Data Modeler
+1. Abdullahi Munye - Data Modeler
 2. Khamilah Nixon - Documentation Lead
