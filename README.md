@@ -13,3 +13,4 @@ The team used JIRA as our project progess tracking tool alongside Discord and Mi
 3. Kyle Williams :fire: - **Code Architect**
 4. Alan Oliver 🕴️ - **Team Manager**
 5. Joe Nsengiyumva :hatching_chick: - **Testing Lead**
+6. Raven Gardner :seedling: - **UX/UI Lead**
