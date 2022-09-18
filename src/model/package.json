@@ -1,0 +1,24 @@
+{"name":"quickart",
+  
+  "version":"1.0.0",
+  "main":"index.js",
+  "scripts":{
+    "start":"node items/index.js",
+    "dev":"nodemon items/index.js",
+    "test":"echo \"Error: no test specified\" && exit 1"
+  },
+    "keywords":[],
+    "author":"",
+    "license":"ISC",
+    "dependencies":{
+      "apollo-server":"^3.10.2",
+      "dotenv":"^16.0.2",
+      "graphql":"^16.6.0",
+      "mongodb":"3.6",
+      "nodemon": "^2.0.19"
+    },
+    "devDependencies":{
+      "@types/bcryptjs":"^2.4.2",
+      "@types/jsonwebtoken":"^8.5.9",
+      "@types/mongodb":"^4.0.7"}
+    }
