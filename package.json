@@ -1,0 +1,13 @@
+{"name":"quickart",
+  
+  "version":"1.0.0",
+  "main":"node src/QuicKart-Backend/Item.js",
+  "scripts":{
+    "start":"node src/QuicKart-Backend/Item.js",
+    "dev":"nodemon src/QuicKart-Backend/Item.js",
+    "test":"echo \"Error: no test specified\" && exit 1"},
+    "keywords":[],
+    "author":"",
+    "license":"ISC",
+    "dependencies":{"apollo-server":"^3.10.2","bcryptjs":"^2.4.3","dotenv":"^16.0.2","graphql":"^16.6.0","jsonwebtoken":"^8.5.1","mongodb":"3.6"},
+    "devDependencies":{"@types/bcryptjs":"^2.4.2","@types/jsonwebtoken":"^8.5.9","@types/mongodb":"^4.0.7"}}
