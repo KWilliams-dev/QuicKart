@@ -44,10 +44,14 @@ const start = async () => {
   await client.connect();
   const db = client.db("QuickKart");
  
+  const context = {
+    db,
+  }
+  
   const server = new ApolloServer({
       typeDefs,
       resolvers,
-      context: db,
+      context,
       introspection: true
   }); 
   
