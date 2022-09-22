@@ -1,16 +1,22 @@
-
-const dotenv = require('dotenv');
-dotenv.config();
 const { ApolloServer, gql } = require('apollo-server');
 const { MongoClient, ObjectID } = require('mongodb');
+const dotenv = require('dotenv');
+const Db = require('mongodb/lib/db');
 const { assertValidSDLExtension } = require('graphql/validation/validate');
+
+dotenv.config();
+const { DB_URI, DB_NAME} = process.env;
 
 const typeDefs = gql`
     type Query {
-        getItem (
-          id:ID!,
-          name:String!,
-        ):Item
+      getItem (
+        id:ID!,
+        name:String!,
+      ):Item
+
+      getAisle (id:ID!): Aisle
+
+      getBay (id:ID!): Bay
     }
     
     type Item{
@@ -22,94 +28,147 @@ const typeDefs = gql`
       xVal:Int!,
       yVal:Int!
     }
-    
+
+    type Aisle{
+      id: ID!,
+      name:String!,
+      bays:[Bay!]!,
+      location: Location!
+    }
+
+    type Bay{
+      id: ID!,
+      name:String!,
+      items:[Item!]!,
+      location: Location!
+    }
+
+    type Location{
+      xStartVal:Int!,
+      xEndVal:Int!,
+      yStartVal:Int!,
+      yEndVal:Int!
+    }
+
     type StoreMap {
       id: ID!,
-      description: String,
-      aisle: [Aisle!]!,
+      description: String!,
+      aisle: [Aisle],
       width: Int!,
-      length: Int!,
-      entrance: [[Int!]!]! 
-    }
-    
-    input MapInput {
-      description: String, 
-      aisle: [Aisle!]!, 
-      width: Int!, 
       length: Int!
     }
-
-    type User {
-      id: ID!,
-      shoppingList: [Item!]!,
-      startingLocation: [[Int!]!]! 
-    }
-
+    
     type Mutation {
-        createItem(name: String!, aisle: String!): Item!
-        
-        createMap(input: MapInput!): StoreMap!
-        getMap(id: ID!): StoreMap!
+      createItem(name: String!, aisle: String!): Item!
+      createAisle(name: String!): Aisle!
+      createBay(name: String!): Aisle!
 
-        #demonstration purposes only!!!
-        #TODO: delete after 9-26
-        getAllMapCoords(id: ID!): [[Int]!]!
+      createMap(description: String!, width: Int!, length: Int!): StoreMap!
+      getMap(id: ID!): StoreMap!
+
+      #demonstration purposes only!!!
+      #TODO: delete after 9-26
+      getAllMapCoords(id: ID!): [[Int]!]!
     }
-
 `;
+
 
 const resolvers = {
   Query:  {
+    
+    getAisle: async(_, { id }, { db }) => {
+      return await db.collection('Aisles').findOne({ _id: ObjectID(id) });
+    },
+    
+    getBay: async(_, { id }, { db }) => {
+      return await db.collection('Bays').findOne({ _id: ObjectID(id) });
+    }
 
   },
   Mutation: {
-    createMap: async (_, { description, width, length }, { db, aisle }) => {
-        if(!aisle) { throw new Error('Aisle does not exist') }
+    createAisle: async(_, { name }, { db }) => {
+      //  name:String!, bays:[Bay!]!, xStartVal:Int!, xEndVal:Int!, yStartVal:Int!, yEndVal:Int!
+      const newAisle = {
+          name
+      }
 
-        const newMap = {
-          description, 
-          aisle: [aisle],
-          width,
-          length
-        }
-        
-        const result = await db.collection('Map').insert(newMap);
+      // insert newAisle object into database
+      const result = await db.collection('Aisles').insert(newAisle);
+      return result.ops[0]; // first item in array is the item we just added
+  },
 
-        return result.ops[0]
-    },
+  createBay: async(_, { name }, { db }) => {
+    //  name:String!, bays:[Bay!]!, xStartVal:Int!, xEndVal:Int!, yStartVal:Int!, yEndVal:Int!
+    const newBay = {
+        name
+    }
 
-    getMap: async (_, { id }, { db }) => {
-      return await db.collection('Map').findOne({ _id: ObjectID(id) });
-    },
+    // insert newAisle object into database
+    const result = await db.collection('Bays').insert(newBay);
+    return result.ops[0]; // first item in array is the item we just added
+  },
+  createMap: async (_, { description, width, length }, { db }) => { 
 
-    getAllMapCoords: async (_, { id }, { db}) => {
-        if(!await db.collection('Map').findOne({ _id: ObjectID(id) })) {
-            throw new Error('Map not found');
-        }
-        const data = [[]];
-        for(let x = 0; x < width; x++) {
-            for(let y = 0; y < length; y++) {
-                data.push([x,y]);
-            }        
-        }
-        return data;
-    },
+    
+    const newMap = {
+      description,
+      width,
+      length,
+      aisle: await db.collection('Aisles').find().toArray()
+    }
+    
+    const result = await db.collection('Map').insert(newMap);
+
+    return result.ops[0]
+  },
+
+  getMap: async (_, { id }, { db }) => {
+    return await db.collection('Map').findOne({ _id: ObjectID(id) });
+  },
+
+  getAllMapCoords: async (_, { id }, { db}) => {
+      if(!await db.collection('Map').findOne({ _id: ObjectID(id) })) {
+          throw new Error('Map not found');
+      }
+      const data = [[]];
+      for(let x = 0; x < width; x++) {
+          for(let y = 0; y < length; y++) {
+              data.push([x,y]);
+          }        
+      }
+      return data;
+  },
+  
 
   },
+
+  // did this so then Aisle.id in Apollo wouldn't give an error for non-nullable fields
+  Aisle: {
+    id: ({ _id, id }) => _id || id,  
+  },
+
+  Bay: {
+    id: ({ _id, id }) => _id || id,  
+  },
+  
   StoreMap: {
-    id: ({ _id, id }) => id || id,
+    id: ({ _id, id }) => _id || id,
   },
+  
 };
 
 const start = async () => {
-  const client = new MongoClient("mongodb+srv://admin:admin@quickkartcluster.o0bsfej.mongodb.net/test", { useNewUrlParser: true, useUnifiedTopology: true });
+  const client = new MongoClient(DB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
   await client.connect();
-  const db = client.db("QuickKart");
- 
+  const db = client.db(DB_NAME); // defines the database
+
+  const context = {
+    db,
+  }
   const server = new ApolloServer({
       typeDefs,
       resolvers,
-      context: db,
+      context,
       introspection: true
   }); 
   
