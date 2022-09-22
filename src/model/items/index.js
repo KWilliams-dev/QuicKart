@@ -14,7 +14,7 @@ const typeDefs = gql`
 
       getAisle (id:ID!): Aisle
 
-      getBay (name:String!): Bay
+      getBay (id:ID!): Bay
     }
     
     type Item{
@@ -35,12 +35,10 @@ const typeDefs = gql`
     }
 
     type Bay{
+      id: ID!,
       name:String!,
       items:[Item!]!,
-      xStartVal:Int!,
-      xEndVal:Int!,
-      yStartVal:Int!,
-      yEndVal:Int!
+      location: Location!
     }
 
     type Location{
@@ -53,6 +51,7 @@ const typeDefs = gql`
     type Mutation {
       createItem(name: String!, aisle: String!): Item!
       createAisle(name: String!): Aisle!
+      createBay(name: String!): Aisle!
     }
 `;
 
@@ -61,10 +60,12 @@ const resolvers = {
   Query:  {
     
     getAisle: async(_, { id }, { db }) => {
-      console.log(id);
       return await db.collection('Aisles').findOne({ _id: ObjectID(id) });
-    }
+    },
     
+    getBay: async(_, { id }, { db }) => {
+      return await db.collection('Bays').findOne({ _id: ObjectID(id) });
+    }
 
   },
   Mutation: {
@@ -79,10 +80,25 @@ const resolvers = {
       return result.ops[0]; // first item in array is the item we just added
   },
 
+  createBay: async(_, { name }, { db }) => {
+    //  name:String!, bays:[Bay!]!, xStartVal:Int!, xEndVal:Int!, yStartVal:Int!, yEndVal:Int!
+    const newBay = {
+        name
+    }
+
+    // insert newAisle object into database
+    const result = await db.collection('Bays').insert(newBay);
+    return result.ops[0]; // first item in array is the item we just added
+  },
+
   },
 
   // did this so then Aisle.id in Apollo wouldn't give an error for non-nullable fields
   Aisle: {
+    id: ({ _id, id }) => _id || id,  
+  },
+
+  Bay: {
     id: ({ _id, id }) => _id || id,  
   },
   
