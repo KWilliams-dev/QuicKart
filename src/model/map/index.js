@@ -49,12 +49,14 @@ const typeDefs = gql`
         createItem(name: String!, aisle: String!): Item!
         
         createMap(input: MapInput!): StoreMap!
-        getMap(id: ID!): [[Int!]!]!
+        getMap(id: ID!): StoreMap!
+
+        #demonstration purposes only!!!
+        #TODO: delete after 9-26
+        getAllMapCoords(id: ID!): [[Int]!]!
     }
 
 `;
-
-
 
 const resolvers = {
   Query:  {
@@ -75,9 +77,24 @@ const resolvers = {
 
         return result.ops[0]
     },
+
     getMap: async (_, { id }, { db }) => {
       return await db.collection('Map').findOne({ _id: ObjectID(id) });
-    }
+    },
+
+    getAllMapCoords: async (_, { id }, { db}) => {
+        if(!await db.collection('Map').findOne({ _id: ObjectID(id) })) {
+            throw new Error('Map not found');
+        }
+        const data = [[]];
+        for(let x = 0; x < width; x++) {
+            for(let y = 0; y < length; y++) {
+                data.push([x,y]);
+            }        
+        }
+        return data;
+    },
+
   },
   StoreMap: {
     id: ({ _id, id }) => id || id,
