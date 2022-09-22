@@ -1,15 +1,23 @@
-
 const dotenv = require('dotenv');
 dotenv.config();
 const { ApolloServer, gql } = require('apollo-server');
 const { MongoClient } = require('mongodb');
+const  items  = require('./itemsListData');
+
+
+
+
+  // type Query {
+    //     getItem (id:ID!,name:String!,):Item
+    // }
+
+    //getItem(id: ID!):Item
 
 const typeDefs = gql`
+
+
     type Query {
-        getItem (
-          id:ID!,
-          name:String!,
-        ):Item
+      items:[Item!]!
     }
     
     type Item{
@@ -22,22 +30,43 @@ const typeDefs = gql`
       yVal:Int!
     }
 
-    type Mutation {
-        createItem(name: String!, aisle: String!): Item!
-    }
-
+   
 `;
 
+// type Mutation {
+//   createItem(name: String!, aisle: String!): Item!
+// }
+
+// type Mutation {
+// createItem(name: String!): Item!
+// }
 
 
+console.log(items)
 const resolvers = {
-  Query:  {
-
+Query:  {
+ items:() => items,
   },
-  Mutation: {
+  // getItem: async(_,{id},{db}) => {
+  //   return await db.collection('Item').findOne({_id:ObjectID(id)})}
+// },
+// Mutation: {
+// createItem:async(_, {name},{db}) => {
 
-  },
+// const newItem = {name,createdAt: new Date().toISOString()
+// }
+
+// const result = await db.collection('Item').insert(newItem);
+// return result.ops[0];
+// }
+// },
+
+Item:{
+id: ( { _id, id }) => _id || id,
+}
+
 };
+
 
 const start = async () => {
   const client = new MongoClient("mongodb+srv://admin:admin@quickkartcluster.o0bsfej.mongodb.net/test", { useNewUrlParser: true, useUnifiedTopology: true });
