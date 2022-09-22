@@ -33,17 +33,16 @@ const typeDefs = gql`
       id: ID!,
       name:String!,
       bays:[Bay!]!,
-      location: Location!
+      xStartVal:Int!,
+      xEndVal:Int!,
+      yStartVal:Int!,
+      yEndVal:Int!
     }
 
     type Bay{
       id: ID!,
       name:String!,
       items:[Item!]!,
-      location: Location!
-    }
-
-    type Location{
       xStartVal:Int!,
       xEndVal:Int!,
       yStartVal:Int!,
@@ -60,8 +59,22 @@ const typeDefs = gql`
     
     type Mutation {
       createItem(name: String!, aisle: String!): Item!
-      createAisle(name: String!): Aisle!
-      createBay(name: String!): Aisle!
+
+      createAisle(
+        name: String!, 
+        xStartVal: Int!, 
+        xEndVal: Int!, 
+        yStartVal: Int!,
+        yEndVal: Int!
+      ): Aisle!
+
+      createBay(
+        name: String!, 
+        xStartVal: Int!, 
+        xEndVal: Int!, 
+        yStartVal: Int!,
+        yEndVal: Int!
+      ): Bay!
 
       createMap(description: String!, width: Int!, length: Int!): StoreMap!
       getMap(id: ID!): StoreMap!
@@ -86,10 +99,17 @@ const resolvers = {
 
   },
   Mutation: {
-    createAisle: async(_, { name }, { db }) => {
+    createAisle: async(_, { name, xStartVal, xEndVal, yStartVal, yEndVal }, { db }) => {
       //  name:String!, bays:[Bay!]!, xStartVal:Int!, xEndVal:Int!, yStartVal:Int!, yEndVal:Int!
+      const bays = await db.collection('Bays').find().toArray;
+
       const newAisle = {
-          name
+        name,
+        bay: bays, 
+        xStartVal,
+        xEndVal,
+        yStartVal,
+        yEndVal
       }
 
       // insert newAisle object into database
@@ -97,10 +117,16 @@ const resolvers = {
       return result.ops[0]; // first item in array is the item we just added
   },
 
-  createBay: async(_, { name }, { db }) => {
-    //  name:String!, bays:[Bay!]!, xStartVal:Int!, xEndVal:Int!, yStartVal:Int!, yEndVal:Int!
+  createBay: async(_, { name, xStartVal, xEndVal, yStartVal, yEndVal }, { db }) => {
+   
+    //const items = await db.collection('Items').find().toArray; // need items
     const newBay = {
-        name
+        name,
+        //item: items, --> need items
+        xStartVal,
+        xEndVal,
+        yStartVal,
+        yEndVal
     }
 
     // insert newAisle object into database
