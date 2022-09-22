@@ -17,6 +17,12 @@ const typeDefs = gql`
       getAisle (id:ID!): Aisle
 
       getBay (id:ID!): Bay
+
+      getMap(id: ID!): StoreMap
+
+      # demonstration purposes only!!!
+      # TODO: delete after 9-26-22
+      getAllMapCoords(id: ID!): [[Int]]
     }
     
     type Item{
@@ -64,11 +70,6 @@ const typeDefs = gql`
       createBay(name: String!): Aisle!
 
       createMap(description: String!, width: Int!, length: Int!): StoreMap!
-      getMap(id: ID!): StoreMap!
-
-      #demonstration purposes only!!!
-      #TODO: delete after 9-26
-      getAllMapCoords(id: ID!): [[Int]!]!
     }
 `;
 
@@ -82,7 +83,27 @@ const resolvers = {
     
     getBay: async(_, { id }, { db }) => {
       return await db.collection('Bays').findOne({ _id: ObjectID(id) });
-    }
+    },
+
+    getMap: async (_, { id }, { db }) => {
+      return await db.collection('Map').findOne({ _id: ObjectID(id) });
+    },  
+    
+    getAllMapCoords: async (_, { id }, { db}) => {
+      const map = await db.collection('Map').findOne({ _id: ObjectID(id) });
+      if(!map) {
+          throw new Error('Map not found');
+      }
+      
+      const coordinates = [];
+      for(let x = 0; x <= map.width; x++) {
+          for(let y = 0; y <= map.length; y++) {
+            coordinates.push([x,y]);
+          }        
+      }
+      return coordinates;
+      
+    },
 
   },
   Mutation: {
@@ -109,36 +130,21 @@ const resolvers = {
   },
   createMap: async (_, { description, width, length }, { db }) => { 
 
-    
+    const aisles = await db.collection('Aisles').find().toArray();
+
+    // TODO: Check if the aisle and bay coordinates exist within the map area
+
     const newMap = {
       description,
       width,
       length,
-      aisle: await db.collection('Aisles').find().toArray()
+      aisle: aisles
     }
     
     const result = await db.collection('Map').insert(newMap);
 
     return result.ops[0]
   },
-
-  getMap: async (_, { id }, { db }) => {
-    return await db.collection('Map').findOne({ _id: ObjectID(id) });
-  },
-
-  getAllMapCoords: async (_, { id }, { db}) => {
-      if(!await db.collection('Map').findOne({ _id: ObjectID(id) })) {
-          throw new Error('Map not found');
-      }
-      const data = [[]];
-      for(let x = 0; x < width; x++) {
-          for(let y = 0; y < length; y++) {
-              data.push([x,y]);
-          }        
-      }
-      return data;
-  },
-  
 
   },
 
