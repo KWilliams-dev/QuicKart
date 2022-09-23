@@ -50,6 +50,54 @@ export const ShoppingListScreen = () => {
     <View style={styles.container}>
         <NativeText style={styles.titleText}>Shopping List</NativeText>
         
+        <SearchableDropdown
+                selectedItems={selectedItems}
+                onItemSelect={(item) => {
+                    const items = selectedItems;
+                    items.push(item)
+                    setSelectedItems(() => {
+                        return [...items]
+                    })
+                }}
+                containerStyle = { styles.dropdown }
+                onRemoveItem = { (item, index) => {
+                    const items = selectedItems.filter((sitem) => sitem.id !== item.id );
+                    setSelectedItems(() => {
+                        return [...items]
+                    })
+                }}
+                itemStyle={{
+                    padding: 10,
+                    backgroundColor: '#F1F5F2',
+                    borderColor: '#bbb',
+                    marginTop: 10
+                }}
+                itemTextStyle={{ color: '#222' }}
+                itemsContainerStyle={{ maxHeight: 140 }}
+                items={DATA}
+                resetValue={false}
+
+                textInputProps={
+                    {
+                      placeholder: "placeholder",
+                      underlineColorAndroid: "transparent",
+                      style: {
+                          padding: 12,
+                          borderWidth: 1,
+                          borderColor: '#ccc',
+                          borderRadius: 5,
+                      },
+                      //onTextChange: text => alert(text)
+                    }
+                  }
+                  listProps={
+                    {
+                      nestedScrollEnabled: true,
+                    }
+                }
+                >
+        </SearchableDropdown>
+
         <View style={styles.flatList}>
             <FlatList data={selectedItems}
             renderItem={({item}) => { return(<NativeText style={styles.item}>{item.name}</NativeText>);
