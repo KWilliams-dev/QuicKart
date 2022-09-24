@@ -61,7 +61,7 @@ const typeDefs = gql`
       title: String!
       description: String,
       aisle: [Aisle!]!,
-      #checkout: [Checkout!]!
+      checkout: [Checkout!]!
       width: Int!,
       length: Int!
     }
@@ -93,10 +93,8 @@ const resolvers = {
     
     getAllMapCoords: async (_, { id }, { db}) => {
       const map = await db.collection('Map').findOne({ _id: ObjectID(id) });
-      if(!map) {
-          throw new Error('Map not found');
-      }
-      
+      if(!map) { throw new Error('Map not found'); }
+
       const coordinates = [];
       for(let x = 0; x <= map.width; x++) {
           for(let y = 0; y <= map.length; y++) {
@@ -130,36 +128,41 @@ const resolvers = {
     const result = await db.collection('Bays').insert(newBay);
     return result.ops[0]; // first item in array is the item we just added
   },
+
   createMap: async (_, { title, description, width, length }, { db }) => { 
-    
-    if(await db.collection('Map').findOne({ title: title })) {
-      throw new Error('Map already exists')
-    }
-    if(!(width > 0 && length > 0)) {
-      throw new Error('Invalid map dimensions. Must have an area of at least 1 unit')
-    }
+
+    if(await db.collection('Map').findOne({ title: title })) { throw new Error('Map already exists') }
+
+    if(!(width > 0 && length > 0)) { throw new Error('Invalid map dimensions. Must have an area of at least 1 unit') }
 
     const aisles = await db.collection('Aisles').find().toArray();
-    //const checkoutLanes = await db.collection('Checkout').find().toArray();
+    const checkoutLanes = await db.collection('Checkout').find().toArray();
+
+    const validateRange = (x, y, min, max) => {
+      return x >= min && y <= max
+    }
 
     aisles.forEach(aisle => {
-      if(!(aisle.xStartVal >= 0 
-        && aisle.xEndVal <= width 
-        && aisle.yStartVal >= 0 
-        && aisle.yEndVal <= length)) {
-          throw new Error(`Aisle dimensions exceed map dimensions`)
-      }
+      if(!(validateRange(aisle.xStartVal, aisle.xEndVal, 0, width)
+          && validateRange(aisle.yStartVal, aisle.yEndVal, 0, length))) { 
+            throw new Error(`Aisle dimensions exceed map dimensions`)
+          }
+    });
+
+    checkoutLanes.forEach(cLane => {
+      if(!(validateRange(cLane.xStartVal, cLane.xEndVal, 0, width)
+          && validateRange(cLane.yStartVal, cLane.yEndVal, 0, length))) { 
+            throw new Error(`Checkout lane dimensions exceed map dimensions`)
+          }
     });
     
-    
-
     const newMap = {
       title,
       description,
       width,
       length,
       aisle: aisles,
-      //checkout: checkoutLanes
+      checkout: checkoutLanes
     }
     
     const result = await db.collection('Map').insert(newMap);
