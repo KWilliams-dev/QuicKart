@@ -58,8 +58,10 @@ const typeDefs = gql`
 
     type StoreMap {
       id: ID!,
-      description: String!,
-      aisle: [Aisle],
+      title: String!
+      description: String,
+      aisle: [Aisle!]!,
+      #checkout: [Checkout!]!
       width: Int!,
       length: Int!
     }
@@ -69,7 +71,7 @@ const typeDefs = gql`
       createAisle(name: String!): Aisle!
       createBay(name: String!): Aisle!
 
-      createMap(description: String!, width: Int!, length: Int!): StoreMap!
+      createMap(title: String!, description: String!, width: Int!, length: Int!): StoreMap!
     }
 `;
 
@@ -128,17 +130,36 @@ const resolvers = {
     const result = await db.collection('Bays').insert(newBay);
     return result.ops[0]; // first item in array is the item we just added
   },
-  createMap: async (_, { description, width, length }, { db }) => { 
+  createMap: async (_, { title, description, width, length }, { db }) => { 
+    
+    if(await db.collection('Map').findOne({ title: title })) {
+      throw new Error('Map already exists')
+    }
+    if(!(width > 0 && length > 0)) {
+      throw new Error('Invalid map dimensions. Must have an area of at least 1 unit')
+    }
 
     const aisles = await db.collection('Aisles').find().toArray();
+    //const checkoutLanes = await db.collection('Checkout').find().toArray();
 
-    // TODO: Check if the aisle and bay coordinates exist within the map area
+    aisles.forEach(aisle => {
+      if(!(aisle.xStartVal >= 0 
+        && aisle.xEndVal <= width 
+        && aisle.yStartVal >= 0 
+        && aisle.yEndVal <= length)) {
+          throw new Error(`Aisle dimensions exceed map dimensions`)
+      }
+    });
+    
+    
 
     const newMap = {
+      title,
       description,
       width,
       length,
-      aisle: aisles
+      aisle: aisles,
+      //checkout: checkoutLanes
     }
     
     const result = await db.collection('Map').insert(newMap);
