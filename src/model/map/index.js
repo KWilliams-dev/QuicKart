@@ -15,8 +15,6 @@ const typeDefs = gql`
       ):Item
 
       getAisle (id:ID!): Aisle
-
-      getBay (id:ID!): Bay
     }
     
     type Item{
@@ -31,18 +29,9 @@ const typeDefs = gql`
 
     type Aisle{
       id: ID!,
+      number: Int!,
       name:String!,
-      bays:[Bay!]!,
-      xStartVal:Int!,
-      xEndVal:Int!,
-      yStartVal:Int!,
-      yEndVal:Int!
-    }
-
-    type Bay{
-      id: ID!,
-      name:String!,
-      items:[Item!]!,
+      bays:[[Int]!]!,
       xStartVal:Int!,
       xEndVal:Int!,
       yStartVal:Int!,
@@ -61,20 +50,13 @@ const typeDefs = gql`
       createItem(name: String!, aisle: String!): Item!
 
       createAisle(
+        number: Int!
         name: String!, 
         xStartVal: Int!, 
         xEndVal: Int!, 
         yStartVal: Int!,
         yEndVal: Int!
       ): Aisle!
-
-      createBay(
-        name: String!, 
-        xStartVal: Int!, 
-        xEndVal: Int!, 
-        yStartVal: Int!,
-        yEndVal: Int!
-      ): Bay!
 
       createMap(description: String!, width: Int!, length: Int!): StoreMap!
       getMap(id: ID!): StoreMap!
@@ -92,20 +74,78 @@ const resolvers = {
     getAisle: async(_, { id }, { db }) => {
       return await db.collection('Aisles').findOne({ _id: ObjectID(id) });
     },
-    
-    getBay: async(_, { id }, { db }) => {
-      return await db.collection('Bays').findOne({ _id: ObjectID(id) });
-    }
 
   },
   Mutation: {
-    createAisle: async(_, { name, xStartVal, xEndVal, yStartVal, yEndVal }, { db }) => {
-      //  name:String!, bays:[Bay!]!, xStartVal:Int!, xEndVal:Int!, yStartVal:Int!, yEndVal:Int!
-      const bays = await db.collection('Bays').find().toArray;
+    createAisle: async(_, { number, name, xStartVal, xEndVal, yStartVal, yEndVal }, { db }) => {
+
+      const width = (xEndVal - xStartVal) + 1;
+      const length = (yEndVal - yStartVal) + 1;
+
+      // bays are not unique identifiers like aisles
+      // three bays per aisle
+      const horizonBayLength = width/3; 
+      const vertBayLength = length/3;
+
+      // 1st bay starts = startVal
+      // 1st bay ends = starts + (bay length - 1)
+      // 2nd bay starts = 1stBayEnds + 1
+      // 2nd bay ends = starts + (bay length -1)
+      // 3rd bay starts = 2ndBayEnds + 1
+      // 3rd bay ends =  endVal
+
+      const bayCoordinates = [];
+      if( width > length ) {
+        for(let i = 0; i <= width; i++) {
+          if (i == horizonBayLength) {
+
+            const horizonFirstBayEnd = xStartVal + (i - 1);
+            bayCoordinates.push([xStartVal,horizonFirstBayEnd]);
+
+          } else if (i == (horizonBayLength*2)) {
+            
+            const horizonSecondBay = xStartVal + (horizonBayLength - 1);
+            const horizonSecondBayEnd = xStartVal + (i - 1);
+            bayCoordinates.push([horizonSecondBay,horizonSecondBayEnd]);
+
+          } else if (i == (horizonBayLength*3)) {
+
+            const horizonThirdBay = xStartVal + ( (horizonBayLength*2) - 1);
+            const horizonThirdBayEnd = xEndVal;
+            bayCoordinates.push([horizonThirdBay,horizonThirdBayEnd]);
+
+          }
+        }
+      } else {
+
+        for(let i = 0; i <= length; i++) {
+          if (i == vertBayLength) {
+
+            const vertFirstBayEnd = yStartVal + (i - 1);
+            bayCoordinates.push([yStartVal,vertFirstBayEnd]);
+
+          } else if (i == (vertBayLength*2)) {
+            
+            const vertSecondBay = yStartVal + (vertBayLength - 1);
+            const vertSecondBayEnd = yStartVal + (i - 1);
+            bayCoordinates.push([vertSecondBay,vertSecondBayEnd]);
+
+          } else if (i == (vertBayLength*3)) {
+
+            const vertThirdBay = yStartVal + ( (vertBayLength*2) - 1);
+            const vertThirdBayEnd = yEndVal;
+            bayCoordinates.push([vertThirdBay,vertThirdBayEnd]);
+            
+          }
+        }
+      }
+
+      console.log(bayCoordinates);
 
       const newAisle = {
+        number,
         name,
-        bay: bays, 
+        bays: bayCoordinates,
         xStartVal,
         xEndVal,
         yStartVal,
@@ -114,25 +154,9 @@ const resolvers = {
 
       // insert newAisle object into database
       const result = await db.collection('Aisles').insert(newAisle);
-      return result.ops[0]; // first item in array is the item we just added
+      return result.ops[0];
   },
 
-  createBay: async(_, { name, xStartVal, xEndVal, yStartVal, yEndVal }, { db }) => {
-   
-    //const items = await db.collection('Items').find().toArray; // need items
-    const newBay = {
-        name,
-        //item: items, --> need items
-        xStartVal,
-        xEndVal,
-        yStartVal,
-        yEndVal
-    }
-
-    // insert newAisle object into database
-    const result = await db.collection('Bays').insert(newBay);
-    return result.ops[0]; // first item in array is the item we just added
-  },
   createMap: async (_, { description, width, length }, { db }) => { 
 
     
@@ -170,10 +194,6 @@ const resolvers = {
 
   // did this so then Aisle.id in Apollo wouldn't give an error for non-nullable fields
   Aisle: {
-    id: ({ _id, id }) => _id || id,  
-  },
-
-  Bay: {
     id: ({ _id, id }) => _id || id,  
   },
   
