@@ -45,6 +45,14 @@ const typeDefs = gql`
       width: Int!,
       length: Int!
     }
+
+    type Checkout {
+      lane: Int!,
+      xStartVal:Int!,
+      xEndVal:Int!,
+      yStartVal:Int!,
+      yEndVal:Int!
+    }
     
     type Mutation {
       createItem(name: String!, aisle: String!): Item!
@@ -57,6 +65,14 @@ const typeDefs = gql`
         yStartVal: Int!,
         yEndVal: Int!
       ): Aisle!
+
+      createCheckout(
+        lane: Int!,
+        xStartVal:Int!,
+        xEndVal:Int!,
+        yStartVal:Int!,
+        yEndVal:Int!
+      ): Checkout!
 
       createMap(description: String!, width: Int!, length: Int!): StoreMap!
       getMap(id: ID!): StoreMap!
@@ -140,8 +156,6 @@ const resolvers = {
         }
       }
 
-      console.log(bayCoordinates);
-
       const newAisle = {
         number,
         name,
@@ -189,6 +203,19 @@ const resolvers = {
       return data;
   },
   
+  createCheckout: async(_, { lane, xStartVal, xEndVal, yStartVal, yEndVal } , { db }) => {
+    const newLane = {
+      lane,
+      xStartVal,
+      xEndVal,
+      yStartVal,
+      yEndVal
+    }
+    
+    const result = await db.collection('Checkout').insert(newLane);
+
+    return result.ops[0]
+  },
 
   },
 
