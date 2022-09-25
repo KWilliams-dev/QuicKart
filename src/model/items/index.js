@@ -13,12 +13,7 @@ const typeDefs = gql`
         id:ID!,
         name:String!,
       ):Item
-
       getAisle (id:ID!): Aisle
-
-      getMap(id: ID!): StoreMap
-
-      getAllMapCoords(id: ID!): [[Int]]
     }
     
     type Item{
@@ -30,7 +25,6 @@ const typeDefs = gql`
       xVal:Int!,
       yVal:Int!
     }
-
     type Aisle{
       id: ID!,
       number: Int!,
@@ -41,17 +35,13 @@ const typeDefs = gql`
       yStartVal:Int!,
       yEndVal:Int!
     }
-
     type StoreMap {
       id: ID!,
-      title: String!
-      description: String,
-      aisle: [Aisle!]!,
-      checkout: [Checkout!]!
+      description: String!,
+      aisle: [Aisle],
       width: Int!,
       length: Int!
     }
-
     type Checkout {
       lane: Int!,
       xStartVal:Int!,
@@ -61,10 +51,7 @@ const typeDefs = gql`
     }
     
     type Mutation {
-      createItem(name: String!, 
-        aisle: String!
-      ): Item!
-
+      createItem(name: String!, aisle: String!): Item!
       createAisle(
         number: Int!
         name: String!, 
@@ -73,7 +60,6 @@ const typeDefs = gql`
         yStartVal: Int!,
         yEndVal: Int!
       ): Aisle!
-
       createCheckout(
         lane: Int!,
         xStartVal:Int!,
@@ -81,19 +67,18 @@ const typeDefs = gql`
         yStartVal:Int!,
         yEndVal:Int!
       ): Checkout!
-
-      createMap(title: String!, 
-        description: String!, 
-        width: Int!, 
-        length: Int!
-      ): StoreMap!
+      createMap(description: String!, width: Int!, length: Int!): StoreMap!
+      getMap(id: ID!): StoreMap!
+      #demonstration purposes only!!!
+      #TODO: delete after 9-26
+      getAllMapCoords(id: ID!): [[Int]!]!
     }
 `;
 
 
 const resolvers = {
   Query:  {
-
+    
     getAisle: async(_, { id }, { db }) => {
       return await db.collection('Aisles').findOne({ _id: ObjectID(id) });
     },
@@ -101,12 +86,12 @@ const resolvers = {
     getMap: async (_, { id }, { db }) => {
       return await db.collection('Map').findOne({ _id: ObjectID(id) });
     },
-
+  
     getAllMapCoords: async (_, { id }, { db}) => {
         if(!await db.collection('Map').findOne({ _id: ObjectID(id) })) {
             throw new Error('Map not found');
         }
-        const data = [];
+        const data = [[]];
         for(let x = 0; x < width; x++) {
             for(let y = 0; y < length; y++) {
                 data.push([x,y]);
@@ -153,6 +138,28 @@ const resolvers = {
         }
       } else {
 
+        for(let i = 0; i <= length; i++) {
+          if (i == vertBayLength) {
+
+            const vertFirstBayEnd = yStartVal + (i - 1);
+            bayCoordinates.push([yStartVal,vertFirstBayEnd]);
+
+          } else if (i == (vertBayLength*2)) {
+            
+            const vertSecondBay = yStartVal + (vertBayLength);
+            const vertSecondBayEnd = yStartVal + (i - 1);
+            bayCoordinates.push([vertSecondBay,vertSecondBayEnd]);
+
+          } else if (i == (vertBayLength*3)) {
+
+            const vertThirdBay = yStartVal + (vertBayLength*2);
+            const vertThirdBayEnd = yEndVal;
+            bayCoordinates.push([vertThirdBay,vertThirdBayEnd]);
+            
+          }
+        }
+      }
+
       const newAisle = {
         number,
         name,
@@ -166,10 +173,9 @@ const resolvers = {
       // insert newAisle object into database
       const result = await db.collection('Aisles').insert(newAisle);
       return result.ops[0];
-    }
   },
 
-    createMap: async (_, { title, description, width, length }, { db }) => { 
+  createMap: async (_, { title, description, width, length }, { db }) => { 
 
     if(await db.collection('Map').findOne({ title: title })) { throw new Error('Map already exists') }
 
@@ -208,21 +214,22 @@ const resolvers = {
     const result = await db.collection('Map').insert(newMap);
 
     return result.ops[0]
-    },
+  },
+  
+  createCheckout: async(_, { lane, xStartVal, xEndVal, yStartVal, yEndVal } , { db }) => {
+    const newLane = {
+      lane,
+      xStartVal,
+      xEndVal,
+      yStartVal,
+      yEndVal
+    }
+    
+    const result = await db.collection('Checkout').insert(newLane);
 
-    createCheckout: async(_, { lane, xStartVal, xEndVal, yStartVal, yEndVal } , { db }) => {
-      const newLane = {
-        lane,
-        xStartVal,
-        xEndVal,
-        yStartVal,
-        yEndVal
-      }
-      
-      const result = await db.collection('Checkout').insert(newLane);
+    return result.ops[0]
+  },
 
-      return result.ops[0]
-    },
   },
 
   // did this so then Aisle.id in Apollo wouldn't give an error for non-nullable fields
@@ -233,6 +240,7 @@ const resolvers = {
   StoreMap: {
     id: ({ _id, id }) => _id || id,
   },
+  
 };
 
 const start = async () => {
