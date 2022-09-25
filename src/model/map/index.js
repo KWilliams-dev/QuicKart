@@ -18,8 +18,6 @@ const typeDefs = gql`
 
       getMap(id: ID!): StoreMap
 
-      # demonstration purposes only!!!
-      # TODO: delete after 9-26-22
       getAllMapCoords(id: ID!): [[Int]]
     }
     
@@ -63,7 +61,9 @@ const typeDefs = gql`
     }
     
     type Mutation {
-      createItem(name: String!, aisle: String!): Item!
+      createItem(name: String!, 
+        aisle: String!
+      ): Item!
 
       createAisle(
         number: Int!
@@ -82,21 +82,37 @@ const typeDefs = gql`
         yEndVal:Int!
       ): Checkout!
 
-      createMap(title: String!, description: String!, width: Int!, length: Int!): StoreMap!
-      getMap(id: ID!): StoreMap!
-
-      #demonstration purposes only!!!
-      #TODO: delete after 9-26
-      getAllMapCoords(id: ID!): [[Int]!]!
+      createMap(title: String!, 
+        description: String!, 
+        width: Int!, 
+        length: Int!
+      ): StoreMap!
     }
 `;
 
 
 const resolvers = {
   Query:  {
-    
+
     getAisle: async(_, { id }, { db }) => {
       return await db.collection('Aisles').findOne({ _id: ObjectID(id) });
+    },
+
+    getMap: async (_, { id }, { db }) => {
+      return await db.collection('Map').findOne({ _id: ObjectID(id) });
+    },
+
+    getAllMapCoords: async (_, { id }, { db}) => {
+        if(!await db.collection('Map').findOne({ _id: ObjectID(id) })) {
+            throw new Error('Map not found');
+        }
+        const data = [];
+        for(let x = 0; x < width; x++) {
+            for(let y = 0; y < length; y++) {
+                data.push([x,y]);
+            }        
+        }
+        return data;
     },
 
   },
@@ -150,11 +166,10 @@ const resolvers = {
       // insert newAisle object into database
       const result = await db.collection('Aisles').insert(newAisle);
       return result.ops[0];
-  }
-},
+    }
+  },
 
-
-  createMap: async (_, { title, description, width, length }, { db }) => { 
+    createMap: async (_, { title, description, width, length }, { db }) => { 
 
     if(await db.collection('Map').findOne({ title: title })) { throw new Error('Map already exists') }
 
@@ -193,39 +208,21 @@ const resolvers = {
     const result = await db.collection('Map').insert(newMap);
 
     return result.ops[0]
-  },
+    },
 
-  getMap: async (_, { id }, { db }) => {
-    return await db.collection('Map').findOne({ _id: ObjectID(id) });
-  },
-
-  getAllMapCoords: async (_, { id }, { db}) => {
-      if(!await db.collection('Map').findOne({ _id: ObjectID(id) })) {
-          throw new Error('Map not found');
+    createCheckout: async(_, { lane, xStartVal, xEndVal, yStartVal, yEndVal } , { db }) => {
+      const newLane = {
+        lane,
+        xStartVal,
+        xEndVal,
+        yStartVal,
+        yEndVal
       }
-      const data = [];
-      for(let x = 0; x < width; x++) {
-          for(let y = 0; y < length; y++) {
-              data.push([x,y]);
-          }        
-      }
-      return data;
-  },
-  
-  createCheckout: async(_, { lane, xStartVal, xEndVal, yStartVal, yEndVal } , { db }) => {
-    const newLane = {
-      lane,
-      xStartVal,
-      xEndVal,
-      yStartVal,
-      yEndVal
-    }
-    
-    const result = await db.collection('Checkout').insert(newLane);
+      
+      const result = await db.collection('Checkout').insert(newLane);
 
-    return result.ops[0]
-  },
-
+      return result.ops[0]
+    },
   },
 
   // did this so then Aisle.id in Apollo wouldn't give an error for non-nullable fields
