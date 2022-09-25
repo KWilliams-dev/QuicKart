@@ -120,13 +120,13 @@ const resolvers = {
 
           } else if (i == (horizonBayLength*2)) {
             
-            const horizonSecondBay = xStartVal + (horizonBayLength - 1);
+            const horizonSecondBay = xStartVal + (horizonBayLength);
             const horizonSecondBayEnd = xStartVal + (i - 1);
             bayCoordinates.push([horizonSecondBay,horizonSecondBayEnd]);
 
           } else if (i == (horizonBayLength*3)) {
 
-            const horizonThirdBay = xStartVal + ( (horizonBayLength*2) - 1);
+            const horizonThirdBay = xStartVal + (horizonBayLength*2);
             const horizonThirdBayEnd = xEndVal;
             bayCoordinates.push([horizonThirdBay,horizonThirdBayEnd]);
 
@@ -142,13 +142,13 @@ const resolvers = {
 
           } else if (i == (vertBayLength*2)) {
             
-            const vertSecondBay = yStartVal + (vertBayLength - 1);
+            const vertSecondBay = yStartVal + (vertBayLength);
             const vertSecondBayEnd = yStartVal + (i - 1);
             bayCoordinates.push([vertSecondBay,vertSecondBayEnd]);
 
           } else if (i == (vertBayLength*3)) {
 
-            const vertThirdBay = yStartVal + ( (vertBayLength*2) - 1);
+            const vertThirdBay = yStartVal + (vertBayLength*2);
             const vertThirdBayEnd = yEndVal;
             bayCoordinates.push([vertThirdBay,vertThirdBayEnd]);
             
