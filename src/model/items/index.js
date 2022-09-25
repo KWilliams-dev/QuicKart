@@ -1,8 +1,10 @@
-const dotenv = require('dotenv');
-dotenv.config();
 const { ApolloServer, gql } = require('apollo-server');
-const { MongoClient } = require('mongodb');
-const  items  = require('./itemsListData');
+const { MongoClient, ObjectID } = require('mongodb');
+const dotenv = require('dotenv');
+
+dotenv.config();
+const { DB_URI, DB_NAME} = process.env;
+
 
 
 
@@ -18,6 +20,7 @@ const typeDefs = gql`
 
     type Query {
       items:[Item!]!
+      getItem (id:ID!):Item
     }
     
     type Item{
@@ -44,14 +47,14 @@ const typeDefs = gql`
 
 
 
-console.log(items)
 const resolvers = {
 Query:  {
- items:() => items,
-  },
-  // getItem: async(_,{id},{db}) => {
-  //   return await db.collection('Item').findOne({_id:ObjectID(id)})}
-// },
+  getItem: async(_,{id},{db}) => {
+    console.log(DB_URI);
+    console.log(DB_NAME);
+    console.log(id);
+    return await db.collection('Item').findOne({_id:ObjectID(id)})}
+},
 
 Mutation: {
 createItem:async(_, {name, aisle, bay, price, xVal, yVal},{db}) => {
@@ -72,9 +75,9 @@ id: ( { _id, id }) => _id || id,
 
 
 const start = async () => {
-  const client = new MongoClient("mongodb+srv://admin:admin@quickkartcluster.o0bsfej.mongodb.net/test", { useNewUrlParser: true, useUnifiedTopology: true });
+  const client = new MongoClient(DB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
   await client.connect();
-  const db = client.db("quickKart");
+  const db = client.db(DB_NAME);
  
   const context = {
     db,
