@@ -3,8 +3,8 @@
   "version":"1.0.0",
   "main":"index.js",
   "scripts":{
-    "start":"node map/index.js",
-    "dev":"nodemon map/index.js",
+    "start":"node items/index.js",
+    "dev":"nodemon items/index.js",
     "test":"echo \"Error: no test specified\" && exit 1"
   },
     "keywords":[],
