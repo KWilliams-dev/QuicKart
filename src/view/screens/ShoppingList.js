@@ -1,55 +1,60 @@
 import * as React from 'react';
 import {useState, useEffect}  from 'react';
-import { View, StyleSheet, FlatList, Text as NativeText} from 'react-native';
+import { View, StyleSheet, FlatList, Text as NativeText, Alert} from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import SearchableDropdown from 'react-native-searchable-dropdown';
+import { gql, useQuery} from '@apollo/client';
 
-const DATA = [
-    {
-      id: 1,
-      name: 'Banana',
-    },
-    {
-      id: 2,
-      name: 'Apple',
-    },
-    {
-      id: 3,
-      name: 'Doritos',
-    },
-    {
-      id: 4,
-      name: 'Oreos',
-    },
-    {
-      id: 5,
-      name: 'Ice cream',
-    },
-    {
-      id: 6,
-      name: 'Blueberries',
-    },
-    {
-      id: 7,
-      name: 'Bread',
-    },
-    {
-      id: 8,
-      name: 'Oranges',
-    },
-  ];
+const GET_ITEMS =  gql`
+
+  query GetInventory($getInventoryId: ID!) {
+
+    getInventory(id: $getInventoryId) {
+      id
+      name
+      aisle
+      bay
+      price
+      xVal
+      yVal
+    }
+  }
+
+`
+
+let id = '6330b4671a51355fa4e2a77d'
 
 export const ShoppingListScreen = () => {
+
     const [selectedItems, setSelectedItems] = useState([]);
+    const [inventory, setInventory] = useState([]);
 
     useEffect(() => {
-        console.log(selectedItems)
+        //console.log(selectedItems)
     },[selectedItems]) 
+  
+    const {loading, error, data} = useQuery(GET_ITEMS, { variables: { id: '6330b4671a51355fa4e2a77d' }});
+
+    useEffect(() => {
+        if(error) {
+            Alert.alert('Error fetching inventory', error.message)
+        }
+    }, [error])
+
+    useEffect(() => {
+        if(data) {
+            setInventory(data.getInventory);
+        }
+    }, [data])
+
+    // if(loading) {
+
+    // }
 
     return (
     <View style={styles.container}>
         <NativeText style={styles.titleText}>Shopping List</NativeText>
-        
+
         <SearchableDropdown
                 selectedItems={selectedItems}
                 onItemSelect={(item) => {
@@ -66,15 +71,17 @@ export const ShoppingListScreen = () => {
                         return [...items]
                     })
                 }}
+
                 itemStyle={{
                     padding: 10,
                     backgroundColor: '#F1F5F2',
                     borderColor: '#bbb',
                     marginTop: 10
                 }}
+
                 itemTextStyle={{ color: '#222' }}
                 itemsContainerStyle={{ maxHeight: 140 }}
-                items={DATA}
+                items={data}
                 resetValue={false}
 
                 textInputProps={
