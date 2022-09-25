@@ -105,11 +105,6 @@ const resolvers = {
 
       // 1st bay starts = startVal
       // 1st bay ends = starts + (bay length - 1)
-      // 2nd bay starts = 1stBayEnds + 1
-      // 2nd bay ends = starts + (bay length -1)
-      // 3rd bay starts = 2ndBayEnds + 1
-      // 3rd bay ends =  endVal
-
       const bayCoordinates = [];
       if( width > length ) {
         for(let i = 0; i <= width; i++) {
