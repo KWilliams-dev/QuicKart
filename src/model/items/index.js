@@ -30,6 +30,10 @@ const typeDefs = gql`
       yVal:Int!
     }
 
+    #created to create the items in apollographql
+    type Mutation {
+      createItem(name: String!,aisle:String!,bay:String!,price:Float!,xVal:Int!,yVal:Int!): Item!
+      }
    
 `;
 
@@ -37,9 +41,7 @@ const typeDefs = gql`
 //   createItem(name: String!, aisle: String!): Item!
 // }
 
-// type Mutation {
-// createItem(name: String!): Item!
-// }
+
 
 
 console.log(items)
@@ -50,16 +52,17 @@ Query:  {
   // getItem: async(_,{id},{db}) => {
   //   return await db.collection('Item').findOne({_id:ObjectID(id)})}
 // },
-// Mutation: {
-// createItem:async(_, {name},{db}) => {
 
-// const newItem = {name,createdAt: new Date().toISOString()
-// }
+Mutation: {
+createItem:async(_, {name, aisle, bay, price, xVal, yVal},{db}) => {
 
-// const result = await db.collection('Item').insert(newItem);
-// return result.ops[0];
-// }
-// },
+const newItem = {name, aisle, bay, price, xVal, yVal, createdAt: new Date().toISOString()
+}
+
+const result = await db.collection('Item').insert(newItem);
+return result.ops[0];
+}
+},
 
 Item:{
 id: ( { _id, id }) => _id || id,
@@ -71,7 +74,7 @@ id: ( { _id, id }) => _id || id,
 const start = async () => {
   const client = new MongoClient("mongodb+srv://admin:admin@quickkartcluster.o0bsfej.mongodb.net/test", { useNewUrlParser: true, useUnifiedTopology: true });
   await client.connect();
-  const db = client.db("QuickKart");
+  const db = client.db("quickKart");
  
   const context = {
     db,
