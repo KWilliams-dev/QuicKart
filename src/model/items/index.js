@@ -14,6 +14,8 @@ const typeDefs = gql`
         name:String!,
       ):Item
 
+      getInventory (id: ID!): [Item]!
+
       getAisle (id:ID!): Aisle
 
       getMap(id: ID!): StoreMap
@@ -59,8 +61,14 @@ const typeDefs = gql`
       yStartVal:Int!,
       yEndVal:Int!
     }
+
+    type Inventory {
+      items: [Item]!
+    }
     
     type Mutation {
+      createInventory(title: String!): Inventory!
+
       createItem(name: String!, 
         aisle: String!
       ): Item!
@@ -93,6 +101,15 @@ const typeDefs = gql`
 
 const resolvers = {
   Query:  {
+    getInventory: async (_, { id }, { db }) => {
+      const inventory =  await db.collection('Inventory').findOne( {_id: ObjectID(id) });
+      const items = inventory.items;
+      return items
+    },
+
+    getItem: async (_, { id }, { db }) => {
+      return await db.collection('Item').findOne({ _id: ObjectID(id) });
+    },
 
     getAisle: async(_, { id }, { db }) => {
       return await db.collection('Aisles').findOne({ _id: ObjectID(id) });
@@ -117,6 +134,17 @@ const resolvers = {
 
   },
   Mutation: {
+    createInventory: async(_, { title }, { db }) => {
+      const currItems = await db.collection('Item').find().toArray();
+      const newInventory = {
+        items: currItems
+      }
+
+      const result = await db.collection('Inventory').insert(newInventory);
+
+      return result.ops[0]
+    },
+
     createAisle: async(_, { number, name, xStartVal, xEndVal, yStartVal, yEndVal }, { db }) => {
 
       const width = (xEndVal - xStartVal) + 1;
@@ -227,6 +255,10 @@ const resolvers = {
 
   // did this so then Aisle.id in Apollo wouldn't give an error for non-nullable fields
   Aisle: {
+    id: ({ _id, id }) => _id || id,  
+  },
+
+  Item: {
     id: ({ _id, id }) => _id || id,  
   },
   
