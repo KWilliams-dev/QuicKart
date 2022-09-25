@@ -15,6 +15,12 @@ const typeDefs = gql`
       ):Item
 
       getAisle (id:ID!): Aisle
+
+      getMap(id: ID!): StoreMap
+
+      # demonstration purposes only!!!
+      # TODO: delete after 9-26-22
+      getAllMapCoords(id: ID!): [[Int]]
     }
     
     type Item{
@@ -40,8 +46,10 @@ const typeDefs = gql`
 
     type StoreMap {
       id: ID!,
-      description: String!,
-      aisle: [Aisle],
+      title: String!
+      description: String,
+      aisle: [Aisle!]!,
+      checkout: [Checkout!]!
       width: Int!,
       length: Int!
     }
@@ -74,7 +82,7 @@ const typeDefs = gql`
         yEndVal:Int!
       ): Checkout!
 
-      createMap(description: String!, width: Int!, length: Int!): StoreMap!
+      createMap(title: String!, description: String!, width: Int!, length: Int!): StoreMap!
       getMap(id: ID!): StoreMap!
 
       #demonstration purposes only!!!
@@ -129,28 +137,6 @@ const resolvers = {
         }
       } else {
 
-        for(let i = 0; i <= length; i++) {
-          if (i == vertBayLength) {
-
-            const vertFirstBayEnd = yStartVal + (i - 1);
-            bayCoordinates.push([yStartVal,vertFirstBayEnd]);
-
-          } else if (i == (vertBayLength*2)) {
-            
-            const vertSecondBay = yStartVal + (vertBayLength);
-            const vertSecondBayEnd = yStartVal + (i - 1);
-            bayCoordinates.push([vertSecondBay,vertSecondBayEnd]);
-
-          } else if (i == (vertBayLength*3)) {
-
-            const vertThirdBay = yStartVal + (vertBayLength*2);
-            const vertThirdBayEnd = yEndVal;
-            bayCoordinates.push([vertThirdBay,vertThirdBayEnd]);
-            
-          }
-        }
-      }
-
       const newAisle = {
         number,
         name,
@@ -164,16 +150,44 @@ const resolvers = {
       // insert newAisle object into database
       const result = await db.collection('Aisles').insert(newAisle);
       return result.ops[0];
-  },
+  }
+},
 
-  createMap: async (_, { description, width, length }, { db }) => { 
 
+  createMap: async (_, { title, description, width, length }, { db }) => { 
+
+    if(await db.collection('Map').findOne({ title: title })) { throw new Error('Map already exists') }
+
+    if(!(width > 0 && length > 0)) { throw new Error('Invalid map dimensions. Must have an area of at least 1 unit') }
+
+    const aisles = await db.collection('Aisles').find().toArray();
+    const checkoutLanes = await db.collection('Checkout').find().toArray();
+
+    const validateRange = (x, y, min, max) => {
+      return x >= min && y <= max
+    }
+
+    aisles.forEach(aisle => {
+      if(!(validateRange(aisle.xStartVal, aisle.xEndVal, 0, width)
+          && validateRange(aisle.yStartVal, aisle.yEndVal, 0, length))) { 
+            throw new Error(`Aisle dimensions exceed map dimensions`)
+          }
+    });
+
+    checkoutLanes.forEach(cLane => {
+      if(!(validateRange(cLane.xStartVal, cLane.xEndVal, 0, width)
+          && validateRange(cLane.yStartVal, cLane.yEndVal, 0, length))) { 
+            throw new Error(`Checkout lane dimensions exceed map dimensions`)
+          }
+    });
     
     const newMap = {
+      title,
       description,
       width,
       length,
-      aisle: await db.collection('Aisles').find().toArray()
+      aisle: aisles,
+      checkout: checkoutLanes
     }
     
     const result = await db.collection('Map').insert(newMap);
@@ -189,7 +203,7 @@ const resolvers = {
       if(!await db.collection('Map').findOne({ _id: ObjectID(id) })) {
           throw new Error('Map not found');
       }
-      const data = [[]];
+      const data = [];
       for(let x = 0; x < width; x++) {
           for(let y = 0; y < length; y++) {
               data.push([x,y]);
@@ -222,7 +236,6 @@ const resolvers = {
   StoreMap: {
     id: ({ _id, id }) => _id || id,
   },
-  
 };
 
 const start = async () => {
