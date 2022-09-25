@@ -8,11 +8,11 @@ dotenv.config();
 const { DB_URI, DB_NAME} = process.env;
 
 const typeDefs = gql`
+
+
     type Query {
-      getItem (
-        id:ID!,
-        name:String!,
-      ):Item
+      items:[Item!]!
+      getItem (id:ID!):Item
 
       getAisle (id:ID!): Aisle
 
@@ -61,9 +61,7 @@ const typeDefs = gql`
     }
     
     type Mutation {
-      createItem(name: String!, 
-        aisle: String!
-      ): Item!
+      createItem(name: String!,aisle:String!,bay:String!,price:Float!,xVal:Int!,yVal:Int!): Item!
 
       createAisle(
         number: Int!
@@ -90,9 +88,22 @@ const typeDefs = gql`
     }
 `;
 
+// type Mutation {
+//   createItem(name: String!, aisle: String!): Item!
+// }
+
+
 
 const resolvers = {
   Query:  {
+
+     getItem: async(_,{id},{db}) => {
+    console.log(DB_URI);
+    console.log(DB_NAME);
+    console.log(id);
+    return await db.collection('Item').findOne({_id:ObjectID(id)})
+  },
+
 
     getAisle: async(_, { id }, { db }) => {
       return await db.collection('Aisles').findOne({ _id: ObjectID(id) });
@@ -117,51 +128,7 @@ const resolvers = {
 
   },
   Mutation: {
-    createAisle: async(_, { number, name, xStartVal, xEndVal, yStartVal, yEndVal }, { db }) => {
-
-      const width = (xEndVal - xStartVal) + 1;
-      const length = (yEndVal - yStartVal) + 1;
-
-      // bays are not unique identifiers like aisles
-      // three bays per aisle
-      const horizonBayLength = width/3; 
-      const vertBayLength = length/3;
-
-      // 1st bay starts = startVal
-      // 1st bay ends = starts + (bay length - 1)
-      const bayCoordinates = [];
-      if( width > length ) {
-        for(let i = 0; i <= width; i++) {
-          if (i == horizonBayLength) {
-
-            const horizonFirstBayEnd = xStartVal + (i - 1);
-            bayCoordinates.push([xStartVal,horizonFirstBayEnd]);
-
-          } else if (i == (horizonBayLength*2)) {
-            
-            const horizonSecondBay = xStartVal + (horizonBayLength);
-            const horizonSecondBayEnd = xStartVal + (i - 1);
-            bayCoordinates.push([horizonSecondBay,horizonSecondBayEnd]);
-
-          } else if (i == (horizonBayLength*3)) {
-
-            const horizonThirdBay = xStartVal + (horizonBayLength*2);
-            const horizonThirdBayEnd = xEndVal;
-            bayCoordinates.push([horizonThirdBay,horizonThirdBayEnd]);
-
-          }
-        }
-      } else {
-
-      const newAisle = {
-        number,
-        name,
-        bays: bayCoordinates,
-        xStartVal,
-        xEndVal,
-        yStartVal,
-        yEndVal
-      }
+    createItem:async(_, {name, aisle, bay, price, xVal, yVal},{db}) => {
 
       // insert newAisle object into database
       const result = await db.collection('Aisles').insert(newAisle);
@@ -222,7 +189,7 @@ const resolvers = {
       const result = await db.collection('Checkout').insert(newLane);
 
       return result.ops[0]
-    },
+    
   },
 
   // did this so then Aisle.id in Apollo wouldn't give an error for non-nullable fields
@@ -234,6 +201,12 @@ const resolvers = {
     id: ({ _id, id }) => _id || id,
   },
 };
+      
+  
+    
+
+
+
 
 const start = async () => {
   const client = new MongoClient(DB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
