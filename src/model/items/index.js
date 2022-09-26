@@ -125,10 +125,12 @@ const resolvers = {
   Mutation: {
     createItem:async(_, {name, aisle, bay, price, xVal, yVal},{db}) => {
 
-      // insert newAisle object into database
-      const result = await db.collection('Aisles').insert(newAisle);
+      const newItem = {name, aisle, bay, price, xVal, yVal, createdAt: new Date().toISOString()
+      }
+      
+      const result = await db.collection('Item').insert(newItem);
       return result.ops[0];
-    },
+      },
 
     createAisle: async(_, { number, name, xStartVal, xEndVal, yStartVal, yEndVal }, { db }) => {
 
@@ -271,6 +273,9 @@ const resolvers = {
   StoreMap: {
     id: ({ _id, id }) => _id || id,
   },
+  Item:{
+    id: ( { _id, id }) => _id || id,
+    },
 };
       
   
