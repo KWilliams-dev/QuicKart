@@ -61,6 +61,7 @@ const typeDefs = gql`
     }
     
     type Mutation {
+
       createItem(name: String!,aisle:String!,bay:String!,price:Float!,xVal:Int!,yVal:Int!): Item!
 
       createAisle(
@@ -79,12 +80,7 @@ const typeDefs = gql`
         yStartVal:Int!,
         yEndVal:Int!
       ): Checkout!
-
-      createMap(title: String!, 
-        description: String!, 
-        width: Int!, 
-        length: Int!
-      ): StoreMap!
+      createMap(description: String!, width: Int!, length: Int!): StoreMap!
     }
 `;
 
@@ -104,7 +100,6 @@ const resolvers = {
     return await db.collection('Item').findOne({_id:ObjectID(id)})
   },
 
-
     getAisle: async(_, { id }, { db }) => {
       return await db.collection('Aisles').findOne({ _id: ObjectID(id) });
     },
@@ -112,12 +107,12 @@ const resolvers = {
     getMap: async (_, { id }, { db }) => {
       return await db.collection('Map').findOne({ _id: ObjectID(id) });
     },
-
+  
     getAllMapCoords: async (_, { id }, { db}) => {
         if(!await db.collection('Map').findOne({ _id: ObjectID(id) })) {
             throw new Error('Map not found');
         }
-        const data = [];
+        const data = [[]];
         for(let x = 0; x < width; x++) {
             for(let y = 0; y < length; y++) {
                 data.push([x,y]);
@@ -133,10 +128,82 @@ const resolvers = {
       // insert newAisle object into database
       const result = await db.collection('Aisles').insert(newAisle);
       return result.ops[0];
-    }
+    },
+
+    createAisle: async(_, { number, name, xStartVal, xEndVal, yStartVal, yEndVal }, { db }) => {
+
+      const width = (xEndVal - xStartVal) + 1;
+      const length = (yEndVal - yStartVal) + 1;
+
+      // bays are not unique identifiers like aisles
+      // three bays per aisle
+      const horizonBayLength = width/3; 
+      const vertBayLength = length/3;
+
+      // 1st bay starts = startVal
+      // 1st bay ends = starts + (bay length - 1)
+      const bayCoordinates = [];
+      if( width > length ) {
+        for(let i = 0; i <= width; i++) {
+          if (i == horizonBayLength) {
+
+            const horizonFirstBayEnd = xStartVal + (i - 1);
+            bayCoordinates.push([xStartVal,horizonFirstBayEnd]);
+
+          } else if (i == (horizonBayLength*2)) {
+            
+            const horizonSecondBay = xStartVal + (horizonBayLength);
+            const horizonSecondBayEnd = xStartVal + (i - 1);
+            bayCoordinates.push([horizonSecondBay,horizonSecondBayEnd]);
+
+          } else if (i == (horizonBayLength*3)) {
+
+            const horizonThirdBay = xStartVal + (horizonBayLength*2);
+            const horizonThirdBayEnd = xEndVal;
+            bayCoordinates.push([horizonThirdBay,horizonThirdBayEnd]);
+
+          }
+        }
+      } else {
+
+        for(let i = 0; i <= length; i++) {
+          if (i == vertBayLength) {
+
+            const vertFirstBayEnd = yStartVal + (i - 1);
+            bayCoordinates.push([yStartVal,vertFirstBayEnd]);
+
+          } else if (i == (vertBayLength*2)) {
+            
+            const vertSecondBay = yStartVal + (vertBayLength);
+            const vertSecondBayEnd = yStartVal + (i - 1);
+            bayCoordinates.push([vertSecondBay,vertSecondBayEnd]);
+
+          } else if (i == (vertBayLength*3)) {
+
+            const vertThirdBay = yStartVal + (vertBayLength*2);
+            const vertThirdBayEnd = yEndVal;
+            bayCoordinates.push([vertThirdBay,vertThirdBayEnd]);
+            
+          }
+        }
+      }
+
+      const newAisle = {
+        number,
+        name,
+        bays: bayCoordinates,
+        xStartVal,
+        xEndVal,
+        yStartVal,
+        yEndVal
+      }
+
+      // insert newAisle object into database
+      const result = await db.collection('Aisles').insert(newAisle);
+      return result.ops[0];
   },
 
-    createMap: async (_, { title, description, width, length }, { db }) => { 
+  createMap: async (_, { title, description, width, length }, { db }) => { 
 
     if(await db.collection('Map').findOne({ title: title })) { throw new Error('Map already exists') }
 
@@ -175,24 +242,28 @@ const resolvers = {
     const result = await db.collection('Map').insert(newMap);
 
     return result.ops[0]
-    },
-
-    createCheckout: async(_, { lane, xStartVal, xEndVal, yStartVal, yEndVal } , { db }) => {
-      const newLane = {
-        lane,
-        xStartVal,
-        xEndVal,
-        yStartVal,
-        yEndVal
-      }
-      
-      const result = await db.collection('Checkout').insert(newLane);
-
-      return result.ops[0]
+  },
+  
+  createCheckout: async(_, { lane, xStartVal, xEndVal, yStartVal, yEndVal } , { db }) => {
+    const newLane = {
+      lane,
+      xStartVal,
+      xEndVal,
+      yStartVal,
+      yEndVal
+    }
     
+    const result = await db.collection('Checkout').insert(newLane);
+
+    return result.ops[0]
   },
 
-  // did this so then Aisle.id in Apollo wouldn't give an error for non-nullable fields
+
+    
+
+  },
+
+   // did this so then Aisle.id in Apollo wouldn't give an error for non-nullable fields
   Aisle: {
     id: ({ _id, id }) => _id || id,  
   },
