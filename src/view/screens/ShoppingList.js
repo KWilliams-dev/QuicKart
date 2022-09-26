@@ -7,9 +7,8 @@ import { gql, useQuery} from '@apollo/client';
 
 const GET_ITEMS =  gql`
 
-  query GetInventory($getInventoryId: ID!) {
-
-    getInventory(id: $getInventoryId) {
+query GetInventory($id: Int!) {
+    getInventory(id: $id) {
       id
       name
       aisle
@@ -22,7 +21,7 @@ const GET_ITEMS =  gql`
 
 `
 
-let id = '6330b4671a51355fa4e2a77d'
+
 
 export const ShoppingListScreen = () => {
 
@@ -33,7 +32,9 @@ export const ShoppingListScreen = () => {
         //console.log(selectedItems)
     },[selectedItems]) 
   
-    const {loading, error, data} = useQuery(GET_ITEMS, { variables: { id: '6330b4671a51355fa4e2a77d' }});
+    const {loading, error, data} = useQuery(GET_ITEMS, { variables: { id: 123 }});
+    
+    console.log(data.getInventory)
 
     useEffect(() => {
         if(error) {
@@ -81,7 +82,7 @@ export const ShoppingListScreen = () => {
 
                 itemTextStyle={{ color: '#222' }}
                 itemsContainerStyle={{ maxHeight: 140 }}
-                items={data}
+                items={inventory}
                 resetValue={false}
 
                 textInputProps={

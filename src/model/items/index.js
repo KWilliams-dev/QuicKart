@@ -14,7 +14,7 @@ const typeDefs = gql`
         name:String!,
       ):Item
 
-      getInventory (id: ID!): [Item]!
+      getInventory (id: Int!): [Item]!
 
       getAisle (id:ID!): Aisle
 
@@ -63,11 +63,13 @@ const typeDefs = gql`
     }
 
     type Inventory {
+      id: Int!
+      title: String!
       items: [Item]!
     }
     
     type Mutation {
-      createInventory(title: String!): Inventory!
+      createInventory(id: Int!, title: String!): Inventory!
 
       createItem(name: String!, 
         aisle: String!
@@ -102,7 +104,7 @@ const typeDefs = gql`
 const resolvers = {
   Query:  {
     getInventory: async (_, { id }, { db }) => {
-      const inventory =  await db.collection('Inventory').findOne( {_id: ObjectID(id) });
+      const inventory =  await db.collection('Inventory').findOne( {id: id });
       const items = inventory.items;
       return items
     },
@@ -134,9 +136,11 @@ const resolvers = {
 
   },
   Mutation: {
-    createInventory: async(_, { title }, { db }) => {
+    createInventory: async(_, { title, id }, { db }) => {
       const currItems = await db.collection('Item').find().toArray();
       const newInventory = {
+        id: id,
+        title: title,
         items: currItems
       }
 
