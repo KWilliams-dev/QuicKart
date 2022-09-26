@@ -8,11 +8,11 @@ dotenv.config();
 const { DB_URI, DB_NAME} = process.env;
 
 const typeDefs = gql`
+
+
     type Query {
-      getItem (
-        id:ID!,
-        name:String!,
-      ):Item
+      items:[Item!]!
+      getItem (id:ID!):Item
 
       getAisle (id:ID!): Aisle
 
@@ -61,7 +61,8 @@ const typeDefs = gql`
     }
     
     type Mutation {
-      createItem(name: String!, aisle: String!): Item!
+
+      createItem(name: String!,aisle:String!,bay:String!,price:Float!,xVal:Int!,yVal:Int!): Item!
 
       createAisle(
         number: Int!
@@ -83,10 +84,22 @@ const typeDefs = gql`
     }
 `;
 
+// type Mutation {
+//   createItem(name: String!, aisle: String!): Item!
+// }
+
+
 
 const resolvers = {
   Query:  {
-    
+
+     getItem: async(_,{id},{db}) => {
+    console.log(DB_URI);
+    console.log(DB_NAME);
+    console.log(id);
+    return await db.collection('Item').findOne({_id:ObjectID(id)})
+  },
+
     getAisle: async(_, { id }, { db }) => {
       return await db.collection('Aisles').findOne({ _id: ObjectID(id) });
     },
@@ -110,6 +123,13 @@ const resolvers = {
 
   },
   Mutation: {
+    createItem:async(_, {name, aisle, bay, price, xVal, yVal},{db}) => {
+
+      // insert newAisle object into database
+      const result = await db.collection('Aisles').insert(newAisle);
+      return result.ops[0];
+    },
+
     createAisle: async(_, { number, name, xStartVal, xEndVal, yStartVal, yEndVal }, { db }) => {
 
       const width = (xEndVal - xStartVal) + 1;
@@ -238,9 +258,12 @@ const resolvers = {
     return result.ops[0]
   },
 
+
+    
+
   },
 
-  // did this so then Aisle.id in Apollo wouldn't give an error for non-nullable fields
+   // did this so then Aisle.id in Apollo wouldn't give an error for non-nullable fields
   Aisle: {
     id: ({ _id, id }) => _id || id,  
   },
@@ -248,8 +271,13 @@ const resolvers = {
   StoreMap: {
     id: ({ _id, id }) => _id || id,
   },
-  
 };
+      
+  
+    
+
+
+
 
 const start = async () => {
   const client = new MongoClient(DB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
