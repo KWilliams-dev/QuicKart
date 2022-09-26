@@ -13,7 +13,12 @@ const typeDefs = gql`
         id:ID!,
         name:String!,
       ):Item
+
       getAisle (id:ID!): Aisle
+
+      getMap(id: ID!): StoreMap
+
+      getAllMapCoords(id: ID!): [[Int]]
     }
     
     type Item{
@@ -25,6 +30,7 @@ const typeDefs = gql`
       xVal:Int!,
       yVal:Int!
     }
+
     type Aisle{
       id: ID!,
       number: Int!,
@@ -35,13 +41,17 @@ const typeDefs = gql`
       yStartVal:Int!,
       yEndVal:Int!
     }
+
     type StoreMap {
       id: ID!,
-      description: String!,
-      aisle: [Aisle],
+      title: String!
+      description: String,
+      aisle: [Aisle!]!,
+      checkout: [Checkout!]!
       width: Int!,
       length: Int!
     }
+
     type Checkout {
       lane: Int!,
       xStartVal:Int!,
@@ -52,6 +62,7 @@ const typeDefs = gql`
     
     type Mutation {
       createItem(name: String!, aisle: String!): Item!
+
       createAisle(
         number: Int!
         name: String!, 
@@ -60,6 +71,7 @@ const typeDefs = gql`
         yStartVal: Int!,
         yEndVal: Int!
       ): Aisle!
+
       createCheckout(
         lane: Int!,
         xStartVal:Int!,
@@ -68,10 +80,6 @@ const typeDefs = gql`
         yEndVal:Int!
       ): Checkout!
       createMap(description: String!, width: Int!, length: Int!): StoreMap!
-      getMap(id: ID!): StoreMap!
-      #demonstration purposes only!!!
-      #TODO: delete after 9-26
-      getAllMapCoords(id: ID!): [[Int]!]!
     }
 `;
 
