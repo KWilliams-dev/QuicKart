@@ -34,7 +34,7 @@ export const ShoppingListScreen = () => {
   
     const {loading, error, data} = useQuery(GET_ITEMS, { variables: { id: 123 }});
     
-    console.log(data.getInventory)
+    console.log(data)
 
     useEffect(() => {
         if(error) {
