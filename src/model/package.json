@@ -5,7 +5,8 @@
   "scripts":{
     "start":"node items/index.js",
     "dev":"nodemon items/index.js",
-    "test":"echo \"Error: no test specified\" && exit 1"
+    "test":"echo \"Error: no test specified\" && exit 1",
+    "type": "module"
   },
     "keywords":[],
     "author":"",
