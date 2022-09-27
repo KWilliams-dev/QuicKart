@@ -1,5 +1,7 @@
+//connects the database to the server
 const { ApolloServer, gql } = require('apollo-server');
 const { MongoClient, ObjectID } = require('mongodb');
+
 const dotenv = require('dotenv');
 const Db = require('mongodb/lib/db');
 const { assertValidSDLExtension } = require('graphql/validation/validate');
@@ -7,11 +9,15 @@ const { assertValidSDLExtension } = require('graphql/validation/validate');
 dotenv.config();
 const { DB_URI, DB_NAME} = process.env;
 
+//defining the different types in the schema
 const typeDefs = gql`
 
 
     type Query {
+      #creating an arrays of items
       items:[Item!]!
+
+      #gets a specific item by its ID
       getItem (id:ID!):Item
 
       getInventory (id: Int!): [Item]!
@@ -23,6 +29,7 @@ const typeDefs = gql`
       getAllMapCoords(id: ID!): [[Int]]
     }
     
+    #defining what a item is in our database
     type Item{
       id:ID!,
       name:String!,
@@ -67,10 +74,12 @@ const typeDefs = gql`
       title: String!
       items: [Item]!
     }
+
     
     type Mutation {
       createInventory(id: Int!, title: String!): Inventory!
 
+      #creates an item
       createItem(name: String!,aisle:String!,bay:String!,price:Float!,xVal:Int!,yVal:Int!): Item!
 
       createAisle(
@@ -93,12 +102,10 @@ const typeDefs = gql`
     }
 `;
 
-// type Mutation {
-//   createItem(name: String!, aisle: String!): Item!
-// }
 
 
 
+//
 const resolvers = {
   Query:  {
     getInventory: async (_, { id }, { db }) => {
@@ -107,16 +114,13 @@ const resolvers = {
       return items
     },
 
+    //created this area to create an item and save it to the database
     getItem: async (_, { id }, { db }) => {
       return await db.collection('Item').findOne({ _id: ObjectID(id) });
     },
 
-     getItem: async(_,{id},{db}) => {
-    console.log(DB_URI);
-    console.log(DB_NAME);
-    console.log(id);
-    return await db.collection('Item').findOne({_id:ObjectID(id)})
-  },
+     
+  
 
     getAisle: async(_, { id }, { db }) => {
       return await db.collection('Aisles').findOne({ _id: ObjectID(id) });
@@ -153,8 +157,11 @@ const resolvers = {
 
       return result.ops[0]
     },
+
+    //created this area to create an item and save it to the database
     createItem:async(_, {name, aisle, bay, price, xVal, yVal},{db}) => {
 
+      //what is need for the item to be created and what time it was created at
       const newItem = {name, aisle, bay, price, xVal, yVal, createdAt: new Date().toISOString()
       }
       
@@ -300,6 +307,7 @@ const resolvers = {
     id: ({ _id, id }) => _id || id,  
   },
 
+  //Error for non-nullable fields
   Item: {
     id: ({ _id, id }) => _id || id,  
   },
@@ -322,6 +330,8 @@ const start = async () => {
   const client = new MongoClient(DB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
   await client.connect();
   const db = client.db(DB_NAME); // defines the database
+  //we wait to connect the sever untill  we connect to the database we will start the server
+  //we need a connection to the server in order to have access to the data
 
   const context = {
     db,
