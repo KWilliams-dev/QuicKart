@@ -3,18 +3,24 @@ import { StyleSheet, Text, View } from 'react-native';
 import { ShoppingListScreen } from './screens/ShoppingList';
 import { ApolloProvider } from '@apollo/client'; 
 import { client } from './apollo';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
 
-    <ApolloProvider client={client}> 
-
-      <View style={styles.container}>
-        <ShoppingListScreen />
-      </View>
-
-    </ApolloProvider>
-    
+    <View style={styles.container}>
+      <ApolloProvider client={client}> 
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name="Welcome" component={Welcome} />
+            <Stack.Screen name="ShoppingList" component={ShoppingListScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ApolloProvider>
+    </View>
   );
 }
 
