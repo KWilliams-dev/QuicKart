@@ -235,30 +235,40 @@ const resolvers = {
       return x >= min && y <= max
     }
 
-    /*const validateObject = ([obj], x1, x2, y1, y2, min, max) => {
+    const validateObject = (obj, objName) => {
+      obj.forEach( (element) => {
+        if(!(validateRange(element.xStartVal, element.xEndVal, 0, width)
+          && validateRange(element.yStartVal, element.yEndVal, 0, length))) { 
+            throw new Error(`${objName} dimensions exceed map dimensions`)
+        }
+        
+      });
+    }
 
-    }*/
+    validateObject(aisles, "Aisle")
+    validateObject(checkoutLanes, "Checkout lane")
+    validateObject(entrances, "Entrance")
 
-    aisles.forEach(aisle => {
-      if(!(validateRange(aisle.xStartVal, aisle.xEndVal, 0, width)
-          && validateRange(aisle.yStartVal, aisle.yEndVal, 0, length))) { 
-            throw new Error(`Aisle dimensions exceed map dimensions`)
-          }
-    });
+    // aisles.forEach(aisle => {
+    //   if(!(validateRange(aisle.xStartVal, aisle.xEndVal, 0, width)
+    //       && validateRange(aisle.yStartVal, aisle.yEndVal, 0, length))) { 
+    //         throw new Error(`Aisle dimensions exceed map dimensions`)
+    //       }
+    // });
 
-    checkoutLanes.forEach(cLane => {
-      if(!(validateRange(cLane.xStartVal, cLane.xEndVal, 0, width)
-          && validateRange(cLane.yStartVal, cLane.yEndVal, 0, length))) { 
-            throw new Error(`Checkout lane dimensions exceed map dimensions`)
-          }
-    });
+    // checkoutLanes.forEach(cLane => {
+    //   if(!(validateRange(cLane.xStartVal, cLane.xEndVal, 0, width)
+    //       && validateRange(cLane.yStartVal, cLane.yEndVal, 0, length))) { 
+    //         throw new Error(`Checkout lane dimensions exceed map dimensions`)
+    //       }
+    // });
 
-    entrances.forEach(door => {
-      if(!(validateRange(door.xStartVal, door.xEndVal, 0, width)
-          && validateRange(door.yStartVal, door.yEndVal, 0, length))) { 
-            throw new Error(`Entrance dimensions exceed map dimensions`)
-          }
-    });
+    // entrances.forEach(door => {
+    //   if(!(validateRange(door.xStartVal, door.xEndVal, 0, width)
+    //       && validateRange(door.yStartVal, door.yEndVal, 0, length))) { 
+    //         throw new Error(`Entrance dimensions exceed map dimensions`)
+    //       }
+    // });
     
     const newMap = {
       title,
