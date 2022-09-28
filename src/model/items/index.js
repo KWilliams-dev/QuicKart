@@ -59,6 +59,14 @@ const typeDefs = gql`
       yStartVal:Int!,
       yEndVal:Int!
     }
+
+    type Door {
+      name: String!,
+      xStartVal:Int!,
+      xEndVal:Int!,
+      yStartVal:Int!,
+      yEndVal:Int!
+    }
     
     type Mutation {
 
@@ -80,6 +88,15 @@ const typeDefs = gql`
         yStartVal:Int!,
         yEndVal:Int!
       ): Checkout!
+
+      createDoor(
+        name: String!,
+        xStartVal:Int!,
+        xEndVal:Int!,
+        yStartVal:Int!,
+        yEndVal:Int!
+      ): Door!
+
       createMap(description: String!, width: Int!, length: Int!): StoreMap!
     }
 `;
@@ -258,8 +275,19 @@ const resolvers = {
     return result.ops[0]
   },
 
-
+  createDoor: async(_, { name, xStartVal, xEndVal, yStartVal, yEndVal } , { db }) => {
+    const newDoor = {
+      name,
+      xStartVal,
+      xEndVal,
+      yStartVal,
+      yEndVal
+    }
     
+    const result = await db.collection('Doors').insert(newDoor);
+
+    return result.ops[0]
+  },
 
   },
 
