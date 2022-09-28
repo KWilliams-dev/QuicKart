@@ -23,7 +23,7 @@ query GetInventory($id: Int!) {
 
 
 
-export const ShoppingListScreen = () => {
+export const ShoppingListScreen = ({navigation}) => {
 
     const [selectedItems, setSelectedItems] = useState([]);
     const [inventory, setInventory] = useState([]);
@@ -117,7 +117,7 @@ export const ShoppingListScreen = () => {
             <Text style={styles.bottomText} variant='titleLarge'>Total Cost:      </Text>
             <Text style={styles.bottomText} variant='titleLarge'>Grocery Count: {selectedItems.length}</Text>
         </View>
-        <Button style={styles.bottomButton} buttonColor='blue' mode='contained'><Text style={styles.bottomText} variant='headlineMedium'>START SHOPPING</Text></Button>
+        <Button onPress={() => navigation.navigate('ShoppingRoute')} style={styles.bottomButton} buttonColor='blue' mode='contained'><Text style={styles.bottomText} variant='headlineMedium'>START SHOPPING</Text></Button>
      </View>
     );
 }
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         height: '100%',
-        paddingTop:75,
+        paddingTop:25,
     },
     titleText: {
         marginTop: 10,
