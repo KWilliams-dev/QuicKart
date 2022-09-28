@@ -50,6 +50,7 @@ const typeDefs = gql`
       checkout: [Checkout!]!
       width: Int!,
       length: Int!
+      entrance: [Door!]!
     }
 
     type Checkout {
@@ -97,7 +98,7 @@ const typeDefs = gql`
         yEndVal:Int!
       ): Door!
 
-      createMap(description: String!, width: Int!, length: Int!): StoreMap!
+      createMap(title: String!, description: String!, width: Int!, length: Int!): StoreMap!
     }
 `;
 
@@ -228,10 +229,15 @@ const resolvers = {
 
     const aisles = await db.collection('Aisles').find().toArray();
     const checkoutLanes = await db.collection('Checkout').find().toArray();
+    const entrances = await db.collection('Doors').find().toArray();
 
     const validateRange = (x, y, min, max) => {
       return x >= min && y <= max
     }
+
+    /*const validateObject = ([obj], x1, x2, y1, y2, min, max) => {
+
+    }*/
 
     aisles.forEach(aisle => {
       if(!(validateRange(aisle.xStartVal, aisle.xEndVal, 0, width)
@@ -246,6 +252,13 @@ const resolvers = {
             throw new Error(`Checkout lane dimensions exceed map dimensions`)
           }
     });
+
+    entrances.forEach(door => {
+      if(!(validateRange(door.xStartVal, door.xEndVal, 0, width)
+          && validateRange(door.yStartVal, door.yEndVal, 0, length))) { 
+            throw new Error(`Entrance dimensions exceed map dimensions`)
+          }
+    });
     
     const newMap = {
       title,
@@ -253,7 +266,8 @@ const resolvers = {
       width,
       length,
       aisle: aisles,
-      checkout: checkoutLanes
+      checkout: checkoutLanes,
+      entrance: entrances
     }
     
     const result = await db.collection('Map').insert(newMap);
