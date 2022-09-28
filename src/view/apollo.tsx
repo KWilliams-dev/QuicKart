@@ -1,6 +1,8 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { IP } from './env';
 
-const URI = 'http://172.16.0.8:4000/quickkart';
+
+const URI = 'http://'+ IP + ':4000/quickkart';
 
 const httpLink = createHttpLink({
   uri: URI,
