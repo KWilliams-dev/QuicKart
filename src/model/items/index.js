@@ -59,6 +59,7 @@ const typeDefs = gql`
       checkout: [Checkout!]!
       width: Int!,
       length: Int!
+      entrance: [Door!]!
     }
 
     type Checkout {
@@ -69,12 +70,19 @@ const typeDefs = gql`
       yEndVal:Int!
     }
 
+    type Door {
+      name: String!,
+      xStartVal:Int!,
+      xEndVal:Int!,
+      yStartVal:Int!,
+      yEndVal:Int!
+    }
+    
     type Inventory {
       id: Int!
       title: String!
       items: [Item]!
     }
-
     
     type Mutation {
       createInventory(id: Int!, title: String!): Inventory!
@@ -98,7 +106,16 @@ const typeDefs = gql`
         yStartVal:Int!,
         yEndVal:Int!
       ): Checkout!
-      createMap(description: String!, width: Int!, length: Int!): StoreMap!
+
+      createDoor(
+        name: String!,
+        xStartVal:Int!,
+        xEndVal:Int!,
+        yStartVal:Int!,
+        yEndVal:Int!
+      ): Door!
+
+      createMap(title: String!, description: String!, width: Int!, length: Int!): StoreMap!
     }
 `;
 
@@ -250,24 +267,46 @@ const resolvers = {
 
     const aisles = await db.collection('Aisles').find().toArray();
     const checkoutLanes = await db.collection('Checkout').find().toArray();
+    const entrances = await db.collection('Doors').find().toArray();
 
     const validateRange = (x, y, min, max) => {
       return x >= min && y <= max
     }
 
-    aisles.forEach(aisle => {
-      if(!(validateRange(aisle.xStartVal, aisle.xEndVal, 0, width)
-          && validateRange(aisle.yStartVal, aisle.yEndVal, 0, length))) { 
-            throw new Error(`Aisle dimensions exceed map dimensions`)
-          }
-    });
+    const validateObject = (obj, objName) => {
+      obj.forEach( (element) => {
+        if(!(validateRange(element.xStartVal, element.xEndVal, 0, width)
+          && validateRange(element.yStartVal, element.yEndVal, 0, length))) { 
+            throw new Error(`${objName} dimensions exceed map dimensions`)
+        }
+        
+      });
+    }
 
-    checkoutLanes.forEach(cLane => {
-      if(!(validateRange(cLane.xStartVal, cLane.xEndVal, 0, width)
-          && validateRange(cLane.yStartVal, cLane.yEndVal, 0, length))) { 
-            throw new Error(`Checkout lane dimensions exceed map dimensions`)
-          }
-    });
+    validateObject(aisles, "Aisle")
+    validateObject(checkoutLanes, "Checkout lane")
+    validateObject(entrances, "Entrance")
+
+    // aisles.forEach(aisle => {
+    //   if(!(validateRange(aisle.xStartVal, aisle.xEndVal, 0, width)
+    //       && validateRange(aisle.yStartVal, aisle.yEndVal, 0, length))) { 
+    //         throw new Error(`Aisle dimensions exceed map dimensions`)
+    //       }
+    // });
+
+    // checkoutLanes.forEach(cLane => {
+    //   if(!(validateRange(cLane.xStartVal, cLane.xEndVal, 0, width)
+    //       && validateRange(cLane.yStartVal, cLane.yEndVal, 0, length))) { 
+    //         throw new Error(`Checkout lane dimensions exceed map dimensions`)
+    //       }
+    // });
+
+    // entrances.forEach(door => {
+    //   if(!(validateRange(door.xStartVal, door.xEndVal, 0, width)
+    //       && validateRange(door.yStartVal, door.yEndVal, 0, length))) { 
+    //         throw new Error(`Entrance dimensions exceed map dimensions`)
+    //       }
+    // });
     
     const newMap = {
       title,
@@ -275,7 +314,8 @@ const resolvers = {
       width,
       length,
       aisle: aisles,
-      checkout: checkoutLanes
+      checkout: checkoutLanes,
+      entrance: entrances
     }
     
     const result = await db.collection('Map').insert(newMap);
@@ -297,8 +337,19 @@ const resolvers = {
     return result.ops[0]
   },
 
-
+  createDoor: async(_, { name, xStartVal, xEndVal, yStartVal, yEndVal } , { db }) => {
+    const newDoor = {
+      name,
+      xStartVal,
+      xEndVal,
+      yStartVal,
+      yEndVal
+    }
     
+    const result = await db.collection('Doors').insert(newDoor);
+
+    return result.ops[0]
+  },
 
   },
 
