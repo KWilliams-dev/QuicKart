@@ -43,6 +43,13 @@ export const ShoppingListScreen = ({navigation}) => {
         }
     }, [data])
 
+    const deleteItem = (item) => {
+        const items = selectedItems.filter((sitem) => sitem.id !== item.id );
+        setSelectedItems(() => {
+            return [...items]
+        })
+    };
+
     // useEffect(() => {
     //     loading(true);
     //     setTimeout(() =>
@@ -113,10 +120,16 @@ export const ShoppingListScreen = ({navigation}) => {
 
         <View style={styles.flatList}>
             <FlatList data={selectedItems}
-            renderItem={({item}) => { return(<NativeText style={styles.item}>{item.name}</NativeText>);
+            renderItem={({item}) => { 
+                return(
+                    <NativeText style={styles.item}>
+                        {item.name}
+                        <Button onPress={() => deleteItem(item)} icon="delete" style={styles.trashButton}/>
+                    </NativeText>
+                );
             }}
             extraData={selectedItems}
-            />
+            /> 
         </View>
         <View style={styles.bottomContainer}>
             <Text style={styles.bottomText} variant='titleLarge'>Total Cost:      </Text>
@@ -201,5 +214,9 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 2,  
         elevation: 5
+    },
+    trashButton: {
+        paddingLeft: 75,
+        paddingTop: 15,
     }
 });
