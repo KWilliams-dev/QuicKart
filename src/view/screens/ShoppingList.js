@@ -4,7 +4,6 @@ import { View, StyleSheet, FlatList, Text as NativeText, Alert} from 'react-nati
 import { Button, Text } from 'react-native-paper';
 import SearchableDropdown from 'react-native-searchable-dropdown';
 import { gql, useQuery} from '@apollo/client';
-import { SplashScreen } from './SplashScreen';
 
 const GET_ITEMS =  gql`
 
@@ -43,24 +42,14 @@ export const ShoppingListScreen = ({navigation}) => {
         }
     }, [data])
 
-    // useEffect(() => {
-    //     loading(true);
-    //     setTimeout(() =>
-    //     {loading(false);
-    //     }, 8000)        // if(loading){
-    //     //     console.log("Loading is true");
-    //     // }
-    // }, [])
+    // if(loading) {
 
-    // if (loading) {
-    //     return <SplashScreen />
     // }
 
     return (
     <View style={styles.container}>
-        {loading ? <SplashScreen /> : 
-        <>
         <NativeText style={styles.titleText}>Shopping List</NativeText>
+
         <SearchableDropdown
                 selectedItems={selectedItems}
                 onItemSelect={(item) => {
@@ -123,7 +112,6 @@ export const ShoppingListScreen = ({navigation}) => {
             <Text style={styles.bottomText} variant='titleLarge'>Grocery Count: {selectedItems.length}</Text>
         </View>
         <Button onPress={() => navigation.navigate('ShoppingRoute')} style={styles.bottomButton} buttonColor='blue' mode='contained'><Text style={styles.bottomText} variant='headlineMedium'>START SHOPPING</Text></Button>
-        </>}
      </View>
     );
 }
