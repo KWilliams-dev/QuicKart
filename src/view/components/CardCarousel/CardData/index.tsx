@@ -1,6 +1,8 @@
 import React from "react"
-import { View, Text, useWindowDimensions } from 'react-native'
+import { View, Text } from 'react-native'
 import { styles, composeStyles, fadeStyle } from './styles'
+import { scaling } from '../../../util/scaling'
+
 
 interface CardDataProps {
     item: string,
@@ -15,8 +17,10 @@ const CardData = (props: CardDataProps) => {
    const fade = fadeStyle(isActive)
    const fadedStyle = (style: any) => composeStyles(style, fade);
 
-   const { fontScale } = useWindowDimensions()
+   
+   const fontScale = scaling('font',30)
    const style = styles(fontScale)
+
    const labelDataStyle = [ style.label, style.labelData ] 
 
    return (

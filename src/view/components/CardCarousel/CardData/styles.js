@@ -11,7 +11,7 @@ export const styles = (fontScale) => StyleSheet.create({
     },
     labelData: {
         padding: 7,
-        fontSize: 24 / fontScale,
+        fontSize: fontScale,
         color: "#000000",
     },
     label: {
