@@ -6,6 +6,8 @@ import SearchableDropdown from 'react-native-searchable-dropdown';
 import { gql, useQuery} from '@apollo/client';
 import { SplashScreen } from './SplashScreen';
 
+
+
 const GET_ITEMS =  gql`
 
 query GetInventory($id: Int!) {
@@ -25,11 +27,20 @@ query GetInventory($id: Int!) {
 
 
 export const ShoppingListScreen = ({navigation}) => {
-
+    
     const [selectedItems, setSelectedItems] = useState([]);
     const [inventory, setInventory] = useState([]);
-  
+    const [totalPrice, setPrice] = useState(0.00);
     const {loading, error, data} = useQuery(GET_ITEMS, { variables: { id: 123 }});
+
+    useEffect(() =>{
+        let subTotal =0.00
+        selectedItems.forEach(item=>{
+            subTotal += item.price;
+        })
+    
+    
+        setPrice(subTotal)},[selectedItems])
     
     useEffect(() => {
         if(error) {
@@ -40,6 +51,7 @@ export const ShoppingListScreen = ({navigation}) => {
     useEffect(() => {
         if(data) {
             setInventory(data.getInventory);
+            
         }
     }, [data])
 
@@ -113,13 +125,15 @@ export const ShoppingListScreen = ({navigation}) => {
 
         <View style={styles.flatList}>
             <FlatList data={selectedItems}
-            renderItem={({item}) => { return(<NativeText style={styles.item}>{item.name}</NativeText>);
+            
+            renderItem={({item})  => { return(<View><NativeText style={styles.item}>{item.name}</NativeText><NativeText style={}>{item.price}</NativeText></View>);
             }}
+            
             extraData={selectedItems}
             />
         </View>
         <View style={styles.bottomContainer}>
-            <Text style={styles.bottomText} variant='titleLarge'>Total Cost:      </Text>
+            <Text style={styles.bottomText} variant='titleLarge'>Total Cost:$</Text><NativeText >{totalPrice}</NativeText>
             <Text style={styles.bottomText} variant='titleLarge'>Grocery Count: {selectedItems.length}</Text>
         </View>
         <Button onPress={() => navigation.navigate('ShoppingRoute')} style={styles.bottomButton} buttonColor='blue' mode='contained'><Text style={styles.bottomText} variant='headlineMedium'>START SHOPPING</Text></Button>

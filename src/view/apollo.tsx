@@ -12,4 +12,3 @@ export const client = new ApolloClient({
     uri: URI,
     cache: new InMemoryCache(),
   });
-  
