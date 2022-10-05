@@ -1,10 +1,11 @@
 import * as React from 'react';
 import {useState, useEffect}  from 'react';
-import { View, StyleSheet, FlatList, Text as NativeText, Alert} from 'react-native';
+import { View, FlatList, Text as NativeText, Alert} from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import SearchableDropdown from 'react-native-searchable-dropdown';
 import { gql, useQuery} from '@apollo/client';
 import { SplashScreen } from './SplashScreen';
+import { styles } from '../styles/ShoppingList.styles';
 
 const GET_ITEMS =  gql`
 
@@ -21,8 +22,6 @@ query GetInventory($id: Int!) {
   }
 
 `
-
-
 
 export const ShoppingListScreen = ({navigation}) => {
 
@@ -42,19 +41,6 @@ export const ShoppingListScreen = ({navigation}) => {
             setInventory(data.getInventory);
         }
     }, [data])
-
-    // useEffect(() => {
-    //     loading(true);
-    //     setTimeout(() =>
-    //     {loading(false);
-    //     }, 8000)        // if(loading){
-    //     //     console.log("Loading is true");
-    //     // }
-    // }, [])
-
-    // if (loading) {
-    //     return <SplashScreen />
-    // }
 
     return (
     <View style={styles.container}>
@@ -84,23 +70,16 @@ export const ShoppingListScreen = ({navigation}) => {
                     borderColor: '#bbb',
                     marginTop: 10
                 }}
-
                 itemTextStyle={{ color: '#222' }}
-                itemsContainerStyle={{ maxHeight: 140 }}
+                itemsContainerStyle={{ maxHeight: 200 }}
                 items={inventory}
-                resetValue={false}
-
                 textInputProps={
                     {
                       placeholder: "placeholder",
                       underlineColorAndroid: "transparent",
                       style: {
                           padding: 12,
-                          borderWidth: 1,
-                          borderColor: '#ccc',
-                          borderRadius: 5,
                       },
-                      //onTextChange: text => alert(text)
                     }
                   }
                   listProps={
@@ -128,78 +107,3 @@ export const ShoppingListScreen = ({navigation}) => {
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#F2FFFF',
-        alignItems: 'center',
-        width: '100%',
-        height: '100%',
-        paddingTop:25,
-    },
-    titleText: {
-        marginTop: 10,
-        fontSize: 46
-    },
-    button: {
-        height: '100%'
-    },
-    flatList: {
-        backgroundColor: 'white',
-        marginTop: 20,
-        width: '85%',
-        height: '50%',
-        borderRadius: 15,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,  
-        elevation: 5
-    },
-    item: {
-        paddingLeft: 25,
-        paddingTop: 15,
-        padding: 10,
-        fontSize: 20,
-        height: 44,
-        color: '#5A5A5A'
-    },
-    bottomContainer: {
-        height: '7%',
-        borderRadius: 15,
-        backgroundColor: '#D42B14',
-        flexDirection: 'row',
-        width: '85%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,  
-        elevation: 5
-    },
-    bottomText: {
-        color: 'white',
-        fontWeight: 'bold'
-    },
-    bottomButton: {
-        marginTop: 30,
-        backgroundColor: '#3F7CAC',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,  
-        elevation: 5
-    },
-    dropdown: {
-        width: '85%',
-        marginTop: 30,
-        backgroundColor: 'white',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.5,
-        shadowRadius: 2,  
-        elevation: 5
-    }
-});
