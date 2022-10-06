@@ -26,7 +26,23 @@ export const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.8,
         shadowRadius: 2,  
-        elevation: 5
+        elevation: 5,
+        flexDirection:'row', 
+        alignItems:'center',
+        flexDirection: 'row', 
+        justifyContent: 'space-between'
+    },
+    itemName:{
+        flex:1,
+        
+    },
+    itemPrice:{
+        justifyContent:'space-evenly',
+         marginVertical:5,
+         
+         paddingRight:40,
+         
+         
     },
     item: {
         paddingLeft: 25,
@@ -54,6 +70,22 @@ export const styles = StyleSheet.create({
     bottomText: {
         color: 'white',
         fontWeight: 'bold'
+    },
+    priceText: {
+        fontSize: 20,
+        color:"#dcdcdc",
+    },
+    currency:{
+        fontSize:20,
+        color:"#6B8068",
+        paddingTop:8,
+        paddingBottom:13,
+    },
+    price:{
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize:20,
+        padding:5,
     },
     bottomButton: {
         marginTop: 30,

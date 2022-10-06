@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {useState, useEffect}  from 'react';
-import { View, FlatList, Text as NativeText, Alert} from 'react-native';
+import { View, FlatList, Text as NativeText, Alert, ScrollView, SafeAreaView, SectionList} from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import SearchableDropdown from 'react-native-searchable-dropdown';
 import { gql, useQuery} from '@apollo/client';
 import { SplashScreen } from './SplashScreen';
 import { styles } from '../styles/ShoppingList.styles';
+
 
 
 
@@ -36,7 +37,9 @@ export const ShoppingListScreen = ({navigation}) => {
         let subTotal =0.00
         selectedItems.forEach(item=>{
             subTotal += item.price;
+           
         })
+        subTotal =subTotal.toFixed(2);
     
     
         setPrice(subTotal)},[selectedItems])
@@ -68,6 +71,7 @@ export const ShoppingListScreen = ({navigation}) => {
                         return [...items]
                     })
                 }}
+                
                 containerStyle = { styles.dropdown }
                 onRemoveItem = { (item, index) => {
                     const items = selectedItems.filter((sitem) => sitem.id !== item.id );
@@ -85,6 +89,7 @@ export const ShoppingListScreen = ({navigation}) => {
                 itemTextStyle={{ color: '#222' }}
                 itemsContainerStyle={{ maxHeight: 200 }}
                 items={inventory}
+                
                 textInputProps={
                     {
                       placeholder: "placeholder",
@@ -102,17 +107,37 @@ export const ShoppingListScreen = ({navigation}) => {
                 >
         </SearchableDropdown>
 
-        <View style={styles.flatList}>
-            <FlatList data={selectedItems}
-            
-            renderItem={({item})  => { return(<View><NativeText style={styles.item}>{item.name}</NativeText><NativeText style={}>{item.price}</NativeText></View>);
-            }}
-            
-            extraData={selectedItems}
-            />
+
+ <View style={styles.flatList}>
+
+ <View style={styles.itemName}>
+                <FlatList data={selectedItems}
+                    renderItem={({ item }) => {
+                        return (
+                            <NativeText style={styles.item}>
+                                {item.name}
+                            </NativeText>
+                        );
+                    } }
+                    extraData={selectedItems} />
+            </View>
+            <View style={styles.itemPrice}>
+                    <FlatList data={selectedItems}
+
+                        renderItem={({ item }) => {
+                            return (<NativeText style={styles.currency}>$<Text style={styles.priceText}> {item.price}</Text></NativeText>);
+                        } }
+
+                        extraData={selectedItems} />
+                </View>
+        
+    
         </View>
+
+
+    
         <View style={styles.bottomContainer}>
-            <Text style={styles.bottomText} variant='titleLarge'>Total Cost:$</Text><NativeText >{totalPrice}</NativeText>
+            <Text style={styles.bottomText} variant='titleLarge'>Total Cost:$</Text><NativeText style={styles.price}>{totalPrice}</NativeText>
             <Text style={styles.bottomText} variant='titleLarge'>Grocery Count: {selectedItems.length}</Text>
         </View>
         <Button onPress={() => navigation.navigate('ShoppingRoute')} style={styles.bottomButton} buttonColor='blue' mode='contained'><Text style={styles.bottomText} variant='headlineMedium'>START SHOPPING</Text></Button>
