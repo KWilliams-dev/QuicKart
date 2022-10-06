@@ -160,13 +160,13 @@ export const ShoppingListScreen = ({navigation}) => {
 
                 extraData={selectedItems} />
         </View>
-    </View>
+</View>
 
 
     
         <View style={styles.bottomContainer}>
-            <Text style={styles.bottomText} variant='titleLarge'>Total Cost:$</Text><NativeText style={styles.price}>{totalPrice}</NativeText>
-            <Text style={styles.bottomText} variant='titleLarge'>Grocery Count: {selectedItems.length}</Text>
+            <Text style={styles.bottomText} variant='titleMedium'>Total Cost:${totalPrice}  </Text>
+            <Text style={styles.bottomText} variant='titleMedium'>Grocery Count: {selectedItems.length}</Text>
         </View>
             <Button onPress={() => navigation.navigate('ShoppingRoute')} style={styles.bottomButton} buttonColor='blue' mode='contained'><Text style={styles.bottomText} variant='headlineMedium'>START SHOPPING</Text></Button>
             </>}
