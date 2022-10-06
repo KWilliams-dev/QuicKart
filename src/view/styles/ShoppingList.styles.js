@@ -38,11 +38,7 @@ export const styles = StyleSheet.create({
     },
     itemPrice:{
         justifyContent:'space-evenly',
-         marginVertical:5,
-         
-         paddingRight:40,
-         
-         
+         marginVertical:5,         
     },
     item: {
         paddingLeft: 25,
@@ -105,5 +101,9 @@ export const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 2,  
         elevation: 5
+    },
+    trashButton: {
+        paddingTop:3,
+        marginTop: 10
     }
 });

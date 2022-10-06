@@ -131,39 +131,36 @@ export const ShoppingListScreen = ({navigation}) => {
 
  <View style={styles.flatList}>
 
- <View style={styles.itemName}>
-                <FlatList data={selectedItems}
-                    renderItem={({ item }) => {
-                        return (
-                            <NativeText style={styles.item}>
-                                {item.name}
-                            </NativeText>
-                        );
-                    } }
-                    extraData={selectedItems} />
-            </View>
-            <View style={styles.itemPrice}>
-                    <FlatList data={selectedItems}
-
-                        renderItem={({ item }) => {
-                            return (<NativeText style={styles.currency}>$<Text style={styles.priceText}> {item.price}</Text></NativeText>);
-                        } }
-
-                        extraData={selectedItems} />
-            </View>
-            <View style={styles.itemPrice}>
-                    <FlatList data={selectedItems}
-
-                        renderItem={({ item }) => {
-                            return (<NativeText style={styles.trashButton}><Button onPress={() => deleteItem(item)} icon="delete" style={styles.trashButton}/></NativeText>)
-                        } }
-
-                        extraData={selectedItems} />
-            </View>
-        
-    
-
+        <View style={styles.itemName}>
+            <FlatList data={selectedItems}
+                renderItem={({ item }) => {
+                    return (
+                        <NativeText style={styles.item}>
+                            {item.name}
+                        </NativeText>
+                    );
+                } }
+                extraData={selectedItems} />
         </View>
+        <View style={styles.itemPrice}>
+                <FlatList data={selectedItems}
+
+                    renderItem={({ item }) => {
+                        return (<NativeText style={styles.currency}>$<Text style={styles.priceText}> {item.price}</Text></NativeText>);
+                    } }
+
+                    extraData={selectedItems} />
+        </View>
+        <View>
+                <FlatList data={selectedItems}
+
+                    renderItem={({ item }) => {
+                        return (<NativeText style={styles.trashButton}><Button onPress={() => deleteItem(item)} icon="delete"/></NativeText>)
+                    } }
+
+                extraData={selectedItems} />
+        </View>
+    </View>
 
 
     
@@ -171,8 +168,8 @@ export const ShoppingListScreen = ({navigation}) => {
             <Text style={styles.bottomText} variant='titleLarge'>Total Cost:$</Text><NativeText style={styles.price}>{totalPrice}</NativeText>
             <Text style={styles.bottomText} variant='titleLarge'>Grocery Count: {selectedItems.length}</Text>
         </View>
-        <Button onPress={() => navigation.navigate('ShoppingRoute')} style={styles.bottomButton} buttonColor='blue' mode='contained'><Text style={styles.bottomText} variant='headlineMedium'>START SHOPPING</Text></Button>
-        </>}
+            <Button onPress={() => navigation.navigate('ShoppingRoute')} style={styles.bottomButton} buttonColor='blue' mode='contained'><Text style={styles.bottomText} variant='headlineMedium'>START SHOPPING</Text></Button>
+            </>}
      </View>
     );
 }
