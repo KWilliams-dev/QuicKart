@@ -64,19 +64,6 @@ export const ShoppingListScreen = ({navigation}) => {
         })
     };
 
-    // useEffect(() => {
-    //     loading(true);
-    //     setTimeout(() =>
-    //     {loading(false);
-    //     }, 8000)        // if(loading){
-    //     //     console.log("Loading is true");
-    //     // }
-    // }, [])
-
-    // if (loading) {
-    //     return <SplashScreen />
-    // }
-
     return (
     <View style={styles.container}>
         {loading ? <SplashScreen /> : 
@@ -131,35 +118,25 @@ export const ShoppingListScreen = ({navigation}) => {
 
  <View style={styles.flatList}>
 
-        <View style={styles.itemName}>
-            <FlatList data={selectedItems}
-                renderItem={({ item }) => {
-                    return (
+    <FlatList data={selectedItems}
+        renderItem={({ item }) => {
+            return (
+                <View style={styles.inline}>
+                    <View style={styles.itemName}>
                         <NativeText style={styles.item}>
                             {item.name}
                         </NativeText>
-                    );
-                } }
-                extraData={selectedItems} />
-        </View>
-        <View style={styles.itemPrice}>
-                <FlatList data={selectedItems}
-
-                    renderItem={({ item }) => {
-                        return (<NativeText style={styles.currency}>$<Text style={styles.priceText}> {item.price}</Text></NativeText>);
-                    } }
-
-                    extraData={selectedItems} />
-        </View>
-        <View>
-                <FlatList data={selectedItems}
-
-                    renderItem={({ item }) => {
-                        return (<NativeText style={styles.trashButton}><Button onPress={() => deleteItem(item)} icon="delete"/></NativeText>)
-                    } }
-
-                extraData={selectedItems} />
-        </View>
+                        </View>
+                    <View style={styles.itemPrice}>
+                        <NativeText style={styles.currency}>$<Text style={styles.priceText}> {item.price}</Text></NativeText>
+                    </View>
+                    <View style={styles.trshbttn}>
+                        <NativeText style={styles.trashButton}><Button onPress={() => deleteItem(item)} icon="delete"/></NativeText>
+                    </View>
+                </View>
+            );
+        } }/>
+        
 </View>
 
 
