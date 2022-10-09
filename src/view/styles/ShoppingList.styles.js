@@ -17,6 +17,7 @@ export const styles = StyleSheet.create({
         height: '100%'
     },
     flatList: {
+        
         backgroundColor: 'white',
         marginTop: 20,
         width: '85%',
@@ -27,22 +28,34 @@ export const styles = StyleSheet.create({
         shadowOpacity: 0.8,
         shadowRadius: 2,  
         elevation: 5,
-        flexDirection:'row', 
-        alignItems:'center',
-        flexDirection: 'row', 
-        justifyContent: 'space-between'
-    },
-    itemName:{
-        flex:1,
+        
         
     },
-    itemPrice:{
+    itemName:{
+        
+        flex:1,
+        marginRight:10,
+        paddingRight:10
+    },
+    inline:{
+        flexDirection:"row",
         justifyContent:'space-evenly',
+        
+          
+        
+    }
+    ,
+    itemPrice:{
+       
          marginVertical:5,
-         
-         paddingRight:40,
-         
-         
+       
+        marginRight:20 ,
+        fontSize: 20,
+        height: 44,
+        flexWrap:"wrap",
+        width:"10%"
+
+
     },
     item: {
         paddingLeft: 25,
@@ -50,14 +63,15 @@ export const styles = StyleSheet.create({
         padding: 10,
         fontSize: 20,
         height: 44,
-        color: '#5A5A5A'
+        color: '#5A5A5A',
+        
     },
     bottomContainer: {
         height: '7%',
         borderRadius: 15,
         backgroundColor: '#D42B14',
         flexDirection: 'row',
-        width: '85%',
+        width: '90%',
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 10,
@@ -72,14 +86,19 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     priceText: {
+        
         fontSize: 20,
         color:"#dcdcdc",
+        
+        
     },
     currency:{
-        fontSize:20,
-        color:"#6B8068",
+        
         paddingTop:8,
-        paddingBottom:13,
+        fontSize:20,
+        color:"#dcdcdc",
+        
+        
     },
     price:{
         color: 'white',
@@ -87,6 +106,7 @@ export const styles = StyleSheet.create({
         fontSize:20,
         padding:5,
     },
+   
     bottomButton: {
         marginTop: 30,
         backgroundColor: '#3F7CAC',
@@ -105,5 +125,23 @@ export const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 2,  
         elevation: 5
+    },
+
+    trashButton: {
+        paddingTop:10,
+        marginLeft:5,
+        marginTop: 10
+        
+    },
+
+    trshbttn:{
+        paddingTop:2,
+        paddingLeft:2,
+        justifyContent:'space-evenly',
+        
     }
+
+
+
+
 });

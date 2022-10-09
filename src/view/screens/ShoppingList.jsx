@@ -57,6 +57,13 @@ export const ShoppingListScreen = ({navigation}) => {
         }
     }, [data])
 
+    const deleteItem = (item) => {
+        const items = selectedItems.filter((sitem) => sitem.id !== item.id );
+        setSelectedItems(() => {
+            return [...items]
+        })
+    };
+
     return (
     <View style={styles.container}>
         {loading ? <SplashScreen /> : 
@@ -110,27 +117,31 @@ export const ShoppingListScreen = ({navigation}) => {
 
  <View style={styles.flatList}>
 
- <View style={styles.itemName}>
+ 
                 <FlatList data={selectedItems}
                     renderItem={({ item }) => {
                         return (
-                            <NativeText style={styles.item}>
-                                {item.name}
-                            </NativeText>
+                            <View style={styles.inline}>
+                                <View style={styles.itemName}>
+                                    <NativeText style={styles.item}>
+                                        {item.name}
+                                    </NativeText>
+                                 </View>
+                                <View style={styles.itemPrice}>
+                                    <NativeText style={styles.currency}>$<Text style={styles.priceText}> {item.price}</Text></NativeText>
+                                </View>
+                                <View style={styles.trshbttn}>
+    
+
+                    
+                        <NativeText style={styles.trashButton}><Button onPress={() => deleteItem(item)} icon="delete"/></NativeText>
+                  
+
+                                </View>
+                            </View>
                         );
-                    } }
-                    extraData={selectedItems} />
-            </View>
-            <View style={styles.itemPrice}>
-                    <FlatList data={selectedItems}
+                    } }/>
 
-                        renderItem={({ item }) => {
-                            return (<NativeText style={styles.currency}>$<Text style={styles.priceText}> {item.price}</Text></NativeText>);
-                        } }
-
-                        extraData={selectedItems} />
-                </View>
-        
     
         </View>
 
@@ -145,4 +156,3 @@ export const ShoppingListScreen = ({navigation}) => {
      </View>
     );
 }
-
