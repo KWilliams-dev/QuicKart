@@ -73,10 +73,24 @@ export const ShoppingListScreen = ({navigation}) => {
                 selectedItems={selectedItems}
                 onItemSelect={(item) => {
                     const items = selectedItems;
-                    items.push(item)
+                    
+                    const isFound = items.some(sitem => {
+                        if (sitem.id === item.id) {
+                            return true; 
+                        } else {
+                            return false
+                        }
+                    });
+
+                    if(isFound == true){
+                        Alert.alert("Item has already been added");
+                    } else {
+                        items.push(item);
+                    }
+                      
                     setSelectedItems(() => {
-                        return [...items]
-                    })
+                            return [...items]
+                    })                    
                 }}
                 
                 containerStyle = { styles.dropdown }
