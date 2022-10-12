@@ -2,6 +2,8 @@
 const { ApolloServer, gql } = require('apollo-server');
 const { MongoClient, ObjectID } = require('mongodb');
 
+const graph = require('../routing/graph');
+
 const dotenv = require('dotenv');
 const Db = require('mongodb/lib/db');
 const { assertValidSDLExtension } = require('graphql/validation/validate');
@@ -148,16 +150,18 @@ const resolvers = {
     },
   
     getAllMapCoords: async (_, { id }, { db}) => {
-        if(!await db.collection('Map').findOne({ _id: ObjectID(id) })) {
-            throw new Error('Map not found');
-        }
-        const data = [[]];
-        for(let x = 0; x < width; x++) {
-            for(let y = 0; y < length; y++) {
-                data.push([x,y]);
-            }        
-        }
-        return data;
+      const map = await db.collection('Map').findOne({ _id: ObjectID(id) })
+      if(!map) {
+          throw new Error('Map not found');
+      }
+        // const data = [[]];
+        // for(let x = 0; x < width; x++) {
+        //     for(let y = 0; y < length; y++) {
+        //         data.push([x,y]);
+        //     }        
+        // }
+        // return data;
+      console.log(graph(map.width, map.length));
     },
 
   },
