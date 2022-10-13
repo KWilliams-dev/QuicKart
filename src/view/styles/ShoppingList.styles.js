@@ -17,6 +17,7 @@ export const styles = StyleSheet.create({
         height: '100%'
     },
     flatList: {
+        
         backgroundColor: 'white',
         marginTop: 20,
         width: '85%',
@@ -52,7 +53,6 @@ export const styles = StyleSheet.create({
         fontSize: 20,
         height: 44,
         color: '#5A5A5A',
-        
     },
     bottomContainer: {
         height: '7%',
@@ -158,15 +158,10 @@ export const styles = StyleSheet.create({
         marginTop: 10
         
     },
-
     trshbttn:{
         paddingTop:2,
         paddingLeft:2,
         justifyContent:'space-evenly',
         
     }
-
-
-
-
 });
