@@ -66,9 +66,8 @@ export const ShoppingListScreen = ({navigation}) => {
 
     return (
     <View style={styles.container}>
-        {loading ? <SplashScreen /> : 
-        <>
         <NativeText style={styles.titleText}>Shopping List</NativeText>
+
         <SearchableDropdown
                 selectedItems={selectedItems}
                 onItemSelect={(item) => {
@@ -152,7 +151,6 @@ export const ShoppingListScreen = ({navigation}) => {
             <Text style={styles.bottomText} variant='titleLarge'>Grocery Count: {selectedItems.length}</Text>
         </View>
         <Button onPress={() => navigation.navigate('ShoppingRoute')} style={styles.bottomButton} buttonColor='blue' mode='contained'><Text style={styles.bottomText} variant='headlineMedium'>START SHOPPING</Text></Button>
-        </>}
      </View>
     );
 }
