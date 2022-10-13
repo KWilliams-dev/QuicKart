@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useState, useEffect}  from 'react';
-import { View, FlatList, Text as NativeText, Alert} from 'react-native';
+import { View, FlatList, Text as NativeText, Alert, ScrollView, SafeAreaView, SectionList} from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import SearchableDropdown from 'react-native-searchable-dropdown';
 import { gql, useQuery} from '@apollo/client';
@@ -26,11 +26,22 @@ query GetInventory($id: Int!) {
 `
 
 export const ShoppingListScreen = ({navigation}) => {
-
+    
     const [selectedItems, setSelectedItems] = useState([]);
     const [inventory, setInventory] = useState([]);
-  
+    const [totalPrice, setPrice] = useState(0.00);
     const {loading, error, data} = useQuery(GET_ITEMS, { variables: { id: 123 }});
+
+    useEffect(() =>{
+        let subTotal =0.00
+        selectedItems.forEach(item=>{
+            subTotal += item.price;
+           
+        })
+        subTotal =subTotal.toFixed(2);
+    
+    
+        setPrice(subTotal)},[selectedItems])
     
     useEffect(() => {
         if(error) {
@@ -41,6 +52,7 @@ export const ShoppingListScreen = ({navigation}) => {
     useEffect(() => {
         if(data) {
             setInventory(data.getInventory);
+            
         }
     }, [data])
 
@@ -53,6 +65,13 @@ export const ShoppingListScreen = ({navigation}) => {
     const groceryListHandler = () => {
         dispatch(setGroceryList(selectedItems))
     }
+
+    const deleteItem = (item) => {
+        const items = selectedItems.filter((sitem) => sitem.id !== item.id );
+        setSelectedItems(() => {
+            return [...items]
+        })
+    };
 
     return (
     <View style={styles.container}>
@@ -68,6 +87,7 @@ export const ShoppingListScreen = ({navigation}) => {
                         return [...items]
                     })
                 }}
+                
                 containerStyle = { styles.dropdown }
                 onRemoveItem = { (item, index) => {
                     const items = selectedItems.filter((sitem) => sitem.id !== item.id );
@@ -85,6 +105,7 @@ export const ShoppingListScreen = ({navigation}) => {
                 itemTextStyle={{ color: '#222' }}
                 itemsContainerStyle={{ maxHeight: 200 }}
                 items={inventory}
+                
                 textInputProps={
                     {
                       placeholder: "placeholder",
@@ -100,17 +121,34 @@ export const ShoppingListScreen = ({navigation}) => {
                     }
                 }
                 >
-        </SearchableDropdown>
-
+            </SearchableDropdown>
         <View style={styles.flatList}>
-            <FlatList data={selectedItems}
-            renderItem={({item}) => { return(<NativeText style={styles.item}>{item.name}</NativeText>);
-            }}
-            extraData={selectedItems}
-            />
+                <FlatList data={selectedItems}
+                    renderItem={({ item }) => {
+                        return (
+                            <View style={styles.inline}>
+                                <View style={styles.itemName}>
+                                    <NativeText style={styles.item}>
+                                        {item.name}
+                                    </NativeText>
+                                </View>
+                                <View style={styles.itemPrice}>
+                                    <NativeText style={styles.currency}>$<Text style={styles.priceText}> {item.price}</Text></NativeText>
+                                </View>
+                                <View style={styles.trshbttn}>
+                        <NativeText style={styles.trashButton}><Button onPress={() => deleteItem(item)} icon="delete"/></NativeText>
+                                </View>
+                            </View>
+                        );
+                    } }/>
+
+    
         </View>
+
+
+    
         <View style={styles.bottomContainer}>
-            <Text style={styles.bottomText} variant='titleLarge'>Total Cost:      </Text>
+            <Text style={styles.bottomText} variant='titleLarge'>Total Cost:$</Text><NativeText style={styles.price}>{totalPrice}</NativeText>
             <Text style={styles.bottomText} variant='titleLarge'>Grocery Count: {selectedItems.length}</Text>
         </View>
         <Button onPress={() => {
@@ -122,8 +160,7 @@ export const ShoppingListScreen = ({navigation}) => {
             mode='contained'>
                 <Text style={styles.bottomText} variant='headlineMedium'>START SHOPPING</Text>
         </Button>
-        </>}
+     </>}
      </View>
     );
 }
-

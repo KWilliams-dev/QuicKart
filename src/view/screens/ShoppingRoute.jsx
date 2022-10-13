@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet, Button } from 'react-native';
 import {useState, useEffect}  from 'react';
 import {useSelector, useDispatch} from 'react-redux'
 import {setMinutes, setHours} from '../redux/timerActions'
+import CardData from '../components/CardCarousel/CardData/index';
 
 export const ShoppingRouteScreen = ({navigation}) => {
 
@@ -40,13 +41,18 @@ export const ShoppingRouteScreen = ({navigation}) => {
         clearInterval(timer)
     }
 
+
     return(
         <View style={styles.container}>
-            <Text style={styles.welcomeText}>Shopping Route Stuff!</Text>
+            <CardData item={ "Item Name" } aisle={ "A" } bay={ "1" } isActive={ true }/>
             <Button title={"Finish Shopping"} onPress={() => {
                 navigation.navigate('ShoppingFinish');
                 handleStopTimer()
             }}></Button>
+            {/* delete isActive prop if card will control the opacity */}
+            {/* query database to test card data props */}
+
+            
         </View>
     )
 }
@@ -57,7 +63,7 @@ const styles = StyleSheet.create({
         height: '100%',
         width: '100%',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     welcomeText: {
         fontSize: 32

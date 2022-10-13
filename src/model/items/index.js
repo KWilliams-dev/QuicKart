@@ -131,7 +131,7 @@ const resolvers = {
       return items
     },
 
-    //created this area to create an item and save it to the database
+    // created this area to create an item and save it to the database
     getItem: async (_, { id }, { db }) => {
       return await db.collection('Item').findOne({ _id: ObjectID(id) });
     },
@@ -148,16 +148,17 @@ const resolvers = {
     },
   
     getAllMapCoords: async (_, { id }, { db}) => {
-        if(!await db.collection('Map').findOne({ _id: ObjectID(id) })) {
-            throw new Error('Map not found');
-        }
-        const data = [[]];
-        for(let x = 0; x < width; x++) {
-            for(let y = 0; y < length; y++) {
-                data.push([x,y]);
-            }        
-        }
-        return data;
+      const map = await db.collection('Map').findOne({ _id: ObjectID(id) })
+      if(!map) {
+        throw new Error('Map not found');
+      }
+      const data = [];
+      for(let x = 0; x < width; x++) {
+        for(let y = 0; y < length; y++) {
+          data.push([x,y]);
+        }        
+      }
+      return data;
     },
 
   },
