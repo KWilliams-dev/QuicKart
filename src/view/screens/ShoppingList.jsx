@@ -6,9 +6,8 @@ import SearchableDropdown from 'react-native-searchable-dropdown';
 import { gql, useQuery} from '@apollo/client';
 import { SplashScreen } from './SplashScreen';
 import { styles } from '../styles/ShoppingList.styles';
-
-
-
+import {useDispatch} from 'react-redux'
+import { setGroceryList } from '../redux/groceryListAction'
 
 const GET_ITEMS =  gql`
 
@@ -56,6 +55,16 @@ export const ShoppingListScreen = ({navigation}) => {
             
         }
     }, [data])
+
+    // dispatch is used for calling setter methods specified in actions, that re-write data to the data store
+
+    const dispatch = useDispatch();
+
+    // When the user is done making their selection, we want to globally store that list using dispatch and use it elsewhere in the application.
+    
+    const groceryListHandler = () => {
+        dispatch(setGroceryList(selectedItems))
+    }
 
     const deleteItem = (item) => {
         const items = selectedItems.filter((sitem) => sitem.id !== item.id );
@@ -126,41 +135,44 @@ export const ShoppingListScreen = ({navigation}) => {
                     }
                 }
                 >
-        </SearchableDropdown>
+            </SearchableDropdown>
+       
+            <View style={styles.flatList}>
+                <FlatList data={selectedItems}
+                    renderItem={({ item }) => {
+                        return (
+                            <View style={styles.inline}>
+                                <View style={styles.itemName}>
+                                    <NativeText style={styles.item}>{item.name}</NativeText>
+                                </View>
+                                <View style={styles.itemPrice}>
+                                    <NativeText style={styles.currency}>$<Text style={styles.priceText}> {item.price}</Text></NativeText>
+                                </View>
+                                <View style={styles.trshbttn}>
+                                    <NativeText style={styles.trashButton}><Button onPress={() => deleteItem(item)} icon="delete"/></NativeText>
+                                </View>
+                            </View>
+                        );
+                    } }/>
 
-
-
- <View style={styles.flatList}>
-
-    <FlatList data={selectedItems}
-        renderItem={({ item }) => {
-            return (
-                <View style={styles.inline}>
-                    <View style={styles.itemName}>
-                        <NativeText style={styles.item}>
-                            {item.name}
-                        </NativeText>
-                        </View>
-                    <View style={styles.itemPrice}>
-                        <NativeText style={styles.currency}>$<Text style={styles.priceText}> {item.price}</Text></NativeText>
-                    </View>
-                    <View style={styles.trshbttn}>
-                        <NativeText style={styles.trashButton}><Button onPress={() => deleteItem(item)} icon="delete"/></NativeText>
-                    </View>
-                </View>
-            );
-        } }/>
-        
-</View>
+        </View>
 
 
     
         <View style={styles.bottomContainer}>
-            <Text style={styles.bottomText} variant='titleMedium'>Total Cost:${totalPrice}  </Text>
-            <Text style={styles.bottomText} variant='titleMedium'>Grocery Count: {selectedItems.length}</Text>
+            <Text style={styles.bottomText} variant='titleLarge'>Total Cost:$</Text><NativeText style={styles.price}>{totalPrice}</NativeText>
+            <Text style={styles.bottomText} variant='titleLarge'>Grocery Count: {selectedItems.length}</Text>
         </View>
-            <Button onPress={() => navigation.navigate('ShoppingRoute')} style={styles.bottomButton} buttonColor='blue' mode='contained'><Text style={styles.bottomText} variant='headlineMedium'>START SHOPPING</Text></Button>
-            </>}
+        <Button onPress={() => {
+            navigation.navigate('ShoppingRoute')
+            groceryListHandler();
+            }}
+            style={styles.bottomButton}
+            buttonColor='blue'
+            mode='contained'>
+                <Text style={styles.bottomText} variant='headlineMedium'>START SHOPPING</Text>
+        </Button>
+     </>}
      </View>
     );
 }

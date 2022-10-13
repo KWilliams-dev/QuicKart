@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Welcome } from '../screens/Welcome';
 import { ShoppingListScreen } from '../screens/ShoppingList';
 import { ShoppingRouteScreen } from '../screens/ShoppingRoute';
+import { FinishShoppingScreen } from '../screens/FinishShopping';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,7 @@ function RootNavigator() {
             <Stack.Screen name="Home" component={Welcome} options={{title: 'Welcome!'}}/>
             <Stack.Screen name="ShoppingList" component={ShoppingListScreen} options={{title: 'Your Grocery List!'}}/>
             <Stack.Screen name="ShoppingRoute" component={ShoppingRouteScreen} options={{title: 'Fastest Route!'}} />
+            <Stack.Screen name="ShoppingFinish" component={FinishShoppingScreen} options={{title: "You're all done!"}}/>
             {/* <Stack.Screen name="Loading" component={LoadingScreeen} /> */}
         </Stack.Navigator>
     )
