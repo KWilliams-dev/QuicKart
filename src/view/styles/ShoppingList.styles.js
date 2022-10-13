@@ -17,7 +17,6 @@ export const styles = StyleSheet.create({
         height: '100%'
     },
     flatList: {
-        
         backgroundColor: 'white',
         marginTop: 20,
         width: '85%',
@@ -28,11 +27,8 @@ export const styles = StyleSheet.create({
         shadowOpacity: 0.8,
         shadowRadius: 2,  
         elevation: 5,
-        
-        
     },
     itemName:{
-        
         flex:1,
         marginRight:10,
         paddingRight:10
@@ -40,22 +36,14 @@ export const styles = StyleSheet.create({
     inline:{
         flexDirection:"row",
         justifyContent:'space-evenly',
-        
-          
-        
-    }
-    ,
+    },
     itemPrice:{
-       
-         marginVertical:5,
-       
+        marginVertical:5,
         marginRight:20 ,
         fontSize: 20,
         height: 44,
         flexWrap:"wrap",
         width:"10%"
-
-
     },
     item: {
         paddingLeft: 25,
@@ -86,19 +74,13 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     priceText: {
-        
         fontSize: 20,
         color:"#dcdcdc",
-        
-        
     },
     currency:{
-        
         paddingTop:8,
         fontSize:20,
         color:"#dcdcdc",
-        
-        
     },
     price:{
         color: 'white',
@@ -125,6 +107,49 @@ export const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 2,  
         elevation: 5
+    },
+    finishShoppingTitle: {
+        color: 'white',
+        fontSize: 52,
+        fontWeight: 'bold',
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: { width: -1, height: 1 },
+        textShadowRadius: 5,
+    },
+    finishShoppingTimerView: {
+        backgroundColor: 'white',
+        height: '25%',
+        width: '84%',
+        marginTop: 25,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 15,
+        borderWidth: 2,
+        borderColor: '#e0e0e0'
+    },
+    finishShoppingTimerText: {
+        fontSize: 48,
+        fontWeight: 'bold',
+        textShadowColor: 'rgba(0, 0, 0, 0.50)',
+        textShadowOffset: { width: 0, height: 5 },
+        textShadowRadius: 10,
+    },
+    finishShoppingListContainer: {
+        backgroundColor: 'white',
+        marginTop: 20,
+        width: '85%',
+        height: '40%',
+        borderRadius: 15,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,  
+        elevation: 5
+    },
+    finishShoppingBottomText: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 28,
     },
 
     trashButton: {
