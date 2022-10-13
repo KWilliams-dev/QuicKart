@@ -3,6 +3,7 @@ const { ApolloServer, gql } = require('apollo-server');
 const { MongoClient, ObjectID } = require('mongodb');
 
 const graph = require('../routing/graph');
+const dijkstra = require('../routing/dijkstra');
 
 const dotenv = require('dotenv');
 const Db = require('mongodb/lib/db');
@@ -154,15 +155,18 @@ const resolvers = {
       if(!map) {
           throw new Error('Map not found');
       }
-        // const data = [[]];
-        // for(let x = 0; x < width; x++) {
-        //     for(let y = 0; y < length; y++) {
-        //         data.push([x,y]);
-        //     }        
-        // }
+      // }
+      //   const data = [];
+      //   for(let x = 0; x < map.width; x++) {
+      //       for(let y = 0; y < map.length; y++) {
+      //           data.push([x,y]);
+      //       }        
+      //   }
         // return data;
+      const source = '(0,0)';
       console.log(graph(map.width, map.length));
-    },
+    }
+    // },
 
   },
   Mutation: {

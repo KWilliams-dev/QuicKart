@@ -8,11 +8,14 @@ const graph = (width, length) => {
           let isEdge = false;
           if(direction.includes("N")){
               isEdge ||= y + 1 > length;
-          } else if(direction.includes("E")){
+          } 
+          if(direction.includes("E")){
               isEdge ||= x + 1 > width;
-          } else if(direction.includes("S")){
+          } 
+          if(direction.includes("S")){
               isEdge ||= y - 1 < 0;
-          } else if(direction.includes("W")){
+          } 
+          if(direction.includes("W")){
               isEdge ||= x - 1 < 0;
           }
           return isEdge ? null : 1
@@ -35,7 +38,6 @@ const graph = (width, length) => {
           if(graph[nodeFormat][node] === null) {
             delete graph[nodeFormat][node]
           }
-          console.log(node)
         }
       }
     }
