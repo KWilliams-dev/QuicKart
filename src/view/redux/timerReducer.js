@@ -1,4 +1,4 @@
-import { SET_MINUTES, SET_HOURS } from "./actions";
+import { SET_MINUTES, SET_HOURS } from "./timerActions";
 
 const initialState = {
     minutes: 0,

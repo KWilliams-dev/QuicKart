@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Text, View } from 'react-native';
 import {useState, useEffect}  from 'react';
 import {useSelector, useDispatch} from 'react-redux'
-import {setMinutes, setHours} from '../redux/actions'
+import {setMinutes, setHours} from '../redux/timerActions'
 
-export const Timer = ({timerStoppped}) => {
+export const Timer = () => {
 
-    const {minutes, hours} = useSelector(state => state.timerReducer);
+    const {minutes, hours, timerStopped} = useSelector(state => state.timerReducer);
 
     const [seconds, setSeconds] = useState(0);
 
@@ -31,12 +31,12 @@ export const Timer = ({timerStoppped}) => {
             } 
 
         }, .1)
-
-        return () => clearInterval(timer)
         
-    },)
+    }, [seconds])
 
-    timerStoppped ? clearInterval(timer) : null
+    if(timerStopped) {
+        clearInterval(timer)
+    }
 
     return (
         <View>

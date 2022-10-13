@@ -6,6 +6,8 @@ import SearchableDropdown from 'react-native-searchable-dropdown';
 import { gql, useQuery} from '@apollo/client';
 import { SplashScreen } from './SplashScreen';
 import { styles } from '../styles/ShoppingList.styles';
+import {useDispatch} from 'react-redux'
+import { setGroceryList } from '../redux/groceryListAction'
 
 const GET_ITEMS =  gql`
 
@@ -41,6 +43,16 @@ export const ShoppingListScreen = ({navigation}) => {
             setInventory(data.getInventory);
         }
     }, [data])
+
+    // dispatch is used for calling setter methods specified in actions, that re-write data to the data store
+
+    const dispatch = useDispatch();
+
+    // When the user is done making their selection, we want to globally store that list using dispatch and use it elsewhere in the application.
+    
+    const groceryListHandler = () => {
+        dispatch(setGroceryList(selectedItems))
+    }
 
     return (
     <View style={styles.container}>
@@ -101,7 +113,15 @@ export const ShoppingListScreen = ({navigation}) => {
             <Text style={styles.bottomText} variant='titleLarge'>Total Cost:      </Text>
             <Text style={styles.bottomText} variant='titleLarge'>Grocery Count: {selectedItems.length}</Text>
         </View>
-        <Button onPress={() => navigation.navigate('ShoppingRoute')} style={styles.bottomButton} buttonColor='blue' mode='contained'><Text style={styles.bottomText} variant='headlineMedium'>START SHOPPING</Text></Button>
+        <Button onPress={() => {
+            navigation.navigate('ShoppingRoute')
+            groceryListHandler();
+            }}
+            style={styles.bottomButton}
+            buttonColor='blue'
+            mode='contained'>
+                <Text style={styles.bottomText} variant='headlineMedium'>START SHOPPING</Text>
+        </Button>
         </>}
      </View>
     );
