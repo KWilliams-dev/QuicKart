@@ -146,7 +146,7 @@ export const ShoppingListScreen = ({navigation}) => {
                                     <NativeText style={styles.item}>{item.name}</NativeText>
                                 </View>
                                 <View style={styles.itemPrice}>
-                                    <NativeText style={styles.currency}>$<Text style={styles.priceText}> {item.price}</Text></NativeText>
+                                    <NativeText style={styles.currency}><Text style={styles.priceText}>${item.price}</Text></NativeText>
                                 </View>
                                 <View style={styles.trshbttn}>
                                     <NativeText style={styles.trashButton}><Button onPress={() => deleteItem(item)} icon="delete"/></NativeText>
