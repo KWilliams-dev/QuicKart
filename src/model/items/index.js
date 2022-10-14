@@ -134,7 +134,7 @@ const resolvers = {
       return items
     },
 
-    //created this area to create an item and save it to the database
+    // created this area to create an item and save it to the database
     getItem: async (_, { id }, { db }) => {
       return await db.collection('Item').findOne({ _id: ObjectID(id) });
     },
