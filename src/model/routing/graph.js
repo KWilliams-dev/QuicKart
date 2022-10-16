@@ -1,5 +1,5 @@
 const graph = (width, length) => {
-    const graph = {}
+    const graph = []
 
     for(let x = 0; x <= width; x++) {
       for(let y = 0; y <= length; y++) {
@@ -23,7 +23,8 @@ const graph = (width, length) => {
 
         const nodeFormat = "(" + x + "," + y + ")";
 
-        graph[nodeFormat] = {
+        graph.push({
+          node: nodeFormat,
           NW: weight("NW"),
           N: weight("N"),
           NE: weight("NE"),
@@ -32,7 +33,7 @@ const graph = (width, length) => {
           S: weight("S"),
           SW: weight("SW"),
           W: weight("W"),
-        }
+        })
 
         for(let node in graph[nodeFormat]) {
           if(graph[nodeFormat][node] === null) {

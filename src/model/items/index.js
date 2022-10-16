@@ -164,7 +164,8 @@ const resolvers = {
       //   }
         // return data;
       const source = '(0,0)';
-      console.log(graph(map.width, map.length));
+      const end = '(44,28)'
+      console.log(dijkstra(graph(map.width, map.length), source, end)[graph(map.width, map.length).length-1]);
     }
     // },
 

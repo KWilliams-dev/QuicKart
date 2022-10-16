@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { View, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet, Button, FlatList, Text} from 'react-native';
 import {useState, useEffect}  from 'react';
 import {useSelector, useDispatch} from 'react-redux'
 import {setMinutes, setHours} from '../redux/timerActions'
 import CardData from '../components/CardCarousel/CardData/index';
+
+import {route} from '../routing/route.js'
 
 export const ShoppingRouteScreen = ({navigation}) => {
 
@@ -41,17 +43,24 @@ export const ShoppingRouteScreen = ({navigation}) => {
         clearInterval(timer)
     }
 
-
+    const {groceryList} = useSelector(state => state.listReducer);
+    const list = route(groceryList)
     return(
         <View style={styles.container}>
-            <CardData item={ "Item Name" } aisle={ "A" } bay={ "1" } isActive={ true }/>
+            <CardData item={ list[0].name } aisle={ list[0].aisle } bay={ list[0].bay } isActive={ true }/>
             <Button title={"Finish Shopping"} onPress={() => {
                 navigation.navigate('ShoppingFinish');
                 handleStopTimer()
             }}></Button>
+            
             {/* delete isActive prop if card will control the opacity */}
             {/* query database to test card data props */}
-
+            {/* <FlatList
+                data={groceryList}
+                style={styles.finishShoppingList}
+                renderItem={({item}) => { return(<Text style={styles.item}>{item.name}</Text>);
+            }}
+                /> */}
             
         </View>
     )
