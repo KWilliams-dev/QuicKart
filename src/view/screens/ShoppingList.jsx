@@ -75,11 +75,8 @@ export const ShoppingListScreen = ({navigation}) => {
 
     return (
     <View style={styles.container}>
-        {/*if there is a connection to the database then the splashscreen will load breifly,
-        if not then it will load for ever. */}
-        {loading ? <SplashScreen /> : 
-        <>
         <NativeText style={styles.titleText}>Shopping List</NativeText>
+
         <SearchableDropdown
                 selectedItems={selectedItems}
                 onItemSelect={(item) => {
@@ -153,16 +150,7 @@ export const ShoppingListScreen = ({navigation}) => {
             <Text style={styles.bottomText} variant='titleLarge'>Total Cost:$</Text><NativeText style={styles.price}>{totalPrice}</NativeText>
             <Text style={styles.bottomText} variant='titleLarge'>Grocery Count: {selectedItems.length}</Text>
         </View>
-        <Button onPress={() => {
-            navigation.navigate('ShoppingRoute')
-            groceryListHandler();
-            }}
-            style={styles.bottomButton}
-            buttonColor='blue'
-            mode='contained'>
-                <Text style={styles.bottomText} variant='headlineMedium'>START SHOPPING</Text>
-        </Button>
-     </>}
+        <Button onPress={() => navigation.navigate('ShoppingRoute')} style={styles.bottomButton} buttonColor='blue' mode='contained'><Text style={styles.bottomText} variant='headlineMedium'>START SHOPPING</Text></Button>
      </View>
     );
 }

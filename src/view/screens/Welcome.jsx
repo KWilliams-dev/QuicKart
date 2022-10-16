@@ -4,7 +4,6 @@ import { Button, Text } from 'react-native-paper';
 import Unorderedlist from 'react-native-unordered-list';
 
 export const Welcome = ({navigation}) => {
-
     const Header = () => {
         return(
             <View style={styles.header}>
@@ -28,7 +27,8 @@ export const Welcome = ({navigation}) => {
 
     const Boxes = () => {
         return(
- 
+
+            
             <View style={styles.boxContainer}>
 
              <View style={styles.box}>
@@ -88,8 +88,6 @@ export const Welcome = ({navigation}) => {
 
         )}
 
-
-        
     return(
         <SafeAreaView style={styles.container}>
             <Header/>
