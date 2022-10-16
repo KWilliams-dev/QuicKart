@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import {View, Text, StyleSheet} from 'react-native'
+import { ActivityIndicator } from 'react-native-paper';
 
 export const SplashScreen = () => {
-    
+
   const [text, setText] = useState('');
   const [animate, setAnimate] = useState(true);
 
