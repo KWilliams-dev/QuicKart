@@ -17,7 +17,7 @@ query GetInventory($id: Int!) {
       name
       aisle
       bay
-      price
+      price 
       xVal
       yVal
     }
