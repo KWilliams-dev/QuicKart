@@ -84,24 +84,10 @@ export const ShoppingListScreen = ({navigation}) => {
                 selectedItems={selectedItems}
                 onItemSelect={(item) => {
                     const items = selectedItems;
-                    
-                    const isFound = items.some(sitem => {
-                        if (sitem.id === item.id) {
-                            return true; 
-                        } else {
-                            return false
-                        }
-                    });
-
-                    if(isFound == true){
-                        Alert.alert("Item has already been added");
-                    } else {
-                        items.push(item);
-                    }
-                      
+                    items.push(item)
                     setSelectedItems(() => {
-                            return [...items]
-                    })                    
+                        return [...items]
+                    })
                 }}
                 
                 containerStyle = { styles.dropdown }
@@ -138,25 +124,27 @@ export const ShoppingListScreen = ({navigation}) => {
                 }
                 >
             </SearchableDropdown>
-       
-            <View style={styles.flatList}>
+        <View style={styles.flatList}>
                 <FlatList data={selectedItems}
                     renderItem={({ item }) => {
                         return (
                             <View style={styles.inline}>
                                 <View style={styles.itemName}>
-                                    <NativeText style={styles.item}>{item.name}</NativeText>
+                                    <NativeText style={styles.item}>
+                                        {item.name}
+                                    </NativeText>
                                 </View>
                                 <View style={styles.itemPrice}>
                                     <NativeText style={styles.currency}>$<Text style={styles.priceText}> {item.price}</Text></NativeText>
                                 </View>
                                 <View style={styles.trshbttn}>
-                                    <NativeText style={styles.trashButton}><Button onPress={() => deleteItem(item)} icon="delete"/></NativeText>
+                        <NativeText style={styles.trashButton}><Button onPress={() => deleteItem(item)} icon="delete"/></NativeText>
                                 </View>
                             </View>
                         );
                     } }/>
 
+    
         </View>
 
 
