@@ -8,6 +8,7 @@ import { SplashScreen } from './SplashScreen';
 import { styles } from '../styles/ShoppingList.styles';
 import {useDispatch} from 'react-redux'
 import { setGroceryList } from '../redux/groceryListAction'
+import { setTotal } from '../redux/totalActions';
 
 const GET_ITEMS =  gql`
 
@@ -31,6 +32,10 @@ export const ShoppingListScreen = ({navigation}) => {
     const [inventory, setInventory] = useState([]);
     const [totalPrice, setPrice] = useState(0.00);
     const {loading, error, data} = useQuery(GET_ITEMS, { variables: { id: 123 }});
+
+    const totalHandler = () => {
+        dispatch(setTotal(totalPrice))
+    }
 
     useEffect(() =>{
         let subTotal =0.00
@@ -83,6 +88,13 @@ export const ShoppingListScreen = ({navigation}) => {
         <SearchableDropdown
                 selectedItems={selectedItems}
                 onItemSelect={(item) => {
+                    
+                    // creates a new version of the item that contains a collected property.
+                    item = {
+                        ...item,
+                        collected: false
+                    }
+
                     const items = selectedItems;
                     
                     const isFound = items.some(sitem => {
@@ -148,7 +160,7 @@ export const ShoppingListScreen = ({navigation}) => {
                                     <NativeText style={styles.item}>{item.name}</NativeText>
                                 </View>
                                 <View style={styles.itemPrice}>
-                                    <NativeText style={styles.currency}>$<Text style={styles.priceText}> {item.price}</Text></NativeText>
+                                    <NativeText style={styles.currency}><Text style={styles.priceText}>${item.price}</Text></NativeText>
                                 </View>
                                 <View style={styles.trshbttn}>
                                     <NativeText style={styles.trashButton}><Button onPress={() => deleteItem(item)} icon="delete"/></NativeText>
@@ -158,16 +170,14 @@ export const ShoppingListScreen = ({navigation}) => {
                     } }/>
 
         </View>
-
-
-    
         <View style={styles.bottomContainer}>
-            <Text style={styles.bottomText} variant='titleLarge'>Total Cost:$</Text><NativeText style={styles.price}>{totalPrice}</NativeText>
+            <Text style={styles.bottomText} variant='titleLarge'>Total Cost:</Text><NativeText style={styles.price}>${totalPrice}</NativeText>
             <Text style={styles.bottomText} variant='titleLarge'>Grocery Count: {selectedItems.length}</Text>
         </View>
         <Button onPress={() => {
             navigation.navigate('ShoppingRoute')
             groceryListHandler();
+            totalHandler();
             }}
             style={styles.bottomButton}
             buttonColor='blue'
