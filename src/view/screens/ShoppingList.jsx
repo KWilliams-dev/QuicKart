@@ -80,6 +80,8 @@ export const ShoppingListScreen = ({navigation}) => {
 
     return (
     <View style={styles.container}>
+        {/*if there is a connection to the database then the splashscreen will load breifly,
+        if not then it will load for ever. */}
         {loading ? <SplashScreen /> : 
         <>
         <NativeText style={styles.titleText}>Shopping List</NativeText>
