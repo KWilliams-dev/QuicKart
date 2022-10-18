@@ -9,6 +9,7 @@ export const FinishShoppingScreen = () => {
     // useSelector is one aspect of React - Redux (it allows us to access globally stored variables)
     const {minutes, hours} = useSelector(state => state.timerReducer);
     const {groceryList} = useSelector(state => state.listReducer);
+    const {total} = useSelector(state => state.totalReducer)
 
     return (
         <View style={styles.container}>
@@ -20,12 +21,12 @@ export const FinishShoppingScreen = () => {
                 <FlatList
                 data={groceryList}
                 style={styles.finishShoppingList}
-                renderItem={({item}) => { return(<FinishListItem name={item.name} collected={true}/>);
+                renderItem={({item}) => { return(<FinishListItem name={item.name} collected={item.collected}/>);
             }}
                 />
             </View>
             <View style={styles.bottomContainer}>
-                <Text style={styles.finishShoppingBottomText}>Total: $0.00</Text>
+                <Text style={styles.finishShoppingBottomText}>Total: ${total}</Text>
             </View>
         </View>
     )

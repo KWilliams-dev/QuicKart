@@ -41,7 +41,6 @@ export const ShoppingRouteScreen = ({navigation}) => {
         clearInterval(timer)
     }
 
-
     return(
         <View style={styles.container}>
             <CardData item={ "Item Name" } aisle={ "A" } bay={ "1" } isActive={ true }/>
