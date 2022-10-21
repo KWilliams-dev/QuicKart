@@ -6,7 +6,7 @@ import SearchableDropdown from 'react-native-searchable-dropdown';
 import { gql, useQuery} from '@apollo/client';
 import { SplashScreen } from './SplashScreen';
 import { styles } from '../styles/ShoppingList.styles';
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import { setGroceryList } from '../redux/groceryListAction'
 import { setTotal } from '../redux/totalActions';
 
@@ -33,37 +33,139 @@ export const ShoppingListScreen = ({navigation}) => {
     const [totalPrice, setPrice] = useState(0.00);
     const {loading, error, data} = useQuery(GET_ITEMS, { variables: { id: 123 }});
 
+    const dispatch = useDispatch();
+
     const totalHandler = () => {
         dispatch(setTotal(totalPrice))
     }
 
+    /* 
+    *  Helper method to get the first closest item to the entrance. 
+    *  We don't pass in originX and originY here because we know the
+    *  entrance coordinates already. This method is on it's own to help
+    *  with code readability even though it's only called once in calcRoute()
+    */
+
+    function getFirstItem(arr) {
+        const listWithDistances = []
+        
+        let firstItem;
+
+        arr.forEach(item => {
+            let x2 = item.xVal
+            let y2 = item.yVal
+            let xDistance = Math.abs(x2 - 27)
+            let yDistance = Math.abs(y2 - 29)
+            let distance = xDistance + yDistance
+
+            item = {
+                ...item,
+                 distance: distance
+             }
+ 
+             listWithDistances.push(item)
+        })
+
+        listWithDistances.sort((a,b) => a.distance - b.distance);
+
+        firstItem = listWithDistances.shift();
+
+        return firstItem
+    }
+
+    /* 
+    *  Helper method to get the next closest item from the updated point of origin 
+    *  Takes in arr which is the updated array list from calcRoute().
+    *  The item that was considered the next item for the user to get previously is now
+    *  the new point of origin item.xVal = originX | item.yVal = originY
+    */
+
+    function getNextItem(arr, originX, originY) {
+        const listWithDistances = []
+        
+        let nextItem;
+
+        arr.forEach(item => {
+            let x2 = item.xVal
+            let y2 = item.yVal
+            let xDistance = Math.abs(x2 - originX)
+            let yDistance = Math.abs(y2 - originY)
+            let distance = xDistance + yDistance
+
+            item = {
+                ...item,
+                 distance: distance
+             }
+ 
+             listWithDistances.push(item)
+        })
+
+        listWithDistances.sort((a,b) => a.distance - b.distance);
+
+        nextItem = listWithDistances.shift();
+
+        return nextItem;
+    }
+
+    /* 
+    *  Bulk of the routing is done in this method with the help
+    *  of the helper methods. We start off by distinquishing the first item,
+    *  then move on to running a for loop for the length of the input list - 1
+    *  because we already got the first item. We can't get the first item in the 
+    *  for loop because it will call it multiple times and the logic for getting the
+    *  first item only needs to be called once.
+    */
+
+    const calcRoute = () => {
+        const routedList = [];
+
+        let nextItem;
+
+        let firstItem = getFirstItem(selectedItems);
+
+        routedList.push(firstItem);
+
+        let deprecatedSelectedItems = selectedItems.filter((sitem) => sitem.id !== firstItem.id );
+
+        let originX = firstItem.xVal;
+        let originY = firstItem.yVal;
+
+        for (let i = 0; i < selectedItems.length - 1; i++) {
+            
+            nextItem = getNextItem(deprecatedSelectedItems, originX, originY)
+            routedList.push(nextItem);
+            deprecatedSelectedItems = deprecatedSelectedItems.filter((sitem) => sitem.id !== nextItem.id)
+            originX = nextItem.xVal;
+            originY = nextItem.yVal;
+
+          }
+
+        routedList.forEach(el => {
+            console.log("Name: " + el.name);
+        })
+        
+        dispatch(setGroceryList(routedList));
+    }
+
+    
     useEffect(() =>{
         let subTotal =0.00
         selectedItems.forEach(item=>{
             subTotal += item.price;
-           
         })
         subTotal =subTotal.toFixed(2);
-    
-    
-        setPrice(subTotal)},[selectedItems])
+        setPrice(subTotal)
+    },[selectedItems])
     
     useEffect(() => {
-        if(error) {
-            Alert.alert('Error fetching inventory', error.message)
-        }
+        if(error) {Alert.alert('Error fetching inventory', error.message)}
     }, [error])
 
     useEffect(() => {
-        if(data) {
-            setInventory(data.getInventory);
-            
-        }
+        if(data) {setInventory(data.getInventory);}
     }, [data])
 
     // dispatch is used for calling setter methods specified in actions, that re-write data to the data store
-
-    const dispatch = useDispatch();
 
     // When the user is done making their selection, we want to globally store that list using dispatch and use it elsewhere in the application.
     
@@ -175,9 +277,10 @@ export const ShoppingListScreen = ({navigation}) => {
             <Text style={styles.bottomText} variant='titleLarge'>Grocery Count: {selectedItems.length}</Text>
         </View>
         <Button onPress={() => {
-            navigation.navigate('ShoppingRoute')
             groceryListHandler();
             totalHandler();
+            calcRoute();
+            navigation.navigate("ShoppingRoute");
             }}
             style={styles.bottomButton}
             buttonColor='blue'
