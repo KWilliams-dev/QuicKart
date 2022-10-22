@@ -29,7 +29,7 @@ const typeDefs = gql`
 
       getMap(id: ID!): StoreMap
 
-      getAllMapCoords(id: ID!): [[Int]]
+      getMapElements(id: ID!): [[Int]]
     }
     
     #defining what a item is in our database
@@ -150,24 +150,20 @@ const resolvers = {
       return await db.collection('Map').findOne({ _id: ObjectID(id) });
     },
   
-    getAllMapCoords: async (_, { id }, { db}) => {
+    getMapElements: async (_, { id }, { db}) => {
       const map = await db.collection('Map').findOne({ _id: ObjectID(id) })
       if(!map) {
           throw new Error('Map not found');
       }
-      // }
-      //   const data = [];
-      //   for(let x = 0; x < map.width; x++) {
-      //       for(let y = 0; y < map.length; y++) {
-      //           data.push([x,y]);
-      //       }        
-      //   }
-        // return data;
-      const source = '(0,0)';
-      const end = '(44,28)'
-      console.log(dijkstra(graph(map.width, map.length), source, end)[graph(map.width, map.length).length-1]);
+
+      const aisles = await db.collection('Aisles').find().toArray();
+      const checkoutLanes = await db.collection('Checkout').find().toArray();
+      const entrances = await db.collection('Doors').find().toArray();
+      
+      const source = { x: 0, y: 0 }
+      const destination = { x: 2, y: 2 }
+      console.log(dijkstra(graph(map), source, destination));
     }
-    // },
 
   },
   Mutation: {

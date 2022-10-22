@@ -44,10 +44,14 @@ export const ShoppingRouteScreen = ({navigation}) => {
     }
 
     const {groceryList} = useSelector(state => state.listReducer);
-    const list = route(groceryList)
+    const source = {
+        xVal: 24,
+        yVal: 27
+    }
+    route(groceryList, source)
     return(
         <View style={styles.container}>
-            <CardData item={ list[0].name } aisle={ list[0].aisle } bay={ list[0].bay } isActive={ true }/>
+            {/* <CardData item={ list[0].name } aisle={ list[0].aisle } bay={ list[0].bay } isActive={ true }/> */}
             <Button title={"Finish Shopping"} onPress={() => {
                 navigation.navigate('ShoppingFinish');
                 handleStopTimer()
