@@ -30,7 +30,8 @@ const graph = (map) => {
       y: y,
       logic: logic,
       srcDistance: Infinity,
-      neighbors: []
+      neighbors: [],
+      path: []
     }
   }
   
