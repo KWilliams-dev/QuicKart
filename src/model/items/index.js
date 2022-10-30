@@ -155,17 +155,12 @@ const resolvers = {
       if(!map) {
           throw new Error('Map not found');
       }
-      // }
-      //   const data = [];
-      //   for(let x = 0; x < map.width; x++) {
-      //       for(let y = 0; y < map.length; y++) {
-      //           data.push([x,y]);
-      //       }        
-      //   }
-        // return data;
-      const source = '(0,0)';
-      const end = '(44,28)'
-      console.log(dijkstra(graph(map.width, map.length), source, end)[graph(map.width, map.length).length-1]);
+      
+      const aisles = await db.collection('Aisles').find().toArray();
+      const checkoutLanes = await db.collection('Checkout').find().toArray();
+      const entrances = await db.collection('Doors').find().toArray();
+
+      console.log(graph(map)[2][2]);
     }
     // },
 
