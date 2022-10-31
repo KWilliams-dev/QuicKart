@@ -19,7 +19,10 @@ export default function Navigation() {
 function RootNavigator() {
     return(
         <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen name="Home" component={Welcome} options={{title: 'Welcome!'}}/>
+            <Stack.Screen name="Home" component={Welcome} options={() => ({ 
+                cardStyle: { backgroundColor: 'transparent' },
+                title: 'Welcome!' 
+                })}/>
             <Stack.Screen name="ShoppingList" component={ShoppingListScreen} options={{title: 'Your Grocery List!'}}/>
             <Stack.Screen name="ShoppingRoute" component={ShoppingRouteScreen} options={{title: 'Fastest Route!'}} />
             <Stack.Screen name="ShoppingFinish" component={FinishShoppingScreen} options={{title: "You're all done!"}}/>

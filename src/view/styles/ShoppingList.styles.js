@@ -4,11 +4,14 @@ export const styles = StyleSheet.create({
     container: {
         flex: 1,
         //backgroundColor: '#F2FFFF',
-        backgroundImage: "url('../assets/background.png')",
         alignItems: 'center',
         width: '100%',
         height: '100%',
         paddingTop:25,
+    },
+    backgroundImage: {
+        flex: 1,
+        resizeMode: 'cover', // or 'stretch'
     },
     titleText: {
         marginTop: 10,
@@ -57,7 +60,7 @@ export const styles = StyleSheet.create({
     bottomContainer: {
         height: '7%',
         borderRadius: 15,
-        backgroundColor: '#D42B14',
+        backgroundColor: '#db601b',
         flexDirection: 'row',
         width: '95%',
         alignItems: 'center',
@@ -91,7 +94,7 @@ export const styles = StyleSheet.create({
    
     bottomButton: {
         marginTop: 30,
-        backgroundColor: '#3F7CAC',
+        backgroundColor: '#000000',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.8,
@@ -175,5 +178,13 @@ export const styles = StyleSheet.create({
         paddingLeft:2,
         justifyContent:'space-evenly',
         
-    }
+    },
+    welcomeText:{
+        color: "#000000",
+        fontSize: 60,
+        fontWeight: 'bold',
+        marginTop: 150,
+        marginBottom: 80
+    },
+    
 });

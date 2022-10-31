@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useState, useEffect}  from 'react';
-import { View, FlatList, Text as NativeText, Alert, ScrollView, SafeAreaView, SectionList} from 'react-native';
+import { View, FlatList, Image, Text as NativeText, Alert, ScrollView, SafeAreaView, SectionList, ImageBackground} from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import SearchableDropdown from 'react-native-searchable-dropdown';
 import { gql, useQuery} from '@apollo/client';
@@ -181,6 +181,7 @@ export const ShoppingListScreen = ({navigation}) => {
     };
 
     return (
+    <ImageBackground source={require('../assets/background.png')} style={styles.backgroundImage}>
     <View style={styles.container}>
         {/*if there is a connection to the database then the splashscreen will load breifly,
         if not then it will load for ever. */}
@@ -289,5 +290,6 @@ export const ShoppingListScreen = ({navigation}) => {
         </Button>
      </>}
      </View>
+     </ImageBackground>
     );
 }

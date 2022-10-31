@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet, Button, ImageBackground } from 'react-native';
 import {useState, useEffect}  from 'react';
 import {useSelector, useDispatch} from 'react-redux'
 import {setMinutes, setHours} from '../redux/timerActions'
@@ -42,6 +42,8 @@ export const ShoppingRouteScreen = ({navigation}) => {
     }
 
     return(
+        // <ImageBackground source={require('../assets/background.png')} style={styles.backgroundImage}>
+
         <View style={styles.container}>
             <CardData item={ "Item Name" } aisle={ "A" } bay={ "1" } isActive={ true }/>
             <Button title={"Finish Shopping"} onPress={() => {
@@ -53,6 +55,7 @@ export const ShoppingRouteScreen = ({navigation}) => {
 
             
         </View>
+        // {/* </ImageBackground> */}
     )
 }
 
