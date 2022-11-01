@@ -11,11 +11,16 @@ export const styles = StyleSheet.create({
     },
     backgroundImage: {
         flex: 1,
-        resizeMode: 'cover', // or 'stretch'
+        resizeMode: 'cover'
     },
     titleText: {
-        marginTop: 10,
-        fontSize: 46
+        color: 'white',
+        fontSize: 52,
+        fontWeight: 'bold',
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: { width: -1, height: 1 },
+        textShadowRadius: 5,
+        marginTop: 20
     },
     button: {
         height: '100%'
@@ -93,7 +98,7 @@ export const styles = StyleSheet.create({
     },
    
     bottomButton: {
-        marginTop: 30,
+        marginTop: 50,
         backgroundColor: '#000000',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
@@ -118,6 +123,7 @@ export const styles = StyleSheet.create({
         textShadowColor: 'rgba(0, 0, 0, 0.75)',
         textShadowOffset: { width: -1, height: 1 },
         textShadowRadius: 5,
+        marginTop: 20
     },
     finishShoppingTimerView: {
         backgroundColor: 'white',
