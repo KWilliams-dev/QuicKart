@@ -19,7 +19,7 @@ node -v
 npm -v
 ```
 - ### <em><strong>Note</strong></em>
-&nbsp; &nbsp; &nbsp; If your running a different version of node and run into issues with this project. I'm currently running NodeJS v16.13.2 and npm v8.12.1. Installing those versions directly may help.
+&nbsp; &nbsp; &nbsp; If your running a different version of node and run into issues with this project. I'm currently running NodeJS v16.13.2 and npm v8.12.1. Installing those specific versions may help.
 
 
 <strong>3.</strong> Use the cd command in the terminal of your project directory to get into src and then view. 
@@ -40,7 +40,9 @@ npm install
 &nbsp; &nbsp; &nbsp; After completing these steps, the project will not be running but you will have node_modules directory built and the dependencies that the
 project relies on ready to go.
 
-## Running the project
+# Running the project
+
+## Front End
 
 - ### <em><strong>Note</strong></em>
 &nbsp; &nbsp; &nbsp; I recommend going over some of the docks on this website https://docs.expo.dev/ and also testing out expo in the browser here https://snack.expo.dev/ to familiarize yourself with the technology. There will be some account creation involved.
@@ -49,7 +51,25 @@ To run the front end of the project, make sure you're in the view directory in y
 ```
 npm run web
 ```
-You'll see a QR code pop up in your terminal. If your on an iphone, just download the Expo Go app from the app store.
+You'll see a QR code pop up in your terminal. If your on an iphone, just download the Expo Go app from the app store, and scan it with your camera.
+On android, I believe you need to scan the QR code from the expo go app. The Expo Go icon looks like the picture below:
+
+![image](https://user-images.githubusercontent.com/74102531/199377266-36155398-a05e-4406-a16d-ccb360cfcfe3.png)
+
+## Backend
+
+The backend of the project uses MongoDB, GraphQL and Apollo server. Much of the set up is already done, you'll just need to make sure to follow the build
+instructions first and run ``` npm install ``` in the src/model directory first.
+
+- Apollo docs: https://www.apollographql.com/docs/apollo-server/getting-started/
+- GraphQL docs: https://graphql.org/learn/
+- MongoDB docs: https://www.mongodb.com/docs/manual/
+
+You may also want to reference some of the same YouTube tutorials we followed. Our strategy was to build the app from the tutorial first and then use what we
+learned to begin building QuickKart.
+
+- YouTube tutorial Part 1 (Backend): https://www.youtube.com/watch?v=hPBVIET5coo&list=RDCMUCYSa_YLoJokZAwHhlwJntIA&index=2
+- YouTube tutorial Part 2 (Frontend): https://www.youtube.com/watch?v=GFQDJlVEXRg&list=RDCMUCYSa_YLoJokZAwHhlwJntIA&index=1
 
 ## Installation
 
