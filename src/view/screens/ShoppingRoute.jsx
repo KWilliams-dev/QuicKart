@@ -5,7 +5,6 @@ import {useState, useEffect}  from 'react';
 import {useSelector, useDispatch} from 'react-redux'
 import {setMinutes, setHours} from '../redux/timerActions'
 import { setGroceryList, SET_GROCERY_LIST } from '../redux/groceryListAction';
-import { Delete_Item } from '../redux/groceryListAction';
 import CardData from '../components/CardCarousel/CardData/index';
 import { Button, Text } from 'react-native-paper';
 
@@ -21,7 +20,6 @@ export const ShoppingRouteScreen = ({navigation}) => {
 
    
     const dispatch = useDispatch();
-    console.log("this is the selected item "+selectedItems);
 
     
     
@@ -57,8 +55,12 @@ export const ShoppingRouteScreen = ({navigation}) => {
             
             return [...items]
         })
-        //dispatch(setGroceryList(items));
-         console.log(groceryList);
+        dispatch(setGroceryList(items));
+        groceryList.forEach(item => {
+            console.log(item.name);
+            console.log(item.price);
+        });
+       
     };
 
     
@@ -117,7 +119,7 @@ export const ShoppingRouteScreen = ({navigation}) => {
 
         <View style={styles.bottomContainer}>
             <Text style={styles.bottomText} variant='titleLarge'>Total Cost:</Text><NativeText style={styles.price}>${totalPrice}</NativeText>
-            <Text style={styles.bottomText} variant='titleLarge'>Grocery Count: {groceryList.length}</Text>
+            <Text style={styles.bottomText} variant='titleLarge'>Grocery Count: {selectedItems.length}</Text>
         </View>
             {/* delete isActive prop if card will control the opacity */}
             {/* query database to test card data props */}
