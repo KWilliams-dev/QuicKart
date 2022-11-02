@@ -1,10 +1,20 @@
 import * as React from 'react';
-import { View, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet, Button, FlatList, Dimensions, Image } from 'react-native';
 import {useState, useEffect}  from 'react';
 import {useSelector, useDispatch} from 'react-redux'
 import {setMinutes, setHours} from '../redux/timerActions'
 import CardData from '../components/CardCarousel/CardData/index';
+//import { white } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 
+const DATA = [
+    <CardData item={ "Item Name" } aisle={ "A" } bay={ "1" } isActive={ true }/> ,
+    <CardData item={ "Item Name" } aisle={ "B" } bay={ "2" } isActive={ true }/>
+
+];
+
+
+// const{width} = Dimensions.get("window");
+// const height = width * 100 /60 //60%
 export const ShoppingRouteScreen = ({navigation}) => {
 
     const {minutes, hours} = useSelector(state => state.timerReducer);
@@ -44,7 +54,26 @@ export const ShoppingRouteScreen = ({navigation}) => {
 
     return(
         <View style={styles.container}>
-            <CardData item={ "Item Name" } aisle={ "A" } bay={ "1" } isActive={ true }/>
+            
+            <View style = {styles.flatList2} > 
+                <FlatList
+                data={CardData}
+                keyExtractor={(item,index ) => index.toString()}
+                horizontal
+                pagingEnabled
+                renderItem={({item}) => {
+
+                    return <View style={[styles.card, styles.shadowprop]}>
+  
+                     <CardData item={ "Item Name" } aisle={ "A" } bay={ "1" } isActive={ true }/> 
+                        
+                    </View>               
+                            
+                }}
+                />
+
+            </View>
+            
             <Button title={"Finish Shopping"} onPress={() => {
                 navigation.navigate('ShoppingFinish');
                 handleStopTimer()
@@ -67,5 +96,24 @@ const styles = StyleSheet.create({
     },
     welcomeText: {
         fontSize: 32
-    }
+    },
+    card: {
+        alignItems: 'center',
+        backgroundColor: 'white',
+        borderRadius: 8,
+        paddingHorizontal: 55
+    },
+    shadowprop: {
+        shadowColor: '#171717',
+        shadowOpacity: 0.2,
+        shadowColor: 3,
+        shadowOffset: {width: -2}
+    },
+    flatList2: {
+        backgroundColor: 'white',
+        marginTop: '20%',
+        width: '70%',
+        height: '30%',
+
+    },
 })
