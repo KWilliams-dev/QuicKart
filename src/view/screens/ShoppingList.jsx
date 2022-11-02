@@ -28,7 +28,7 @@ query GetInventory($id: Int!) {
 
 export const ShoppingListScreen = ({navigation}) => {
     
-    const [selectedItems, setSelectedItems] = useState([]);
+    const  [selectedItems, setSelectedItems] = useState([]);
     const [inventory, setInventory] = useState([]);
     const [totalPrice, setPrice] = useState(0.00);
     const {loading, error, data} = useQuery(GET_ITEMS, { variables: { id: 123 }});
@@ -285,6 +285,7 @@ export const ShoppingListScreen = ({navigation}) => {
             style={styles.bottomButton}
             buttonColor='blue'
             mode='contained'>
+            
                 <Text style={styles.bottomText} variant='headlineMedium'>START SHOPPING</Text>
         </Button>
      </>}
