@@ -1,74 +1,72 @@
-const graph = require('./graph');
+const dijkstra = (map, src, destination) => {
 
-const dijkstra = (map, source, destination) => {
+    let mapNode = (node) => map[node.x][node.y]
+
     
-    //access destination: map[destination.x][destination.y]
-    //access source: map[source.x][source.y]
+    const source = mapNode(src);
+    source.srcDistance = 0 
 
-/*
-{
-  x: 0,
-  y: 0,
-  logic: 0,
-  srcDistance: Infinity,
-  neighbors: [
-    [ [Object], 1 ],
-    [ [Object], 1 ],
-    [ [Object], 1.4142135623730951 ]
-  ]
-}
-*/
-    const path = [];
-    const source = map[source.x][source.y];
-    source.srcDistance = 0;
-    //start at source node
+    const settled = [];
+    const unsettled = [];
+    unsettled.push(source);
 
-    //create a visited array to track all processed nodes
-
-    //set all other nodes to infinity
-
-    //update path length for each vertex, if it has NOT been visited
-
-    //if path length is less, update next node to that vertex
-
-
-    const visited = [];
-    const processed = [];
-    processed.push(source);
-
-    const lowestCostNode = (processed) => {
-        let lowestCost = Infinity;
-        let lowestNode = null;
-        processed.forEach(node => {
-            node.forEach(neighbor => {
-                if(neighbor[1] < lowestCost) {
-                    lowestCost = neighbor[1];
-                    lowestNode = neighbor[0];
-                }
-            })
+    const lowestDistanceNode = (unsettled) => {
+        let lowestDistance = Infinity;
+        let lowestDistanceNode = null;
+        unsettled.forEach(node => {
+            if(node.srcDistance < lowestDistance) {
+                lowestDistance = node.srcDistance
+                lowestDistanceNode = node
+            }
         });
-        return lowestNode;
+        console.log(lowestDistanceNode)
+        return mapNode(lowestDistanceNode);
     }
 
-    const minDistance = (node, edge, source) => {
-        let sourceNodeDistance = source.srcDistance
-        if(sourceNodeDistance + edge < node.srcDistance) {
-            node.srcDistance = sourceNodeDistance + edge
-            node.path.push(source)
+    const shortestPath = []
+
+    const minDistance = (evaluationNode, edgeWeight, sourceNode) => {
+        const sourceDistance = sourceNode.srcDistance
+        if(sourceDistance + edgeWeight < evaluationNode.srcDistance) {
+            mapNode(evaluationNode).srcDistance = sourceDistance + edgeWeight
+            const shortestPath = sourceNode.path
+            if(!shortestPath.includes(sourceNode)) {
+                shortestPath.push(sourceNode)
+            }     
+            mapNode(evaluationNode).path = shortestPath  
         }
     }
 
-    while(node != destination) {
-        let currentNode = lowestCostNode(processed)
-        currentNode.forEach(neighbor => {
-            if(!visited.includes(neighbor)) {
-                minDistance(neighbor[0],neighbor[1],currentNode)
-                processed.push(neighbor)
-            }
+    //CurrentNode.x != destination.x && currentNode.y != destination.y
+    let currentNode = source
+    while(!unsettled.includes(mapNode(destination))) {
+        let temp = currentNode
+        currentNode = lowestDistanceNode(unsettled)
+        while(currentNode === null) {
+            unsettled.splice(unsettled.indexOf(temp), 1)
+            currentNode = lowestDistanceNode(unsettled)
+        }
+        currentNode.path.push(currentNode)
+        unsettled.splice(unsettled.indexOf(currentNode), 1)
+        currentNode.neighbors.forEach(neighbor => {
+           let adjacentNode = mapNode(neighbor[0])
+           let edgeWeight = neighbor[1]
+           if(adjacentNode.logic === 0 && !settled.includes(adjacentNode) && !unsettled.includes(adjacentNode)) {
+            minDistance(adjacentNode, edgeWeight, currentNode)
+            unsettled.push(adjacentNode)
+           } 
         })
-        visited.push(currentNode)
+        settled.push(currentNode)
     }
- 
-    return visited;
+    
+    const temp = mapNode(destination).path
+    // temp.push(mapNode(destination))
+    const node = temp[temp.length - 2]
+    // temp.forEach(i => {
+    //     console.log(i.x + " " + i.y)
+    // })
+    // console.log(node.x + " " + node.y);
+    // minDistance()
+    // console.log(unsettled)
 }
 module.exports = dijkstra;
