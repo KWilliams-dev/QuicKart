@@ -1,5 +1,11 @@
-import * as React from 'react';
-import { View, StyleSheet,FlatList, Text as NativeText, Alert, ScrollView, SafeAreaView, SectionList} from 'react-native';
+import * as React from "react";
+import { View, StyleSheet, FlatList, Text as NativeText } from "react-native";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setMinutes, setHours } from "../redux/timerActions";
+import { setGroceryList } from "../redux/groceryListAction";
+import CardData from "../components/CardCarousel/CardData/index";
+import { Button, Text } from "react-native-paper";
 
 import {useState, useEffect}  from 'react';
 import {useSelector, useDispatch} from 'react-redux'
@@ -7,8 +13,6 @@ import {setMinutes, setHours} from '../redux/timerActions'
 import { setGroceryList, SET_GROCERY_LIST } from '../redux/groceryListAction';
 import CardData from '../components/CardCarousel/CardData/index';
 import { Button, Text } from 'react-native-paper';
-import Checkbox from '../components/Checkbox';
-
 
 export const ShoppingRouteScreen = ({navigation}) => {
     const {groceryList} = useSelector(state => state.listReducer);
@@ -23,61 +27,51 @@ export const ShoppingRouteScreen = ({navigation}) => {
    
     const dispatch = useDispatch();
 
-    
-    
- 
-    
-    let timer;
+  let timer;
 
-    useEffect(() => {
+  useEffect(() => {
+    timer = setInterval(() => {
+      setSeconds(seconds + 1);
 
-        timer = setInterval(() => {
+      if (seconds === 60) {
+        dispatch(setMinutes(minutes + 1));
+        setSeconds(0);
+      }
 
-            setSeconds(seconds + 1)
+      if (minutes === 60) {
+        dispatch(setHours(hours + 1));
+        dispatch(setMinutes(0));
+      }
+    }, 1000);
 
-            if(seconds === 60) {
-                dispatch(setMinutes(minutes + 1))
-                setSeconds(0)
-            }
-
-            if(minutes === 60) {
-                dispatch(setHours(hours + 1))
-                dispatch(setMinutes(0))
-            } 
-
-        }, .1)
-
-        return () => clearInterval(timer)
-        
-    },)
+    return () => clearInterval(timer);
+  });
 
     const deleteItem = (item) => {
-        const items = groceryList.filter((sitem) => sitem.id !== item.id );
-      
+        const items = selectedItems.filter((sitem) => sitem.id !== item.id );
+        setSelectedItems(() => {
+            
+            return [...items]
+        })
         dispatch(setGroceryList(items));
-    };
-
-    const checkItem = (item)=>{
-        const items = selectedItems
-        selectedItems.forEach(element => {
-            if(item.id == item.id){
-                chec
-                return[...items]
-            }
+        groceryList.forEach(item => {
+            console.log(item.name);
+            console.log(item.price);
         });
-    }
+       
+    };
 
     
    
         
     useEffect(() =>{
         let subTotal =0.00
-        groceryList.forEach(item=>{
+        selectedItems.forEach(item=>{
             subTotal += item.price;
         })
         subTotal =subTotal.toFixed(2);
         setPrice(subTotal)
-    },[groceryList])
+    },[selectedItems])
     
 
  /*   useEffect(() =>{
@@ -99,27 +93,12 @@ export const ShoppingRouteScreen = ({navigation}) => {
         <View style={styles.container}>
        
             <CardData item={ "Item Name" } aisle={ "A" } bay={ "1" } isActive={ true }/>
-            <Button  onPress={() => {
-                
-            }}
-            style={styles.bottomButton}
-            buttonColor='blue'
-            mode='contained'>
-            
-                <Text style={styles.totalDisplay} variant='headlineMedium'>Next</Text>
-        </Button>
+
             <FlatList style={styles.background}
-                data={groceryList}
+                data={selectedItems}
                     renderItem={({ item }) => {
                         return (
                             <View style={styles.inline}>
-                                <View style={styles.checkbox}>
-
-
-                                    
-                                    <Checkbox isChecked={true} onPress={() => this.setState({checked: !this.state.checked})}/>
-                                   
-                                </View>
                                 <View style={styles.itemName}>
                                     <NativeText style={styles.item}>{item.name}</NativeText>
                                 </View>
@@ -129,18 +108,16 @@ export const ShoppingRouteScreen = ({navigation}) => {
                                 <View style={styles.trshbttn}>
                                     <NativeText style={styles.trashButton}><Button onPress={() =>  deleteItem(item)} icon="delete"/></NativeText>
                                 </View>
-                                
                             </View>
-                            
                         );
                     }
                 }
 
            />
-            <View style={styles.hairline} />
+
         <View style={styles.bottomContainer}>
             <Text style={styles.bottomText} variant='titleLarge'>Total Cost:</Text><NativeText style={styles.price}>${totalPrice}</NativeText>
-            <Text style={styles.bottomText} variant='titleLarge'>Grocery Count: {groceryList.length}</Text>
+            <Text style={styles.bottomText} variant='titleLarge'>Grocery Count: {selectedItems.length}</Text>
         </View>
             {/* delete isActive prop if card will control the opacity */}
             {/* query database to test card data props */}
@@ -154,7 +131,10 @@ export const ShoppingRouteScreen = ({navigation}) => {
             
                 <Text style={styles.totalDisplay} variant='headlineMedium'>Finish Shopping</Text>
         </Button>
-    
+            <Button title={"Finish Shopping"}   onPress={() => {
+                
+                handleStopTimer()
+            }}><NativeText></NativeText></Button>
          
         </View>
         
@@ -235,11 +215,10 @@ const styles = StyleSheet.create({
         fontSize: 20,
         height: 44,
         flexWrap:"wrap",
-        width:"10%",
-        paddingTop:2,
+        width:"10%"
     },
     item: {
-        paddingLeft: 0,
+        paddingLeft: 25,
         paddingTop: 15,
         padding: 10,
         fontSize: 20,
@@ -254,13 +233,12 @@ const styles = StyleSheet.create({
         width: '95%',
         alignItems: 'center',
         justifyContent: 'center',
+        marginTop: 10,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.8,
         shadowRadius: 2,  
-        elevation: 5,
-        paddingBottom:25,
-        
+        elevation: 5
     },
     bottomText: {
         color: 'white',
@@ -285,7 +263,6 @@ const styles = StyleSheet.create({
     bottomButton: {
         marginTop: 30,
         backgroundColor: '#3F7CAC',
-        color:'white',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.8,
@@ -299,7 +276,7 @@ const styles = StyleSheet.create({
         
     },
     trshbttn:{
-        paddingTop:4  ,
+        paddingTop:2,
         paddingLeft:2,
         justifyContent:'space-evenly',
         
@@ -319,15 +296,4 @@ const styles = StyleSheet.create({
         shadowRadius: 2,  
         elevation: 5
     },
-    checkbox:{
-     paddingTop:16,
-     paddingLeft:25,
-    
-   
-    },
-    hairline: {
-  backgroundColor: '#A2A2A2',
-  height: 2,
-  width: 165
-},
 })
