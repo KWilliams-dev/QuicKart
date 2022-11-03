@@ -6,16 +6,14 @@ import {setMinutes, setHours} from '../redux/timerActions'
 import CardData from '../components/CardCarousel/CardData/index';
 //import { white } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 
-const DATA = [
-    <CardData item={ "Item Name" } aisle={ "A" } bay={ "1" } isActive={ true }/> ,
-    <CardData item={ "Item Name" } aisle={ "B" } bay={ "2" } isActive={ true }/>
-
-];
-
 
 // const{width} = Dimensions.get("window");
 // const height = width * 100 /60 //60%
 export const ShoppingRouteScreen = ({navigation}) => {
+
+    //const {groceryList} = useSelector(state => state.listReducer);
+
+    const {groceryList} = useSelector(state => state.listReducer);
 
     const {minutes, hours} = useSelector(state => state.timerReducer);
 
@@ -51,22 +49,28 @@ export const ShoppingRouteScreen = ({navigation}) => {
         clearInterval(timer)
     }
 
+    const nextCard = () => {
 
+    }
+
+    const previousCard = () => {
+        
+    }
     return(
         <View style={styles.container}>
             
             <View style = {styles.flatList2} > 
                 <FlatList
-                data={CardData}
-                keyExtractor={(item,index ) => index.toString()}
+                data={groceryList}
+                //keyExtractor={(item,index ) => index.toString()}
                 horizontal
                 pagingEnabled
                 renderItem={({item}) => {
 
                     return <View style={[styles.card, styles.shadowprop]}>
   
-                     <CardData item={ "Item Name" } aisle={ "A" } bay={ "1" } isActive={ true }/> 
-                        
+                     <CardData item={item.name} aisle={item.aisle} bay={item.bay} isActive={true}/> 
+                     
                     </View>               
                             
                 }}
@@ -74,6 +78,21 @@ export const ShoppingRouteScreen = ({navigation}) => {
 
             </View>
             
+            <View style = {{marginVertical: 20, flexDirection: 'row',}}>
+
+                <Button title={"ADD"} style={{paddingLeft: 150 , marginLeft: 200}} onPress={() => {
+
+                    }}></Button>
+
+                
+                <Button title={"NEXT"} style={{paddingLeft: 200}} onPress={() => {
+            
+                    }}></Button>
+
+                
+            </View>
+            
+
             <Button title={"Finish Shopping"} onPress={() => {
                 navigation.navigate('ShoppingFinish');
                 handleStopTimer()
@@ -101,19 +120,39 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'white',
         borderRadius: 8,
-        paddingHorizontal: 55
+        paddingHorizontal: 42
     },
     shadowprop: {
         shadowColor: '#171717',
+        shadowOffset: {width: -2},
         shadowOpacity: 0.2,
-        shadowColor: 3,
-        shadowOffset: {width: -2}
+        shadowRadius: 3
+        
+    },
+    flatList1: {
+        backgroundColor: 'white',
+        marginTop: 20,
+        width: '70%',
+        height: '30%',
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 5
     },
     flatList2: {
         backgroundColor: 'white',
-        marginTop: '20%',
-        width: '70%',
+        marginTop: 5,
+        width: '60%',
         height: '30%',
-
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 2
     },
+    buttonstyle:{
+        width: 20
+    },
+
 })
