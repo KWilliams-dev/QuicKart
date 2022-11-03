@@ -161,7 +161,7 @@ const resolvers = {
       const entrances = await db.collection('Doors').find().toArray();
       
       const source = { x: 0, y: 0 }
-      const destination = { x: 6, y: 6 }
+      const destination = { x: 4, y: 4 }
       dijkstra(graph(map), source, destination);
     }
 

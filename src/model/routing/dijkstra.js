@@ -25,6 +25,7 @@ const dijkstra = (map, src, destination) => {
 
     const shortestPath = []
 
+    let count = 0
     const minDistance = (evaluationNode, edgeWeight, sourceNode) => {
         const sourceDistance = sourceNode.srcDistance
         if(sourceDistance + edgeWeight < evaluationNode.srcDistance) {
@@ -34,6 +35,13 @@ const dijkstra = (map, src, destination) => {
                 shortestPath.push(sourceNode)
             }     
             mapNode(evaluationNode).path = shortestPath  
+            // let length = 0;
+            // shortestPath.forEach(node => length += node.srcDistance) 
+            // console.log( count + "    (" + evaluationNode.x + " " + evaluationNode.y + ")     " + "    (" + sourceNode.x + " " + sourceNode.y + ")     " + evaluationNode.srcDistance + "    " + length) 
+            // if(evaluationNode.srcDistance > length) {
+            //     mapNode(evaluationNode).path = shortestPath 
+            // } 
+            // count++
         }
     }
 
@@ -68,6 +76,6 @@ const dijkstra = (map, src, destination) => {
     // console.log(node.x + " " + node.y);
     // minDistance()
     // console.log(temp)
-    console.log( mapNode(destination).srcDistance)
+    console.log( mapNode(destination).path)
 }
 module.exports = dijkstra;
