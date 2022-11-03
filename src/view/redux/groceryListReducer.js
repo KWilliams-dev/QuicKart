@@ -1,7 +1,5 @@
 import { SET_GROCERY_LIST} from "./groceryListAction";
 
-
-
 const initialState = {
     groceryList: []
 }
@@ -16,9 +14,6 @@ function listReducer(state = initialState, action) {
 
    
 }
-
-
-
 
 export default listReducer;
 
