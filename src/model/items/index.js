@@ -160,8 +160,9 @@ const resolvers = {
       const checkoutLanes = await db.collection('Checkout').find().toArray();
       const entrances = await db.collection('Doors').find().toArray();
       
-      const source = { x: 0, y: 0 }
-      const destination = { x: 4, y: 4 }
+      const source = { x: 27, y: 26 }
+      const destination = { x: 25, y: 16
+       }
       dijkstra(graph(map), source, destination);
     }
 
