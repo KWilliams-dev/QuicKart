@@ -155,14 +155,9 @@ const resolvers = {
       if(!map) {
           throw new Error('Map not found');
       }
-
-      const aisles = await db.collection('Aisles').find().toArray();
-      const checkoutLanes = await db.collection('Checkout').find().toArray();
-      const entrances = await db.collection('Doors').find().toArray();
       
-      const source = { x: 27, y: 26 }
-      const destination = { x: 25, y: 16
-       }
+      const source = { x: 27, y: 27 }
+      const destination = { x: 25, y: 15 }
       dijkstra(graph(map), source, destination);
     }
 

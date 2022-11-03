@@ -1,103 +1,74 @@
-const dijkstra = (map, src, destination) => {
+const dijkstra = (map, src, finish) => {
 
-    let mapNode = (node) => map[node.x][node.y]
+    const mapNode = (node) => map[node.x][node.y];
 
-    
     const source = mapNode(src);
-    source.srcDistance = 0 
+    const destination = mapNode(finish);
 
-    const settled = [];
-    const unsettled = [];
-    unsettled.push(source);
-
-    const lowestDistanceNode = (unsettled) => {
+    const lowestDistanceNode = (unprocessed) => {
         let lowestDistance = Infinity;
         let lowestDistanceNode = null;
-        unsettled.forEach(node => {
+
+        unprocessed.forEach(node => {
             if(node.srcDistance < lowestDistance) {
-                lowestDistance = node.srcDistance
-                lowestDistanceNode = node
+                lowestDistance = node.srcDistance;
+                lowestDistanceNode = node;
             }
         });
-        // console.log(lowestDistanceNode)
         return mapNode(lowestDistanceNode);
-    }
-
-    const shortestPath = []
-
-    // let count = 0
-    //                      adjacent    weight       currentNode
-    const minDistance = (evaluationNode, edgeWeight, sourceNode) => {
-        const sourceDistance = sourceNode.srcDistance
-        if(sourceDistance + edgeWeight < evaluationNode.srcDistance) {
-            mapNode(evaluationNode).srcDistance = sourceDistance + edgeWeight
-            const shortestPath = [...sourceNode.path]
-            if(!shortestPath.includes(sourceNode)) {
-                
-                shortestPath.push(sourceNode)
-            }
-            // const hasNode  = shortestPath.every(element => !element.includes(sourceNode))
-            // if(!hasNode) {
-                // shortestPath.push(sourceNode)
-            // }
-            mapNode(evaluationNode).path = shortestPath  
-            // let length = 0;
-            // shortestPath.forEach(node => 
-            // console.log( count + "    (" + evaluationNode.x + " " + evaluationNode.y + ")     " + "    (" + sourceNode.x + " " + sourceNode.y + ")") 
-            // // if(evaluationNode.srcDistance > length) {
-            //     mapNode(evaluationNode).path = shortestPath 
-            // } 
-            // count++
-        }
-    }
-
-    //CurrentNode.x != destination.x && currentNode.y != destination.y
-    let currentNode = source
-    while(!unsettled.includes(mapNode(destination))) {
-        let temp = currentNode
-        currentNode = lowestDistanceNode(unsettled)
-        // console.log( currentNode.x + "," + currentNode.y)
-        while(currentNode === null) {
-            unsettled.splice(unsettled.indexOf(temp), 1)
-            currentNode = lowestDistanceNode(unsettled)
-        }
-        currentNode.path.push(currentNode)
-        unsettled.splice(unsettled.indexOf(currentNode), 1)
-
-        currentNode.neighbors.forEach(neighbor => {
-            let adjacentNode = mapNode(neighbor[0])
-            let edgeWeight = neighbor[1]
-            if(adjacentNode.logic === 0 && !settled.includes(adjacentNode) && !unsettled.includes(adjacentNode)) {
-             minDistance(adjacentNode, edgeWeight, currentNode)
-             unsettled.push(adjacentNode)
-            } 
-         })
-        // currentNode.neighbors.forEach(neighbor => {
-        //    let adjacentNode = mapNode(neighbor[0])
-        //    let edgeWeight = neighbor[1]
-        //    if(adjacentNode.logic === 0 && !settled.includes(adjacentNode) && !unsettled.includes(adjacentNode)) {
-        //     minDistance(adjacentNode, edgeWeight, currentNode)
-        //     unsettled.push(adjacentNode)
-        //    } 
-        // })
-        settled.push(currentNode)
-    }
-    const lastNode = settled[settled.length - 1]
-    minDistance(lastNode, currentNode.neighbors.find(node =>
-        node[0].x === lastNode.x && node[0].y === lastNode.y ), currentNode)
+    };
     
-    const temp = mapNode(destination).path
-    // temp.push(mapNode(destination))
-    const node = temp[temp.length - 2]
-    // temp.forEach(i => {
-    //     console.log(i.x + " " + i.y)
-    // })
-    // console.log(node.x + " " + node.y);
-    // minDistance()
-    // console.log(temp)
-    mapNode(destination).path.forEach(node => {
-        
-    console.log(node.x + "," + node.y)
-    })
+    const minDistance = (adjacentNode, edge, currentNode) => {
+        const sourceDistance = currentNode.srcDistance + edge;
+        const evalNode = mapNode(adjacentNode);
+
+        if(sourceDistance < evalNode.srcDistance) {
+            evalNode.srcDistance = sourceDistance;
+            const shortestPath = [...currentNode.path];
+            
+            if(!shortestPath.includes(currentNode)) {
+                shortestPath.push(currentNode);
+            };
+
+            evalNode.path = shortestPath;
+        };
+    };
+
+    const algorithm = () => {
+        source.srcDistance = 0;
+        source.logic = 0;
+        destination.logic = 0;
+
+        let currentNode = source;
+
+        const processed = [];
+        const unprocessed = [];
+
+        unprocessed.push(source);
+
+        while(!processed.includes(mapNode(destination))) {
+            currentNode = lowestDistanceNode(unprocessed);
+            currentNode.path.push(currentNode);
+            unprocessed.splice(unprocessed.indexOf(currentNode), 1);
+
+            currentNode.neighbors.forEach(neighbor => {
+                let adjacentNode = mapNode(neighbor[0]);
+                if(adjacentNode.logic === 0 && !processed.includes(adjacentNode) && !unprocessed.includes(adjacentNode)) {
+                    let edge = neighbor[1];
+                    minDistance(adjacentNode, edge, currentNode);
+                    unprocessed.push(adjacentNode);
+                }; 
+            });
+            processed.push(currentNode);
+        };
+
+        destination.path.forEach(node => {
+            console.log(node.x + "," + node.y);
+        });
+
+        return [source,destination];
+    }
+
+    return algorithm();
 }
 module.exports = dijkstra;
