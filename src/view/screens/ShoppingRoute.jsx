@@ -7,6 +7,8 @@ import {setMinutes, setHours} from '../redux/timerActions'
 import { setGroceryList, SET_GROCERY_LIST } from '../redux/groceryListAction';
 import CardData from '../components/CardCarousel/CardData/index';
 import { Button, Text } from 'react-native-paper';
+import Checkbox from '../components/Checkbox';
+
 
 export const ShoppingRouteScreen = ({navigation}) => {
     const {groceryList} = useSelector(state => state.listReducer);
@@ -50,30 +52,32 @@ export const ShoppingRouteScreen = ({navigation}) => {
     },)
 
     const deleteItem = (item) => {
-        const items = selectedItems.filter((sitem) => sitem.id !== item.id );
-        setSelectedItems(() => {
-            
-            return [...items]
-        })
+        const items = groceryList.filter((sitem) => sitem.id !== item.id );
+      
         dispatch(setGroceryList(items));
-        groceryList.forEach(item => {
-            console.log(item.name);
-            console.log(item.price);
-        });
-       
     };
+
+    const checkItem = (item)=>{
+        const items = selectedItems
+        selectedItems.forEach(element => {
+            if(item.id == item.id){
+                chec
+                return[...items]
+            }
+        });
+    }
 
     
    
         
     useEffect(() =>{
         let subTotal =0.00
-        selectedItems.forEach(item=>{
+        groceryList.forEach(item=>{
             subTotal += item.price;
         })
         subTotal =subTotal.toFixed(2);
         setPrice(subTotal)
-    },[selectedItems])
+    },[groceryList])
     
 
  /*   useEffect(() =>{
@@ -95,12 +99,27 @@ export const ShoppingRouteScreen = ({navigation}) => {
         <View style={styles.container}>
        
             <CardData item={ "Item Name" } aisle={ "A" } bay={ "1" } isActive={ true }/>
-
+            <Button  onPress={() => {
+                
+            }}
+            style={styles.bottomButton}
+            buttonColor='blue'
+            mode='contained'>
+            
+                <Text style={styles.totalDisplay} variant='headlineMedium'>Next</Text>
+        </Button>
             <FlatList style={styles.background}
-                data={selectedItems}
+                data={groceryList}
                     renderItem={({ item }) => {
                         return (
                             <View style={styles.inline}>
+                                <View style={styles.checkbox}>
+
+
+                                    
+                                    <Checkbox isChecked={true} onPress={() => this.setState({checked: !this.state.checked})}/>
+                                   
+                                </View>
                                 <View style={styles.itemName}>
                                     <NativeText style={styles.item}>{item.name}</NativeText>
                                 </View>
@@ -110,16 +129,18 @@ export const ShoppingRouteScreen = ({navigation}) => {
                                 <View style={styles.trshbttn}>
                                     <NativeText style={styles.trashButton}><Button onPress={() =>  deleteItem(item)} icon="delete"/></NativeText>
                                 </View>
+                                
                             </View>
+                            
                         );
                     }
                 }
 
            />
-
+            <View style={styles.hairline} />
         <View style={styles.bottomContainer}>
             <Text style={styles.bottomText} variant='titleLarge'>Total Cost:</Text><NativeText style={styles.price}>${totalPrice}</NativeText>
-            <Text style={styles.bottomText} variant='titleLarge'>Grocery Count: {selectedItems.length}</Text>
+            <Text style={styles.bottomText} variant='titleLarge'>Grocery Count: {groceryList.length}</Text>
         </View>
             {/* delete isActive prop if card will control the opacity */}
             {/* query database to test card data props */}
@@ -133,10 +154,7 @@ export const ShoppingRouteScreen = ({navigation}) => {
             
                 <Text style={styles.totalDisplay} variant='headlineMedium'>Finish Shopping</Text>
         </Button>
-            <Button title={"Finish Shopping"}   onPress={() => {
-                
-                handleStopTimer()
-            }}><NativeText></NativeText></Button>
+    
          
         </View>
         
@@ -217,10 +235,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         height: 44,
         flexWrap:"wrap",
-        width:"10%"
+        width:"10%",
+        paddingTop:2,
     },
     item: {
-        paddingLeft: 25,
+        paddingLeft: 0,
         paddingTop: 15,
         padding: 10,
         fontSize: 20,
@@ -235,12 +254,13 @@ const styles = StyleSheet.create({
         width: '95%',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 10,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.8,
         shadowRadius: 2,  
-        elevation: 5
+        elevation: 5,
+        paddingBottom:25,
+        
     },
     bottomText: {
         color: 'white',
@@ -265,6 +285,7 @@ const styles = StyleSheet.create({
     bottomButton: {
         marginTop: 30,
         backgroundColor: '#3F7CAC',
+        color:'white',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.8,
@@ -278,7 +299,7 @@ const styles = StyleSheet.create({
         
     },
     trshbttn:{
-        paddingTop:2,
+        paddingTop:4  ,
         paddingLeft:2,
         justifyContent:'space-evenly',
         
@@ -298,4 +319,15 @@ const styles = StyleSheet.create({
         shadowRadius: 2,  
         elevation: 5
     },
+    checkbox:{
+     paddingTop:16,
+     paddingLeft:25,
+    
+   
+    },
+    hairline: {
+  backgroundColor: '#A2A2A2',
+  height: 2,
+  width: 165
+},
 })
