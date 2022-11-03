@@ -9,9 +9,13 @@ export const styles = StyleSheet.create({
         height: '100%',
         paddingTop:25,
     },
+    information: {
+        alignSelf: 'flex-end',
+        marginTop: 1,
+    },
     backgroundImage: {
         flex: 1,
-        resizeMode: 'cover'
+        resizeMode: 'cover',
     },
     titleText: {
         color: 'white',
