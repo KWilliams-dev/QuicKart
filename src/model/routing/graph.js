@@ -1,12 +1,12 @@
 const graph = (map) => {
   
-  const aisles = map.aisle;
-  const entrance = map.entrance;
-  const checkout = map.checkout;
-  const width = map.width;
-  const length = map.length;
+  const aisles = map.aisle
+  const entrance = map.entrance
+  const checkout = map.checkout
+  const width = map.width
+  const length = map.length
   
-  const obstacles = [];
+  const obstacles = []
 
   function addObstacles(obstacleArr) {
     obstacleArr.forEach(element => {

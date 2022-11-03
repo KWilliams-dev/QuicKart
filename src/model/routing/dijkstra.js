@@ -19,7 +19,7 @@ const dijkstra = (map, src, destination) => {
                 lowestDistanceNode = node
             }
         });
-        console.log(lowestDistanceNode)
+        // console.log(lowestDistanceNode)
         return mapNode(lowestDistanceNode);
     }
 
@@ -67,6 +67,7 @@ const dijkstra = (map, src, destination) => {
     // })
     // console.log(node.x + " " + node.y);
     // minDistance()
-    // console.log(unsettled)
+    // console.log(temp)
+    console.log( mapNode(destination).srcDistance)
 }
 module.exports = dijkstra;
