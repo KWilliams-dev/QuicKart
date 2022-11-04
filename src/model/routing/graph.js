@@ -1,3 +1,8 @@
+/**
+ * Will create a coordinate plane from a map object
+ * @param {Array} map is an object representing a store map
+ * @returns {Array} a map
+ */
 const graph = (map) => {
   
   const aisles = map.aisle
@@ -5,10 +10,15 @@ const graph = (map) => {
   const checkout = map.checkout
   const width = map.width
   const length = map.length
-  
   const obstacles = []
+  const graph = [];
 
-  function addObstacles(obstacleArr) {
+  /**
+   * Will create an array of coordinates that contain obstacles
+   * @param {Array} obstacleArr is a list of objects with coordinates that represent obstacles
+   */
+
+  const addObstacles = (obstacleArr) => {
     obstacleArr.forEach(element => {
       for(let row = element.xStartVal; row <= element.xEndVal; row++) {
         for(let col = element.yStartVal; col <= element.yEndVal; col++) {
@@ -22,9 +32,16 @@ const graph = (map) => {
   addObstacles(entrance);
   addObstacles(checkout);
   
-  const graph = [];
+
+  /**
+   * Creates a node representing a grid cell
+   * @param {Number} x is the x-coodinate
+   * @param {Number} y is the y-coordinate
+   * @param {Number} logic determines if the node is routable (0) or contains an obstacle (1)
+   * @returns {Object} a node
+   */
   
-  function createNode(x, y, logic) {
+  const createNode = (x, y, logic) => {
     return { 
       x: x,
       y: y,
@@ -35,8 +52,20 @@ const graph = (map) => {
     }
   }
   
-  function addEdge(origin, destination){
+
+  /**
+   * Will add connections between the nodes in the map, creating the weighted graph
+   * @param {Object} origin is the source node
+   * @param {Object} destination is the end node
+   */
+  const addEdge = (origin, destination) => {
     if(!(origin.neighbors.find(element => element[0] === destination))){
+
+      /*
+        Distance between adjacent 1 unit grid cells in the N, S, E, W directions: 1
+        Distance between adjacent 1 unit grid cells in the NE, NW, SE, SW directions: sqrt(2)
+      */
+     
       const distance = (x1, x2, y1, y2) => Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
       const d = distance(origin.x, destination.x, origin.y, destination.y);
       origin.neighbors.push([destination,d])

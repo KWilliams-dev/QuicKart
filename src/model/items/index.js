@@ -155,10 +155,17 @@ const resolvers = {
       if(!map) {
           throw new Error('Map not found');
       }
-      
+
       const source = { x: 27, y: 27 }
       const destination = { x: 25, y: 15 }
-      dijkstra(graph(map), source, destination);
+      const shortestPath = dijkstra(graph(map), source, destination);
+      
+      // Testing output for Dijkstra algorithm
+      let count = 1;
+      shortestPath.forEach(node => {
+        console.log(`Step ${count} → (${node.x},${node.y})`)
+        count++;
+      })
     }
 
   },
