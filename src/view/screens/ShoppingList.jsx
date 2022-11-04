@@ -236,10 +236,9 @@ export const ShoppingListScreen = ({navigation}) => {
                 itemTextStyle={{ color: '#222' }}
                 itemsContainerStyle={{ maxHeight: 200 }}
                 items={inventory}
-                
                 textInputProps={
                     {
-                      placeholder: "placeholder",
+                      placeholder: "Enter Item...",
                       underlineColorAndroid: "transparent",
                       style: {
                           padding: 12,

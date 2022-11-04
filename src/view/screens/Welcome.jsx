@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React, { useState} from 'react';
 import { 
   SafeAreaView, 
   View, 
   ImageBackground, 
   FlatList, 
   Dimensions,
-  TouchableOpacity, 
+  Modal, 
   Image ,
   StyleSheet
 } from 'react-native';
@@ -19,7 +19,7 @@ const COLORS = {black: '#000'};
 const slides = [
   {
     id: '1',
-    title: 'Find Your \nQuickest \nRoute \nEverytime \nYou Shop'
+    title: 'Find Your \nQuickest \nRoute \nEverytime \nYou Shop!'
   },
   {
     id: '2',
@@ -56,17 +56,41 @@ const Slide = ({item}) => {
 };
 
 const Information = () => {
-        
-  return(
-      <View style={styles.information}>
-             <Button icon="information-outline" onPress={() => {window.alert(
-              "This app is the result of an idea from Sasa Mitrovich that landed in the hands of six awesome engineers who built the founadtions."
-              +" Abdullahi Munye (Data Modeler), Khamilah Nixon (Documentation Lead), Kyle Williams (Code Architect), Joe Nsengiyumva (Testing Lead),"
-              +" Raven Gardner (UI/UX Lead), Alan Oliver Santiesteban (Team Manager)")}}>
-                  
-              </Button>
-      </View>
-  )
+
+  const [modalVisible, setModalVisible] = useState(false);
+  return (
+    <View style={styles.information}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.information}>
+          <View style={styles.modalView}>
+            <Text style={{fontWeight: 'bold'}}>Team QuickKart</Text>
+            <Text style={styles.modalText}>This app is the result of an idea from Sasa Mitrovich that landed in the hands of six awesome engineers who built the foundations.
+              Abdullahi Munye (Data Modeler), Khamilah Nixon (Documentation Lead), Kyle Williams (Code Architect), Joe Nsengiyumva (Testing Lead),
+              Raven Gardner (UI/UX Lead), Alan Oliver Santiesteban (Team Manager)</Text>
+            <Button
+              onPress={() => setModalVisible(!modalVisible)}
+              style={styles.bottomButton}
+            >
+             <Text style={styles.bottomText}>OK</Text>
+            </Button>
+          </View>
+        </View>
+      </Modal>
+      <Button
+        icon="information-outline"
+        onPress={() => setModalVisible(true)}
+      >
+      </Button>
+    </View>
+  );
 };
 
 export const Welcome = ({navigation}) => {
