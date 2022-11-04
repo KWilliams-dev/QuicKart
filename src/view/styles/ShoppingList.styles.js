@@ -193,8 +193,8 @@ export const styles = StyleSheet.create({
         color: "#000000",
         fontSize: 60,
         fontWeight: 'bold',
-        marginTop: 150,
-        marginBottom: 80
+        flexWrap: 'wrap',
+        textAlign: 'center',
     },
     
 });
