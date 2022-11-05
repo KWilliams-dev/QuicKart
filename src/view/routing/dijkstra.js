@@ -7,7 +7,19 @@
  * @returns {Array} containing the shortest path from the source to end nodes
  */
 
-const dijkstra = (map, start, end) => {
+const dijkstra = (graph, start, end) => {
+    const map = [...graph];
+
+
+    /**
+     * Will quickly and more efficiently help to reference nodes in the graph without 
+     * using map[x][y] each time a node is referenced
+     * @param {Object} node references the x and y coordinates of the desired node in the map
+     * @return {Object} a node representing a coordinate in the map
+     */
+
+    const mapNode = (node) => map[node.x][node.y];
+
 
     /**
      * Determines the node that is closest to the source node
@@ -31,8 +43,7 @@ const dijkstra = (map, start, end) => {
                 lowestCostNode = node;
             }
         });
-
-        return lowestCostNode;
+        return mapNode(lowestCostNode);
     };
     
 
@@ -46,17 +57,17 @@ const dijkstra = (map, start, end) => {
 
     const calcLowestCost = (adjacentNode, edge, currentNode) => {
         const sourceDistance = currentNode.srcDistance + edge;
+        const evalNode = mapNode(adjacentNode);
 
-        if(sourceDistance < adjacentNode.srcDistance) {
-            adjacentNode.srcDistance = sourceDistance;
+        if(sourceDistance < evalNode.srcDistance) {
+            evalNode.srcDistance = sourceDistance;
             shortestPath = [...currentNode.path];
-
-            // prevents duplicates in the shortest path
+            
             if(!shortestPath.includes(currentNode)) {
                 shortestPath.push(currentNode);
             };
 
-            adjacentNode.path = shortestPath;
+            evalNode.path = shortestPath;
         };
     };
 
@@ -67,29 +78,20 @@ const dijkstra = (map, start, end) => {
      */
 
     const algorithm = () => {
-
-        /**
-         * Will quickly and more efficiently help to reference nodes in the graph without 
-         * using map[x][y] each time a node is referenced
-         * @param {Object} node references the x and y coordinates of the desired node in the map
-         * @return {Object} a node representing a coordinate in the map
-         */
-    
-        const mapNode = (node) => map[node.x][node.y];
-        
-        let currentNode = mapNode(start);
+        const source = mapNode(start);
         const destination = mapNode(end);
         const processed = [];   // visited nodes in which all calculations have been completed
         const unprocessed = []; // visited nodes in which calculations are in progress
 
-        currentNode.srcDistance = 0;
-        currentNode.logic = 0;
+        let currentNode = source;
+
+        source.srcDistance = 0;
+        source.logic = 0;
         destination.logic = 0;
 
-        unprocessed.push(currentNode);
+        unprocessed.push(source);
 
-        //stop iterating when the destination node has been processed
-        while(!processed.includes(mapNode(destination))) { 
+        while(!processed.includes(mapNode(destination))) {  // stop iterating when the destination node has been processed
             currentNode = lowestCostNode(unprocessed);
             currentNode.path.push(currentNode);
 
@@ -107,7 +109,7 @@ const dijkstra = (map, start, end) => {
             */
            
             currentNode.neighbors.forEach(neighbor => {
-                let adjacentNode = neighbor[0];
+                let adjacentNode = mapNode(neighbor[0]);
                 if(adjacentNode.logic === 0 && !processed.includes(adjacentNode) && !unprocessed.includes(adjacentNode)) {
                     let edge = neighbor[1];
                     calcLowestCost(adjacentNode, edge, currentNode);

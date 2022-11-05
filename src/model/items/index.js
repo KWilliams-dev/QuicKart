@@ -156,8 +156,8 @@ const resolvers = {
           throw new Error('Map not found');
       }
 
-      const source = { x: 27, y: 27 }
-      const destination = { x: 25, y: 15 }
+      const source = { x: 15, y: 15 }
+      const destination = { x: 0, y: 0 }
       const shortestPath = dijkstra(graph(map), source, destination);
       
       // Testing output for Dijkstra algorithm
