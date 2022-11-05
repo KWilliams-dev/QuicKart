@@ -5,7 +5,7 @@
  * @returns {Array} a map
  */
 
-const graph = (map) => {
+ const graph = (map) => {
   const aisles = map.aisle;
   const entrance = map.entrance;
   const checkout = map.checkout;

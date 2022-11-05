@@ -3,7 +3,7 @@ const { ApolloServer, gql } = require('apollo-server');
 const { MongoClient, ObjectID } = require('mongodb');
 
 const graph = require('../routing/graph');
-const dijkstra = require('../routing/dijkstra');
+const dijkstra = require('../../view/routing/dijkstra');
 
 const dotenv = require('dotenv');
 const Db = require('mongodb/lib/db');
