@@ -2,7 +2,7 @@ import { SET_MINUTES, SET_HOURS } from "./timerActions";
 
 const initialState = {
     minutes: 0,
-    hours: 0
+    hours: 0,
 }
 
 function timerReducer(state = initialState, action) {

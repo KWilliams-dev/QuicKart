@@ -17,7 +17,6 @@ export const styles = StyleSheet.create({
         height: '100%'
     },
     flatList: {
-        
         backgroundColor: 'white',
         marginTop: 20,
         width: '85%',
@@ -59,7 +58,7 @@ export const styles = StyleSheet.create({
         borderRadius: 15,
         backgroundColor: '#D42B14',
         flexDirection: 'row',
-        width: '90%',
+        width: '95%',
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 10,
@@ -133,6 +132,18 @@ export const styles = StyleSheet.create({
         textShadowColor: 'rgba(0, 0, 0, 0.50)',
         textShadowOffset: { width: 0, height: 5 },
         textShadowRadius: 10,
+    },
+    finishShoppingFlatList: {
+        backgroundColor: 'white',
+        marginTop: 20,
+        width: '85%',
+        height: '45%',
+        borderRadius: 15,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,  
+        elevation: 5,
     },
     finishShoppingListContainer: {
         backgroundColor: 'white',
