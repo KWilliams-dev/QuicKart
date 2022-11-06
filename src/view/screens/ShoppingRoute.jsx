@@ -131,7 +131,7 @@ export const ShoppingRouteScreen = ({ navigation }) => {
       <Button
         onPress={() => {
           nextCard();
-          setCheck(collected);
+          setCheck(!isChecked);
        }}
        
         style={routeStyles.buttonInRow}
@@ -148,16 +148,12 @@ export const ShoppingRouteScreen = ({ navigation }) => {
       <FlatList
         style={routeStyles.flatList}
         data={groceryList}
-        renderItem={({ item}) => {
+        renderItem={({ item => {
           return (
-            item = {
-                ...item,
-                collected: false,
-              },
             
             <View style={routeStyles.inline}>
             <View style={routeStyles.checkbox}>
-            <CheckBox isChecked={collected}/>
+            <CheckBox  isChecked={isChecked}/>
                 
             </View>
 
