@@ -16,6 +16,9 @@ export const ShoppingRouteScreen = ({ navigation }) => {
   const [seconds, setSeconds] = useState(0);
   const [totalPrice, setPrice] = useState(0.0);
   const[isChecked, setCheck] = useState(false);
+  const [currentItem, setCurrentItem] = useState(groceryList[0]);
+
+  const [currentItemIndex, setCurrentItemIndex] = useState(0);
 
   const length = groceryList.length - 1;
 
@@ -62,10 +65,32 @@ export const ShoppingRouteScreen = ({ navigation }) => {
   };
   const nextCard = () => {
 
+  
+   
     if(currentItemIndex === length){
-
-        Alert.alert("You have reached the end of the list");
-        return;
+      // <View style={styles.information}>
+      //   <Modal
+      //   animationType="slide"
+      //   transparent={true}
+      //   visible={modalVisible}
+      //   >
+      //     {/* This is the info inside the pop-up window */}
+      //     <View style={styles.information}>
+      //       <View style={styles.modalView}>
+      //           <Text style={styles.modalText}>You have reached the end of the list</Text>
+      //           {/* when user clicks 'OK' the pop-up window disapeers */}
+      //           <Button
+      //           onPress={() => setModalVisible(!modalVisible)}
+      //           style={styles.bottomButton}
+      //           >
+      //           <Text style={styles.bottomText}>OK</Text>
+      //         </Button>
+      //       </View>
+      //     </View>
+      //   </Modal>
+      // </View>
+      Alert.alert("You have reached the end of the list");
+      return;
     }
 
     let index = currentItemIndex;
@@ -74,6 +99,7 @@ export const ShoppingRouteScreen = ({ navigation }) => {
     setCurrentItem(groceryList[index]);
     
   };
+  
 
  
   return (
@@ -93,6 +119,7 @@ export const ShoppingRouteScreen = ({ navigation }) => {
 
      <Text style={styles.botttomButtonText} variant="headlineLarge">Add</Text>
    </Button>
+      
       <Button
         onPress={() => {
           nextCard();
@@ -107,6 +134,7 @@ export const ShoppingRouteScreen = ({ navigation }) => {
 
 
 
+
    
     </View>
       <FlatList
@@ -114,9 +142,10 @@ export const ShoppingRouteScreen = ({ navigation }) => {
         data={groceryList}
         renderItem={({ item}) => {
           return (
+            
             <View style={styles.inline}>
             <View style={styles.checkbox}>
-            <CheckBox isChecked={isChecked} id={length}/>
+            <CheckBox  isChecked={isChecked}/>
                 
             </View>
 
