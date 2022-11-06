@@ -148,7 +148,7 @@ export const ShoppingRouteScreen = ({ navigation }) => {
       <FlatList
         style={routeStyles.flatList}
         data={groceryList}
-        renderItem={({ item => {
+        renderItem={({ item}) => {
           return (
             
             <View style={routeStyles.inline}>
