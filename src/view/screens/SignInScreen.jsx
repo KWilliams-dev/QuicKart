@@ -39,7 +39,7 @@ const SignInScreen = ({navigation}) => {
       .setItem('token', data.signIn.token)
       .then(() => {
         // redirect home
-        navigation.navigate('Home')
+        navigation.navigate('ShoppingList')
       })
   }
 
