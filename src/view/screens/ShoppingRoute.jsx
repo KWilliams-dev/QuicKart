@@ -194,6 +194,10 @@ export const ShoppingRouteScreen = ({ navigation }) => {
 };
 
 const routeStyles = StyleSheet.create({
+  inline:{
+    flexDirection:"row",
+    justifyContent:'space-evenly',
+  },
   flatList1: {
     backgroundColor: "white",
     marginTop: 20,
