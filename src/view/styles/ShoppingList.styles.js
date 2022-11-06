@@ -195,6 +195,9 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold',
         flexWrap: 'wrap',
         textAlign: 'center',
+        textShadowColor: 'rgba(0.50, 0, 0, 0.65)',
+        textShadowOffset: { width: -1, height: 1 },
+        textShadowRadius: 5,
     },
     modalView: {
         margin: 20,
