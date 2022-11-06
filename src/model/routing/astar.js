@@ -40,11 +40,8 @@ const astar = (graph, start, end) => {
     const mapNode = (node) => map[node.x][node.y];
 
     // 2.) create variables
-
-    let openSet = []; //array containing unevaluated grid points
-    let closedSet = []; //array containing completely evaluated grid points
-    let path = [];
-    let neighbors = []; // neighbors of the current grid point
+    //let path = [];
+    //let neighbors = []; // neighbors of the current grid point
 
     // 3.) create heuristic
 
@@ -59,7 +56,7 @@ const astar = (graph, start, end) => {
      * will use Manhattan distance since it is standard for square grids 
     */
 
-    function heuristic(position0, position1) {
+    const heuristic = (position0, position1) => {
         let distance = Math.abs(position1.x - position0.x) + Math.abs(position1.y - position0.y);
   
         return distance;
@@ -67,55 +64,54 @@ const astar = (graph, start, end) => {
     
     // 4.) implement search algorithm
 
-    // Function to delete element from the array
-    this.removeFromArray = function(arr, elt) {
-        // Could use indexOf here instead to be more efficient
-        for (var i = arr.length - 1; i >= 0; i--) {
-            if (arr[i] == elt) {
-                arr.splice(i, 1);
+    /** Author: Khamilah Nixon
+     * find lowest cost node in openSet
+     * @param {Array} openSet array containing unevaluated grid points
+     */
+
+    const lowestCostNode = (openSet) => {
+        let lowestCost = Infinity;
+        let winner = null;
+
+        openSet.forEach(node => {
+            if(node.srcDistance < lowestCost) {
+                lowestCost = node.srcDistance;
+                winner = node;
             }
-        }
-    }
+        });
+        return mapNode(winner);
+    };
     
-    function search() {
+    const search = () => {
+        const source = mapNode(start);
+        const destination = mapNode(end);
+        const openSet = []; // array containing unvaluated grid points
+        const closedSet = []; // array containing completely evaluated grid points
+
+        let current = source;
+
+        source.srcDistance = 0;
+        source.logic = 0;
+        destination.logic = 0;
+
         f = 0; // total cost function
         g = 0; // cost function from start to the current grid point
         h = 0; // heuristic estimated cost function from current grid point to the goal
         this.parent = undefined; // immediate source of the current grid point
 
-        openSet.push(start);
-        while(openSet.length > 0) {
+        openSet.push(source);
+
+        while(!openSet.includes(mapNode(destination))) {
             // find lowest cost node in openSet
-            let winner  = mapNode(start);
-            for (let i = 0; i < openSet.length; i++) {
-                if(openSet[i] < openSet[winner]) {
-                    winner = i;
-                }
-            }
-            let current = openSet[winner];
-
-            // if current is final, return the successful path
-            if (current === end) {
-                let temp = current;
-                path.push(temp);
-                while (temp.parent) {
-                    path.push(temp.parent);
-                    temp = temp.parent;
-                }
-
-                return path.reverse();
-            }
+           current = lowestCostNode(openSet);
+                       
+           // if current is final, return the successful path
+            current.path.push(current);
 
             // remove current from openSet
-            openSet.slice(winner, 1);
-            // add current to closedSet
-            closedSet.push(current);
+            openSet.slice(openSet.indexOf(current), 1);
 
-            neighbors = mapNode(current.neighbors);
-
-            for (let i = 0; i < neighbors.length; i++) {
-                let neighbor = neighbors[i];
-                
+            current.neighbors.forEach(neighbor => {
                 // neighbors of current node
                 if (!closedSet.includes(neighbor)) {
                     let possibleG = current.g + 1;
@@ -125,7 +121,7 @@ const astar = (graph, start, end) => {
 
                     if (!openSet.includes(neighbor)) {
                         neighbor.g = possibleG;
-                        neighbor.h = heuristic(neighbor, end);
+                        neighbor.h = heuristic(neighbor, destination);
                         neighbor.f = neighbor.g + neighbor.h;
                         neighbor.parent = current;
                         // add neighbor to openset
@@ -134,17 +130,18 @@ const astar = (graph, start, end) => {
                         // if neighbor is in openSet but the current g is better than 
                         // previous g { save g and f, then save the current parent}
                         neighbor.g = possibleG;
-                        neighbor.h = heuristic(neighbor, end);
+                        neighbor.h = heuristic(neighbor, destination);
                         neighbor.f = neighbor.g + neighbor.h;
                         neighbor.parent = current;
-                        continue;
                     }
                 }
-            }
-        }
-         // no solution by default
-         return [];
-    }
-    console.log(search());
+            });
+            // add current to closedSet
+            closedSet.push(current);
+        };
+         return destination.path;
+    };
+
+    return search();
 }
 module.exports = astar;

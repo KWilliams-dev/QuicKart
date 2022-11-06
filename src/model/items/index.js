@@ -169,15 +169,16 @@ const resolvers = {
       });
 
       
-      const start = { x: 27, y: 27 }
-      const end = { x: 25, y: 15 }
-      const shortestPath2 = astar(graph(map), start, end);
+      // const start = { x: 27, y: 27 }
+      // const end = { x: 25, y: 15 }
+      // const shortestPath2 = astar(graph(map), start, end);
 
-      // Testing output for A* Search
-      let count2 = 1;
-      shortestPath2.forEach(node => {
-        console.log(`Step ${count2} -> (${node.x},${node.y})`)
-      });
+      // // Testing output for A* Search
+      // let count2 = 1;
+      // shortestPath2.forEach(node => {
+      //   console.log(`Step ${count2} -> (${node.x},${node.y})`)
+      //   count2++;
+      // });
       
     }
 
