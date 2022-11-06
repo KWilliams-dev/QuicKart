@@ -7,6 +7,8 @@ const dijkstra = require('../routing/dijkstra');
 
 const dotenv = require('dotenv');
 const Db = require('mongodb/lib/db');
+const { assertValidSDLExtension } = require('graphql/validation/validate');
+const astar = require('../routing/astar');
 
 dotenv.config();
 const { DB_URI, DB_NAME} = process.env;
@@ -160,12 +162,25 @@ const resolvers = {
       const source = { x: 15, y: 15 }
       const destination = { x: 0, y: 0 }
       const shortestPath = dijkstra(graph(map), source, destination);
-      
+
       let count = 1;
       shortestPath.forEach(node => {
         console.log(`Step ${count} → (${node.x},${node.y})`)
         count++;
-      })
+      });
+
+      
+      // const start = { x: 27, y: 27 }
+      // const end = { x: 25, y: 15 }
+      // const shortestPath2 = astar(graph(map), start, end);
+
+      // // Testing output for A* Search
+      // let count2 = 1;
+      // shortestPath2.forEach(node => {
+      //   console.log(`Step ${count2} -> (${node.x},${node.y})`)
+      //   count2++;
+      // });
+      
     }
 
   },
