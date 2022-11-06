@@ -17,6 +17,8 @@ export const ShoppingRouteScreen = ({ navigation }) => {
   const [totalPrice, setPrice] = useState(0.0);
   const[isChecked, setCheck] = useState(false);
 
+  const length = groceryList.length - 1;
+
 
   const dispatch = useDispatch();
 
@@ -58,6 +60,20 @@ export const ShoppingRouteScreen = ({ navigation }) => {
   const handleStopTimer = () => {
     clearInterval(timer);
   };
+  const nextCard = () => {
+
+    if(currentItemIndex === length){
+
+        Alert.alert("You have reached the end of the list");
+        return;
+    }
+
+    let index = currentItemIndex;
+    index+= 1;
+    setCurrentItemIndex (index);
+    setCurrentItem(groceryList[index]);
+    
+  };
 
  
   return (
@@ -79,7 +95,8 @@ export const ShoppingRouteScreen = ({ navigation }) => {
    </Button>
       <Button
         onPress={() => {
-          setCheck(!isChecked)
+          nextCard();
+          setCheck(!isChecked);
        }}
        
         style={styles.buttonInRow}
@@ -99,7 +116,7 @@ export const ShoppingRouteScreen = ({ navigation }) => {
           return (
             <View style={styles.inline}>
             <View style={styles.checkbox}>
-            <CheckBox isChecked={isChecked}/>
+            <CheckBox isChecked={isChecked} id={length}/>
                 
             </View>
 
