@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FlatList, View, Text } from 'react-native';
+import { FlatList, View, Text, ImageBackground } from 'react-native';
 import { styles } from '../styles/ShoppingList.styles';
 import {useSelector} from 'react-redux'
 import { FinishListItem } from '../components/FinishListItem';
@@ -12,6 +12,8 @@ export const FinishShoppingScreen = () => {
     const {total} = useSelector(state => state.totalReducer)
 
     return (
+        <ImageBackground source={require('../assets/background.png')} style={styles.backgroundImage}>
+
         <View style={styles.container}>
             <Text style={styles.finishShoppingTitle}>Thank You!</Text>
             <View style={styles.finishShoppingTimerView}>
@@ -29,5 +31,6 @@ export const FinishShoppingScreen = () => {
                 <Text style={styles.finishShoppingBottomText}>Total: ${total}</Text>
             </View>
         </View>
+        </ImageBackground>
     )
 }

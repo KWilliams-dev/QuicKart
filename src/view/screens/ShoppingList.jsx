@@ -1,14 +1,14 @@
-import * as React from "react";
-import { useState, useEffect } from "react";
-import { View, FlatList, Text as NativeText, Alert } from "react-native";
-import { Button, Text } from "react-native-paper";
-import SearchableDropdown from "react-native-searchable-dropdown";
-import { gql, useQuery } from "@apollo/client";
-import { SplashScreen } from "./SplashScreen";
-import { styles } from "../styles/ShoppingList.styles";
-import { useDispatch, useSelector } from "react-redux";
-import { setGroceryList } from "../redux/groceryListAction";
-import { setTotal } from "../redux/totalActions";
+import * as React from 'react';
+import {useState, useEffect}  from 'react';
+import { View, FlatList, Image, Text as NativeText, Alert, ScrollView, SafeAreaView, SectionList, ImageBackground} from 'react-native';
+import { Button, Text } from 'react-native-paper';
+import SearchableDropdown from 'react-native-searchable-dropdown';
+import { gql, useQuery} from '@apollo/client';
+import { SplashScreen } from './SplashScreen';
+import { styles } from '../styles/ShoppingList.styles';
+import {useDispatch, useSelector} from 'react-redux'
+import { setGroceryList } from '../redux/groceryListAction'
+import { setTotal } from '../redux/totalActions';
 
 const GET_ITEMS = gql`
   query GetInventory($id: Int!) {
@@ -181,8 +181,9 @@ export const ShoppingListScreen = ({ navigation }) => {
     const items = groceryList.filter((sitem) => sitem.id !== item.id);
     dispatch(setGroceryList(items));
   };
-
+    
   return (
+    <ImageBackground source={require('../assets/background.png')} style={styles.backgroundImage}>
     <View style={styles.container}>
       {/*if there is a connection to the database then the splashscreen will load breifly,
         if not then it will load for ever. */}
@@ -191,6 +192,7 @@ export const ShoppingListScreen = ({ navigation }) => {
       ) : (
         <>
           <NativeText style={styles.titleText}>Shopping List</NativeText>
+          
           <SearchableDropdown
             onItemSelect={(item) => {
               // creates a new version of the item that contains a collected property.
@@ -227,7 +229,7 @@ export const ShoppingListScreen = ({ navigation }) => {
             itemsContainerStyle={{ maxHeight: 200 }}
             items={inventory}
             textInputProps={{
-              placeholder: "placeholder",
+              placeholder: "Enter item...",
               underlineColorAndroid: "transparent",
               style: {
                 padding: 12,
@@ -265,6 +267,7 @@ export const ShoppingListScreen = ({ navigation }) => {
               }}
             />
           </View>
+
           <View style={styles.bottomContainer}>
             <Text style={styles.bottomText} variant="titleLarge">
               Total Cost:
@@ -274,6 +277,7 @@ export const ShoppingListScreen = ({ navigation }) => {
               Grocery Count: {groceryList.length}
             </Text>
           </View>
+
           <Button
             onPress={() => {
               totalHandler();
@@ -282,15 +286,12 @@ export const ShoppingListScreen = ({ navigation }) => {
               navigation.navigate("ShoppingRoute");
             }}
             style={styles.bottomButton}
-            buttonColor="blue"
-            mode="contained"
-          >
-            <Text style={styles.bottomText} variant="headlineMedium">
-              START SHOPPING
-            </Text>
-          </Button>
-        </>
-      )}
-    </View>
-  );
-};
+            buttonColor='blue'
+            mode='contained'>
+                <Text style={styles.bottomText} variant='headlineMedium'>START SHOPPING</Text>
+        </Button>
+     </>)}
+     </View>
+     </ImageBackground>
+    );
+}

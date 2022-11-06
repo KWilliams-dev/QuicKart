@@ -45,21 +45,34 @@ project relies on ready to go.
 ## Front End
 
 - ### <em><strong>Note</strong></em>
-&nbsp; &nbsp; &nbsp; I recommend going over some of the docks on this website https://docs.expo.dev/ and also testing out expo in the browser here https://snack.expo.dev/ to familiarize yourself with the technology. There will be some account creation involved.
+&nbsp; &nbsp; &nbsp; I recommend going over some of the docs on this website https://docs.expo.dev/ and also testing out expo in the browser here https://snack.expo.dev/ to familiarize yourself with the technology. There will be some account creation involved.
 
 To run the front end of the project, make sure you're in the view directory in your terminal and then run the command
 ```
 npm run web
 ```
+Make sure to create an account with Expo Go and sign into it on your phone. There may be some network issues at first. What I did for my local was to set my home network to private. That is not the only solution though. Please pay attention to the screenshot of the Expo Go docs below if you wish to set up tunneling. (I didn't go this route but I believe with some googling, that it wouldn't be too complex.) 
+
+<em>Screenshot</em>
+![image](https://user-images.githubusercontent.com/74102531/199380582-941f3e4d-2313-4c36-9604-af3d90b2a609.png)
+<em>Screenshot</em>
+
+
 You'll see a QR code pop up in your terminal. If your on an iphone, just download the Expo Go app from the app store, and scan it with your camera.
 On android, I believe you need to scan the QR code from the expo go app. The Expo Go icon looks like the picture below:
 
 ![image](https://user-images.githubusercontent.com/74102531/199377266-36155398-a05e-4406-a16d-ccb360cfcfe3.png)
 
+React docs: https://reactjs.org/docs/getting-started.html
+React-native docs: https://reactnative.dev/docs/getting-started
+
 ## Backend
 
 The backend of the project uses MongoDB, GraphQL and Apollo server. Much of the set up is already done, you'll just need to make sure to follow the build
 instructions first and run ``` npm install ``` in the src/model directory first.
+
+- ### <em><strong>Note</strong></em> 
+Please look over the docs but note that some of them will give you instructions for setting up a new project, which are not needed in this case. The docs are a good source for understanding the basics of how this tech is used.
 
 - Apollo docs: https://www.apollographql.com/docs/apollo-server/getting-started/
 - GraphQL docs: https://graphql.org/learn/
@@ -74,6 +87,8 @@ learned to begin building QuickKart.
 ## Installation
 
 ## Usage
+
+
 
 ## Communications
 The team used JIRA as our project progess tracking tool alongside Discord and Microsft Teams as our primary communication tool and meeting platform.
