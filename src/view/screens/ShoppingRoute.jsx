@@ -35,7 +35,7 @@ export const ShoppingRouteScreen = ({ navigation }) => {
 
   const dispatch = useDispatch();
 
-  const length = groceryList.length;
+  const length = groceryList.length - 1;
 
   let timer;
 
@@ -79,9 +79,11 @@ export const ShoppingRouteScreen = ({ navigation }) => {
     clearInterval(timer);
   };
 
+  if (!Array.isArray(groceryList) || groceryList.length <= 1) {
+    return null;
+  }
+  
   const nextCard = () => {
-
-    const length = groceryList.length -1;
 
     if(currentItemIndex === length){
 
@@ -90,15 +92,13 @@ export const ShoppingRouteScreen = ({ navigation }) => {
     }
 
     let index = currentItemIndex;
-    index+=1;
-
+    index+= 1;
     setCurrentItemIndex (index);
     setCurrentItem(groceryList[currentItemIndex]);
+    
   };
 
-  if (!Array.isArray(groceryList) || groceryList.length <= 0) {
-    return null;
-  }
+
   //console.log(cardData)
 
   return (
