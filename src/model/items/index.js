@@ -30,7 +30,7 @@ const typeDefs = gql`
 
       getMap(id: ID!): StoreMap
 
-      getMapElements(id: ID!): [[Int]]
+      getMapElements(id: ID!): [[Int]]  #TESTING PURPOSES ONLY
     }
     
     #defining what a item is in our database
@@ -151,17 +151,18 @@ const resolvers = {
       return await db.collection('Map').findOne({ _id: ObjectID(id) });
     },
   
+      // Testing output for Dijkstra algorithm
+      // Delete after testing
     getMapElements: async (_, { id }, { db}) => {
       const map = await db.collection('Map').findOne({ _id: ObjectID(id) })
       if(!map) {
           throw new Error('Map not found');
       }
-
-      const source = { x: 27, y: 27 }
-      const destination = { x: 25, y: 15 }
+      console.log(graph(map))
+      const source = { x: 15, y: 15 }
+      const destination = { x: 0, y: 0 }
       const shortestPath = dijkstra(graph(map), source, destination);
 
-      // Testing output for Dijkstra algorithm
       let count = 1;
       shortestPath.forEach(node => {
         console.log(`Step ${count} → (${node.x},${node.y})`)
@@ -308,27 +309,6 @@ const resolvers = {
     validateObject(aisles, "Aisle")
     validateObject(checkoutLanes, "Checkout lane")
     validateObject(entrances, "Entrance")
-
-    // aisles.forEach(aisle => {
-    //   if(!(validateRange(aisle.xStartVal, aisle.xEndVal, 0, width)
-    //       && validateRange(aisle.yStartVal, aisle.yEndVal, 0, length))) { 
-    //         throw new Error(`Aisle dimensions exceed map dimensions`)
-    //       }
-    // });
-
-    // checkoutLanes.forEach(cLane => {
-    //   if(!(validateRange(cLane.xStartVal, cLane.xEndVal, 0, width)
-    //       && validateRange(cLane.yStartVal, cLane.yEndVal, 0, length))) { 
-    //         throw new Error(`Checkout lane dimensions exceed map dimensions`)
-    //       }
-    // });
-
-    // entrances.forEach(door => {
-    //   if(!(validateRange(door.xStartVal, door.xEndVal, 0, width)
-    //       && validateRange(door.yStartVal, door.yEndVal, 0, length))) { 
-    //         throw new Error(`Entrance dimensions exceed map dimensions`)
-    //       }
-    // });
     
     const newMap = {
       title,
