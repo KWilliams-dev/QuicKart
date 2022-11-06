@@ -131,7 +131,7 @@ export const ShoppingRouteScreen = ({ navigation }) => {
       <Button
         onPress={() => {
           nextCard();
-          setCheck(!isChecked);
+          setCheck(collected);
        }}
        
         style={routeStyles.buttonInRow}
@@ -150,10 +150,14 @@ export const ShoppingRouteScreen = ({ navigation }) => {
         data={groceryList}
         renderItem={({ item}) => {
           return (
+            item = {
+                ...item,
+                collected: false,
+              },
             
             <View style={routeStyles.inline}>
             <View style={routeStyles.checkbox}>
-            <CheckBox  isChecked={isChecked}/>
+            <CheckBox isChecked={collected}/>
                 
             </View>
 
@@ -192,7 +196,7 @@ export const ShoppingRouteScreen = ({ navigation }) => {
           handleStopTimer();
           navigation.navigate("ShoppingFinish");
         }}
-        mode='contained'
+        
         style={routeStyles.bottomButton}
         buttonColor="blue"
             mode="contained"
@@ -205,6 +209,10 @@ export const ShoppingRouteScreen = ({ navigation }) => {
 };
 
 const routeStyles = StyleSheet.create({
+  inline:{
+    flexDirection:"row",
+    justifyContent:'space-evenly',
+  },
   flatList1: {
     backgroundColor: "white",
     marginTop: 20,
