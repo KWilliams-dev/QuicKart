@@ -3,21 +3,33 @@ import { StyleSheet } from 'react-native'
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F2FFFF',
+        //backgroundColor: '#F2FFFF',
         alignItems: 'center',
         width: '100%',
         height: '100%',
         paddingTop:25,
     },
+    information: {
+        alignSelf: 'flex-end',
+        marginTop: 1,
+    },
+    backgroundImage: {
+        flex: 1,
+        resizeMode: 'cover',
+    },
     titleText: {
-        marginTop: 10,
-        fontSize: 46
+        color: 'white',
+        fontSize: 52,
+        fontWeight: 'bold',
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: { width: -1, height: 1 },
+        textShadowRadius: 5,
+        marginTop: 20
     },
     button: {
         height: '100%'
     },
     flatList: {
-        
         backgroundColor: 'white',
         marginTop: 20,
         width: '85%',
@@ -57,9 +69,9 @@ export const styles = StyleSheet.create({
     bottomContainer: {
         height: '7%',
         borderRadius: 15,
-        backgroundColor: '#D42B14',
+        backgroundColor: '#db601b',
         flexDirection: 'row',
-        width: '90%',
+        width: '95%',
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 10,
@@ -90,8 +102,8 @@ export const styles = StyleSheet.create({
     },
    
     bottomButton: {
-        marginTop: 30,
-        backgroundColor: '#3F7CAC',
+        marginTop: 50,
+        backgroundColor: '#000000',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.8,
@@ -115,6 +127,7 @@ export const styles = StyleSheet.create({
         textShadowColor: 'rgba(0, 0, 0, 0.75)',
         textShadowOffset: { width: -1, height: 1 },
         textShadowRadius: 5,
+        marginTop: 20
     },
     finishShoppingTimerView: {
         backgroundColor: 'white',
@@ -133,6 +146,18 @@ export const styles = StyleSheet.create({
         textShadowColor: 'rgba(0, 0, 0, 0.50)',
         textShadowOffset: { width: 0, height: 5 },
         textShadowRadius: 10,
+    },
+    finishShoppingFlatList: {
+        backgroundColor: 'white',
+        marginTop: 20,
+        width: '85%',
+        height: '45%',
+        borderRadius: 15,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,  
+        elevation: 5,
     },
     finishShoppingListContainer: {
         backgroundColor: 'white',
@@ -163,5 +188,34 @@ export const styles = StyleSheet.create({
         paddingLeft:2,
         justifyContent:'space-evenly',
         
+    },
+    welcomeText:{
+        color: "#000000",
+        fontSize: 60,
+        fontWeight: 'bold',
+        flexWrap: 'wrap',
+        textAlign: 'center',
+    },
+    modalView: {
+        margin: 20,
+        marginTop: 80,
+        backgroundColor: "#ffffff",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    modalText: {
+        textAlign: "center",
+        marginTop: 10,
+        marginBottom: -25
     }
+    
 });

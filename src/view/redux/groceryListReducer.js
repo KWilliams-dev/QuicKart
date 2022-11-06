@@ -1,4 +1,4 @@
-import { SET_GROCERY_LIST } from "./groceryListAction";
+import { SET_GROCERY_LIST} from "./groceryListAction";
 
 const initialState = {
     groceryList: []
@@ -11,6 +11,9 @@ function listReducer(state = initialState, action) {
         default:
             return state
     }
+
+   
 }
 
 export default listReducer;
+

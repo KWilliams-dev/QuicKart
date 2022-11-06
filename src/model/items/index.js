@@ -10,8 +10,25 @@ const Db = require('mongodb/lib/db');
 const { assertValidSDLExtension } = require('graphql/validation/validate');
 const astar = require('../routing/astar');
 
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 dotenv.config();
-const { DB_URI, DB_NAME} = process.env;
+const { DB_URI, DB_NAME, JWT_SECRET} = process.env;
+
+const getToken = (user) => jwt.sign({id: user._id}, JWT_SECRET, {expiresIn: '10 days'});
+
+const getUserFromToken = async(token, db) =>{
+
+  if(!token){return null}
+
+  const tokenData = jwt.verify(token, JWT_SECRET);
+ 
+  if(!tokenData?.id){
+    return null;
+  }
+
+  return await db.collection('Users').findOne({_id: ObjectID(tokenData.id)});
+}
 
 //defining the different types in the schema
 const typeDefs = gql`
@@ -31,6 +48,65 @@ const typeDefs = gql`
       getMap(id: ID!): StoreMap
 
       getMapElements(id: ID!): [[Int]]  #TESTING PURPOSES ONLY
+    }
+
+    type Mutation {
+      signUp(input: SignUpInput): AuthUser!
+      signIn(input: SignInInput): AuthUser!
+      createInventory(id: Int!, title: String!): Inventory!
+
+      #creates an item
+      createItem(name: String!,aisle:String!,bay:String!,price:Float!,xVal:Int!,yVal:Int!): Item!
+
+      createAisle(
+        number: Int!
+        name: String!, 
+        xStartVal: Int!, 
+        xEndVal: Int!, 
+        yStartVal: Int!,
+        yEndVal: Int!
+      ): Aisle!
+
+      createCheckout(
+        lane: Int!,
+        xStartVal:Int!,
+        xEndVal:Int!,
+        yStartVal:Int!,
+        yEndVal:Int!
+      ): Checkout!
+
+      createDoor(
+        name: String!,
+        xStartVal:Int!,
+        xEndVal:Int!,
+        yStartVal:Int!,
+        yEndVal:Int!
+      ): Door!
+
+      createMap(title: String!, description: String!, width: Int!, length: Int!): StoreMap!
+    }
+    
+    input SignUpInput{
+      email: String!
+      password: String!
+      name: String!
+      
+    }
+
+    input SignInInput{
+      email: String!
+      password: String!
+    }
+
+    type AuthUser{
+      user: User!
+      token: String!
+    }
+
+    type User{
+      id: ID!
+      name: String!
+      email: String!
     }
     
     #defining what a item is in our database
@@ -86,40 +162,6 @@ const typeDefs = gql`
       id: Int!
       title: String!
       items: [Item]!
-    }
-    
-    type Mutation {
-      createInventory(id: Int!, title: String!): Inventory!
-
-      #creates an item
-      createItem(name: String!,aisle:String!,bay:String!,price:Float!,xVal:Int!,yVal:Int!): Item!
-
-      createAisle(
-        number: Int!
-        name: String!, 
-        xStartVal: Int!, 
-        xEndVal: Int!, 
-        yStartVal: Int!,
-        yEndVal: Int!
-      ): Aisle!
-
-      createCheckout(
-        lane: Int!,
-        xStartVal:Int!,
-        xEndVal:Int!,
-        yStartVal:Int!,
-        yEndVal:Int!
-      ): Checkout!
-
-      createDoor(
-        name: String!,
-        xStartVal:Int!,
-        xEndVal:Int!,
-        yStartVal:Int!,
-        yEndVal:Int!
-      ): Door!
-
-      createMap(title: String!, description: String!, width: Int!, length: Int!): StoreMap!
     }
 `;
 
@@ -184,7 +226,41 @@ const resolvers = {
     }
 
   },
+
   Mutation: {
+     signUp: async (_, { input }, { db, }) => {
+   const hashedPassword = bcrypt.hashSync(input.password);
+   const newUser = {
+    ...input,
+    password: hashedPassword,
+   }
+
+   //save to database
+   const result = await db.collection('Users').insert(newUser);
+   const user = result.ops[0]
+   
+   return{
+    user, 
+    token: getToken(user),
+     }
+    },
+
+    signIn: async(_, {input}, {db}) => {
+      const user = await db.collection('Users').findOne({email: input.email});
+      const isPasswordCorrect = user && bcrypt.compareSync(input.password, user?.password);
+
+      if(!user || !isPasswordCorrect){
+        throw new Error('Invalid credentials!');
+      }
+
+      
+   
+      return{
+        user,
+        token: getToken(user),
+      }
+    },
+
     createInventory: async(_, { title, id }, { db }) => {
       const currItems = await db.collection('Item').find().toArray();
       const newInventory = {
@@ -360,6 +436,10 @@ const resolvers = {
     id: ({ _id, id }) => _id || id,  
   },
 
+  User: {
+    id: ( { _id, id }) => _id || id,
+   },
+
   //Error for non-nullable fields
   Item: {
     id: ({ _id, id }) => _id || id,  
@@ -386,13 +466,20 @@ const start = async () => {
   //we wait to connect the sever untill  we connect to the database we will start the server
   //we need a connection to the server in order to have access to the data
 
-  const context = {
-    db,
-  }
+  
   const server = new ApolloServer({
       typeDefs,
       resolvers,
-      context,
+      context: async({ req }) => {
+        const user = await getUserFromToken(req.headers.authorization, db);
+        
+    
+        return{
+          db, 
+          user,
+        }
+    
+       },
       introspection: true
   }); 
   

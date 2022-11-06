@@ -16,7 +16,9 @@
       "dotenv":"^16.0.2",
       "graphql":"^16.6.0",
       "mongodb":"3.6",
-      "nodemon": "^2.0.19"
+      "nodemon": "^2.0.19",
+      "jsonwebtoken": "^8.5.1",
+      "bcryptjs": "^2.4.3"
     },
     "devDependencies":{
       "@types/bcryptjs":"^2.4.2",
