@@ -6,11 +6,13 @@ import {
   Pressable, 
   ActivityIndicator, 
   Alert,
+  ImageBackground
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
 import { useMutation, gql } from '@apollo/client';
+import { styles } from '../styles/ShoppingList.styles';
 
 const SIGN_UP_MUTATION = gql`
 mutation signUp($email: String!, $password: String!, $name: String!) {
@@ -56,7 +58,9 @@ const SignUpScreen = ({navigation}) => {
   }
 
   return (
-    <View style={{ padding: 20 }}>
+    <ImageBackground source={require('../assets/background.png')} style={styles.backgroundImage}>
+    <View style={{ padding: 20, marginTop: 30}}>
+      <Text style={styles.welcomeText}>Sign Up</Text>
       <TextInput 
         placeholder="name"
         value={name}
@@ -97,7 +101,7 @@ const SignUpScreen = ({navigation}) => {
       <Pressable 
         onPress={onSubmit} 
         style={{ 
-          backgroundColor: '#e33062',
+          backgroundColor: '#000000',
           height: 50,
           borderRadius: 5,
           alignItems: 'center',
@@ -109,7 +113,7 @@ const SignUpScreen = ({navigation}) => {
         {loading && <ActivityIndicator />}
         <Text 
           style={{
-            color: 'black',
+            color: 'white',
             fontSize: 18,
             fontWeight: 'bold'
           }}>
@@ -138,6 +142,7 @@ const SignUpScreen = ({navigation}) => {
         </Text>
       </Pressable>
     </View>
+    </ImageBackground>
   )
 }
 
