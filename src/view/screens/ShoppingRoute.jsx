@@ -79,7 +79,9 @@ export const ShoppingRouteScreen = ({ navigation }) => {
     clearInterval(timer);
   };
 
-  if (!Array.isArray(groceryList) || groceryList.length <= 1) {
+   if (!Array.isArray(groceryList) || groceryList.length <= 0) {
+    Alert.alert("You have no more items in your shopping cart");
+    navigation.navigate("ShoppingList");
     return null;
   }
   
@@ -94,17 +96,18 @@ export const ShoppingRouteScreen = ({ navigation }) => {
     let index = currentItemIndex;
     index+= 1;
     setCurrentItemIndex (index);
-    setCurrentItem(groceryList[currentItemIndex]);
+    setCurrentItem(groceryList[index]);
     
   };
 
+ 
 
   //console.log(cardData)
 
   return (
     <View style={styles.container}>
 
-      <View style={styles.flatList2}>
+      <View style={styles.flatList1}>
         
         <CardData
             item={currentItem.name}
@@ -118,6 +121,7 @@ export const ShoppingRouteScreen = ({ navigation }) => {
        
 
         <Button
+          // style={styles.bottomButton}
           onPress={() => {
 
             nextCard();
@@ -196,12 +200,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 42,
   },
-  shadowprop: {
-    shadowColor: "#171717",
-    shadowOffset: { width: -2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-  },
   flatList1: {
     backgroundColor: "white",
     marginTop: 20,
@@ -225,12 +223,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 5,
-  },
-  flatList2: {
-    backgroundColor: "white",
-    marginTop: 5,
-    width: "70%",
-    height: "30%",
   },
   botttomButtonText: {
     fontSize: 18,

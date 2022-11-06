@@ -189,6 +189,7 @@ export const ShoppingListScreen = ({ navigation }) => {
       ) : (
         <>
           <NativeText style={styles.titleText}>Shopping List</NativeText>
+          
           <SearchableDropdown
             onItemSelect={(item) => {
               // creates a new version of the item that contains a collected property.
@@ -263,6 +264,7 @@ export const ShoppingListScreen = ({ navigation }) => {
               }}
             />
           </View>
+
           <View style={styles.bottomContainer}>
             <Text style={styles.bottomText} variant="titleLarge">
               Total Cost:
@@ -272,6 +274,7 @@ export const ShoppingListScreen = ({ navigation }) => {
               Grocery Count: {groceryList.length}
             </Text>
           </View>
+
           <Button
             onPress={() => {
               totalHandler();
