@@ -35,6 +35,7 @@ export const ShoppingListScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const totalHandler = () => {
+    
     dispatch(setTotal(totalPrice));
   };
 
@@ -161,6 +162,7 @@ export const ShoppingListScreen = ({ navigation }) => {
     });
     subTotal = subTotal.toFixed(2);
     setPrice(subTotal);
+    
   }, [groceryList]);
 
   useEffect(() => {
@@ -280,6 +282,7 @@ export const ShoppingListScreen = ({ navigation }) => {
             onPress={() => {
               totalHandler();
               calcRoute();
+              
               navigation.navigate("ShoppingRoute");
             }}
             style={styles.bottomButton}
