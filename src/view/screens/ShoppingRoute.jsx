@@ -1,18 +1,22 @@
 import * as React from "react";
-import { View, StyleSheet, FlatList, Text as NativeText } from "react-native";
+import { View, StyleSheet, FlatList, Text as NativeText} from "react-native";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setMinutes, setHours } from "../redux/timerActions";
 import { setGroceryList } from "../redux/groceryListAction";
 import CardData from "../components/CardCarousel/CardData/index";
 import { Button, Text } from "react-native-paper";
+import { CheckBox } from "../components/Checkbox";
+
+
 
 export const ShoppingRouteScreen = ({ navigation }) => {
   const { groceryList } = useSelector((state) => state.listReducer);
-  const { total } = useSelector((state) => state.totalReducer);
   const { minutes, hours } = useSelector((state) => state.timerReducer);
   const [seconds, setSeconds] = useState(0);
   const [totalPrice, setPrice] = useState(0.0);
+  const[isChecked, setCheck] = useState(false);
+
 
   const dispatch = useDispatch();
 
@@ -36,13 +40,10 @@ export const ShoppingRouteScreen = ({ navigation }) => {
     return () => clearInterval(timer);
   });
 
+  
   const deleteItem = (item) => {
     const items = groceryList.filter((sitem) => sitem.id !== item.id);
     dispatch(setGroceryList(items));
-    groceryList.forEach((item) => {
-      console.log(item.name);
-      console.log(item.price);
-    });
   };
 
   useEffect(() => {
@@ -58,16 +59,51 @@ export const ShoppingRouteScreen = ({ navigation }) => {
     clearInterval(timer);
   };
 
+ 
   return (
+    
     <View style={styles.container}>
       <CardData item={"Item Name"} aisle={"A"} bay={"1"} isActive={true} />
+    <View style={styles.buttonRow}>
+    <Button
+     style={styles.buttonInRow}
+     onPress={() => {
+          
+          navigation.navigate("ShoppingList");
+        }}
+    
+         mode="contained"
+   >
 
+     <Text style={styles.botttomButtonText} variant="headlineLarge">Add</Text>
+   </Button>
+      <Button
+        onPress={() => {
+          setCheck(!isChecked)
+       }}
+       
+        style={styles.buttonInRow}
+            mode="contained">
+   
+        <Text style={styles.botttomButtonText} variant="headlineLarge" >Next</Text>
+      </Button>
+
+
+
+   
+    </View>
       <FlatList
         style={styles.background}
         data={groceryList}
-        renderItem={({ item }) => {
+        renderItem={({ item}) => {
           return (
             <View style={styles.inline}>
+            <View style={styles.checkbox}>
+            <CheckBox isChecked={isChecked}/>
+                
+            </View>
+
+            
               <View style={styles.itemName}>
                 <NativeText style={styles.item}>{item.name}</NativeText>
               </View>
@@ -103,8 +139,11 @@ export const ShoppingRouteScreen = ({ navigation }) => {
           navigation.navigate("ShoppingFinish");
         }}
         style={styles.bottomButton}
+        buttonColor="blue"
+            mode="contained"
       >
-        <Text style={styles.botttomButtonText}>Finish Shopping</Text>
+   
+        <Text style={styles.botttomButtonText} variant="headlineMedium">Finish Shopping</Text>
       </Button>
     </View>
   );
@@ -127,7 +166,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: "75%",
     height: "25    %",
-    marginBottom: 150,
+    marginBottom: 5,
+    marginTop:0,
     borderRadius: 15,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
@@ -136,8 +176,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   botttomButtonText: {
-    fontSize: 18,
-    color: "#0089e3",
+    fontSize: 30,
+    color: "#FFFFFF",
   },
   bottomText: {
     color: "white",
@@ -170,17 +210,19 @@ const styles = StyleSheet.create({
   inline: {
     flexDirection: "row",
     justifyContent: "space-evenly",
+    
   },
   itemPrice: {
     marginVertical: 5,
     marginRight: 20,
+    paddingTop:2,
     fontSize: 20,
     height: 44,
     flexWrap: "wrap",
     width: "10%",
   },
   item: {
-    paddingLeft: 25,
+    paddingLeft: 0,
     paddingTop: 15,
     padding: 10,
     fontSize: 20,
@@ -225,15 +267,32 @@ const styles = StyleSheet.create({
   bottomButton: {
     marginTop: 20,
     marginBottom: 25,
+    backgroundColor:'#3F7CAC',
+    
+  },
+  buttonInRow:{
+ marginTop: 20,
+    marginBottom: 5,
+    padding:3,
+    width:150,
+    backgroundColor:'#3F7CAC',
+  },
+  buttonRow:{
+    flexDirection: "row",
+    margin:0,
   },
   trashButton: {
     paddingTop: 10,
     marginLeft: 5,
-    marginTop: 10,
+    marginTop: 11,
   },
   trshbttn: {
     paddingTop: 2,
     paddingLeft: 2,
     justifyContent: "space-evenly",
   },
+  checkbox:{
+    padding:15
+  },
+ 
 });
