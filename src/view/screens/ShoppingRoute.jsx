@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Text as NativeText, View,
   StyleSheet,
-  Button,
   FlatList,
   Dimensions,
   Image,
@@ -97,10 +96,6 @@ export const ShoppingRouteScreen = ({ navigation }) => {
     setCurrentItem(groceryList[currentItemIndex]);
   };
 
-  const previousCard = () => {
-    setCardData(cardData == 0 ? length - 1 : cardData - 1);
-  };
-
   if (!Array.isArray(groceryList) || groceryList.length <= 0) {
     return null;
   }
@@ -108,33 +103,30 @@ export const ShoppingRouteScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+
       <View style={styles.flatList2}>
-      <CardData
-          item={currentItem.name}
-          aisle={currentItem.aisle}
-          bay={currentItem.bay}
-          isActive={true}
-        />
+        
+        <CardData
+            item={currentItem.name}
+            aisle={currentItem.aisle}
+            bay={currentItem.bay}
+            isActive={true}
+          />
       </View>
+
       <View style={{ marginVertical: 20, flexDirection: "row" }}>
+       
 
         <Button
-          title={"PREV"}
-          style={{ paddingLeft: 150, marginLeft: 200 }}
-          onPress={() => {}}
-        ></Button>
-
-        <Button
-          title={"NEXT"}
-          style={{ paddingLeft: 200 }}
           onPress={() => {
 
             nextCard();
             
           }}
         >
-          {" "}
+          <Text style={styles.botttomButtonText}>NEXT</Text>
         </Button>
+        
       </View>
 
       <FlatList
