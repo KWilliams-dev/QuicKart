@@ -2,8 +2,8 @@ import * as React from "react";
 import { Text as NativeText, View,
   StyleSheet,
   FlatList,
-  Dimensions,
-  Image,
+  Modal,
+  ImageBackground,
   Alert } from "react-native";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,6 +11,7 @@ import { setMinutes, setHours } from "../redux/timerActions";
 import { setGroceryList } from "../redux/groceryListAction";
 import CardData from "../components/CardCarousel/CardData/index";
 import { Button, Text } from "react-native-paper";
+import { styles } from '../styles/ShoppingList.styles';
 
 
 export const ShoppingRouteScreen = ({ navigation }) => {
@@ -28,6 +29,8 @@ export const ShoppingRouteScreen = ({ navigation }) => {
   const { minutes, hours } = useSelector((state) => state.timerReducer);
 
   const [seconds, setSeconds] = useState(0);
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   const { total } = useSelector((state) => state.totalReducer);
 
@@ -88,9 +91,29 @@ export const ShoppingRouteScreen = ({ navigation }) => {
   const nextCard = () => {
 
     if(currentItemIndex === length){
-
-        Alert.alert("You have reached the end of the list");
-        return;
+      // <View style={styles.information}>
+      //   <Modal
+      //   animationType="slide"
+      //   transparent={true}
+      //   visible={modalVisible}
+      //   >
+      //     {/* This is the info inside the pop-up window */}
+      //     <View style={styles.information}>
+      //       <View style={styles.modalView}>
+      //           <Text style={styles.modalText}>You have reached the end of the list</Text>
+      //           {/* when user clicks 'OK' the pop-up window disapeers */}
+      //           <Button
+      //           onPress={() => setModalVisible(!modalVisible)}
+      //           style={styles.bottomButton}
+      //           >
+      //           <Text style={styles.bottomText}>OK</Text>
+      //         </Button>
+      //       </View>
+      //     </View>
+      //   </Modal>
+      // </View>
+      Alert.alert("You have reached the end of the list");
+      return;
     }
 
     let index = currentItemIndex;
@@ -105,9 +128,10 @@ export const ShoppingRouteScreen = ({ navigation }) => {
   //console.log(cardData)
 
   return (
+    <ImageBackground source={require('../assets/background.png')} style={styles.backgroundImage}>
     <View style={styles.container}>
 
-      <View style={styles.flatList1}>
+      <View style={routeStyles.flatList1}>
         
         <CardData
             item={currentItem.name}
@@ -121,20 +145,19 @@ export const ShoppingRouteScreen = ({ navigation }) => {
        
 
         <Button
-          // style={styles.bottomButton}
+          style={routeStyles.nextButton}
           onPress={() => {
-
             nextCard();
-            
           }}
+          mode='contained'
         >
-          <Text style={styles.botttomButtonText}>NEXT</Text>
+          <Text style={styles.bottomText}>NEXT</Text>
         </Button>
         
       </View>
 
       <FlatList
-        style={styles.background}
+        style={routeStyles.flatList}
         data={groceryList}
         renderItem={({ item }) => {
           return (
@@ -173,33 +196,17 @@ export const ShoppingRouteScreen = ({ navigation }) => {
           handleStopTimer();
           navigation.navigate("ShoppingFinish");
         }}
-        style={styles.bottomButton}
+        mode='contained'
+        style={routeStyles.bottomButton}
       >
-        <Text style={styles.botttomButtonText}>Finish Shopping</Text>
+      <Text style={styles.bottomText} variant='headlineMedium'>FINISH SHOPPING</Text>
       </Button>
     </View>
+    </ImageBackground>
   );
 };
 
-const styles = StyleSheet.create({
-    
-  container: {
-    flex: 1,
-    backgroundColor: "#F2FFFF",
-    alignItems: "center",
-    width: "100%",
-    height: "100%",
-    paddingTop: 25,
-  },
-  welcomeText: {
-    fontSize: 32,
-  },
-  card: {
-    alignItems: "center",
-    backgroundColor: "white",
-    borderRadius: 8,
-    paddingHorizontal: 42,
-  },
+const routeStyles = StyleSheet.create({
   flatList1: {
     backgroundColor: "white",
     marginTop: 20,
@@ -211,37 +218,8 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 5,
   },
-  background: {
-    backgroundColor: "white",
-    marginTop: 20,
-    width: "75%",
-    height: "25    %",
-    marginBottom: 150,
-    borderRadius: 15,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 5,
-  },
-  botttomButtonText: {
-    fontSize: 18,
-    color: "#0089e3",
-  },
-  bottomText: {
-    color: "white",
-    fontWeight: "bold",
-  },
-  titleText: {
-    marginTop: 10,
-    fontSize: 46,
-  },
-  button: {
-    height: "100%",
-  },
   flatList: {
     backgroundColor: "white",
-    marginTop: 20,
     width: "85%",
     height: "50%",
     borderRadius: 15,
@@ -251,45 +229,10 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 2,
   },
-  buttonstyle: {
-    width: 20,
-  },
-  flatList3: {
-    backgroundColor: "white",
-    marginTop: 5,
-    width: "70%",
-    height: "30%",
-    elevation: 5,
-  },
-  itemName: {
-    flex: 1,
-    marginRight: 10,
-    paddingRight: 10,
-  },
-  inline: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-  },
-  itemPrice: {
-    marginVertical: 5,
-    marginRight: 20,
-    fontSize: 20,
-    height: 44,
-    flexWrap: "wrap",
-    width: "10%",
-  },
-  item: {
-    paddingLeft: 25,
-    paddingTop: 15,
-    padding: 10,
-    fontSize: 20,
-    height: 44,
-    color: "#5A5A5A",
-  },
   bottomContainer: {
     height: "7%",
     borderRadius: 15,
-    backgroundColor: "#D42B14",
+    backgroundColor: '#db601b',
     flexDirection: "row",
     width: "95%",
     alignItems: "center",
@@ -302,38 +245,22 @@ const styles = StyleSheet.create({
     elevation: 2,
     elevation: 5,
   },
-  bottomText: {
-    color: "white",
-    fontWeight: "bold",
+  nextButton: {
+    backgroundColor: '#000000',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,  
+    elevation: 5
   },
-  priceText: {
-    fontSize: 20,
-    color: "#dcdcdc",
-  },
-  currency: {
-    paddingTop: 8,
-    fontSize: 20,
-    color: "#dcdcdc",
-  },
-  price: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 20,
-    padding: 5,
-  },
-
   bottomButton: {
-    marginTop: 20,
-    marginBottom: 25,
-  },
-  trashButton: {
-    paddingTop: 10,
-    marginLeft: 5,
-    marginTop: 10,
-  },
-  trshbttn: {
-    paddingTop: 2,
-    paddingLeft: 2,
-    justifyContent: "space-evenly",
+    marginTop: 30,
+    marginBottom: 50,
+    backgroundColor: '#000000',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,  
+    elevation: 5
   },
 });

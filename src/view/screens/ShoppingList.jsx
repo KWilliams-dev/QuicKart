@@ -227,7 +227,7 @@ export const ShoppingListScreen = ({ navigation }) => {
             itemsContainerStyle={{ maxHeight: 200 }}
             items={inventory}
             textInputProps={{
-              placeholder: "placeholder",
+              placeholder: "Enter item...",
               underlineColorAndroid: "transparent",
               style: {
                 padding: 12,
