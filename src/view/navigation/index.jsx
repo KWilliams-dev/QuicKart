@@ -20,11 +20,11 @@ export default function Navigation() {
 
 function RootNavigator() {
     return(
-        <Stack.Navigator initialRouteName="SignUp">
+        <Stack.Navigator initialRouteName="Home">
             <Stack.Screen name="Home" component={Welcome} options={{headerShown: false}}/>
             <Stack.Screen name="ShoppingList" component={ShoppingListScreen} options={{headerShown: false}}/>
-            <Stack.Screen name="SignIn" component={SignInScreen} options={{title: 'Please Sign In!'}}/>
-            <Stack.Screen name="SignUp" component={SignUpScreen} options={{title: 'Please Sign Up!'}}/>
+            <Stack.Screen name="SignIn" component={SignInScreen} options={{headerShown: false}}/*options={{title: 'Please Sign In!'}}*//>
+            <Stack.Screen name="SignUp" component={SignUpScreen} options={{headerShown: false}}/*options={{title: 'Please Sign Up!'}}*//>
             <Stack.Screen name="ShoppingRoute" component={ShoppingRouteScreen} options={{headerShown: false}} />
             <Stack.Screen name="ShoppingFinish" component={FinishShoppingScreen} options={{headerShown: false}}/>
         </Stack.Navigator>

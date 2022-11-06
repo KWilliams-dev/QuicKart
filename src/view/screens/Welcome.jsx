@@ -188,10 +188,10 @@ export const Welcome = ({navigation}) => {
             {/* If the current slide is the last slide then display the button that navigates to the shopping list page */}
             {/* Else: display the skip and next buttons  */}
             {currentSlideIndex == slides.length - 1 ? (
-                <Button onPress={() => navigation.navigate('ShoppingList')} style={styles.bottomButton}
+                <Button onPress={() => navigation.navigate('SignIn')} style={styles.bottomButton}
                 mode='contained'
-                title = "START SHOPPING">
-                <Text style={styles.bottomText} variant='headlineMedium'>START SHOPPING</Text></Button>   
+                title = "SIGN IN">
+                <Text style={styles.bottomText} variant='headlineMedium'>SIGN IN</Text></Button>   
             ) : (
               <View style={{flexDirection: 'row'}}>
                 <Button
