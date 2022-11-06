@@ -16,23 +16,7 @@ const dijkstra = (map, start, end) => {
      */
 
     const lowestCostNode = (unprocessed) => {
-        let lowestCost = Infinity;
-        let lowestCostNode = null;
-
-        /*
-            Determines which node in unprocessed is the closest to the source node.
-            If a set of multiple nodes are the same distance to the source, then 
-            the lowestCostNode will always be the last node in the set.
-        */
-
-        unprocessed.forEach(node => {
-            if(node.srcDistance < lowestCost) {
-                lowestCost = node.srcDistance;
-                lowestCostNode = node;
-            }
-        });
-
-        return lowestCostNode;
+        return unprocessed.reduce((prev, curr) => prev.srcDistance < curr.srcDistance ? prev : curr);
     };
     
 
