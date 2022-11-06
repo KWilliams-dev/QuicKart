@@ -1,44 +1,74 @@
-/*push startNode onto openList
-while(openList is not empty) {
- currentNode = find lowest f in openList
- if currentNode is final, return the successful path
- push currentNode onto closedList and remove from openList
- foreach neighbor of currentNode {
-     if neighbor is not in openList {
-            save g, h, and f then save the current parent
-            add neighbor to openList
-     }
-     if neighbor is in openList but the current g is better than previous g {
-             save g and f, then save the current parent
-     }
- }*/
+/**
+ * A* Search Algorithm builds ontop of the Dijkstra's Algorithm
+ * The only difference is the addition of a heuristic
+ * @param {Array} graph 
+ * @param {Object} start 
+ * @param {Object} end 
+ * @returns {Array} shortest path using A* search
+ */
 
-const astar = (graph, start, end, allowDiagonals) => {
-    this.graph = graph;
-    this.lastCheckedNode = start;
-    this.openSet = [];
-    this.openset.push(start);
-    this.closedSet = [];
-    this.start = start;
-    this.end = end;
-    this.allowDiagonals = allowDiagonals;
+const astar = (graph, start, end) => {
+    /** What needs to be done:
+     * 
+     * 1.) reference nodes from the map
+     * 2.) create variables
+     * 3.) create heuristic
+     * 4.) implement search algorithm
+     * 
+     * Pseudocode:
 
-    const visualDist = (a, b) => {
-        return dist(a.i, a.j, b.i, b.j);
-    }
-
-    const heuristic = (a,b) => {
-        var d;
-        if (allowDiagonals) {
-            d = dist(a.i, a.j, b.i, b.j);
-        } else {
-            d = abs(a.i - b.i) + abs(a.j - b.j);
+        push start onto openSet
+        while(openSet is not empty) {
+            currentNode = find lowest f in openSet
+            if currentNode is final, return the successful path
+            push currentNode onto closedSet and remove from openSet
+            foreach neighbor of currentNode {
+                if neighbor is not in openSet {
+                save g, h, and f then save the current parent
+                add neighbor to openSet
+            }
+            if neighbor is in openSetbut the current g is better than previous g {
+                save g and f, then save the current parent
+            }
         }
-        return d;
+     */
+    
+    // 1.) refrences nodes from the map
+
+    const map = [...graph];
+
+    const mapNode = (node) => map[node.x][node.y];
+
+    // 2.) create variables
+
+    let openSet = []; //array containing unevaluated grid points
+    let closedSet = []; //array containing completely evaluated grid points
+    let path = [];
+    let neighbors = []; // neighbors of the current grid point
+
+    // 3.) create heuristic
+
+    /** heuristic-- an educated guess of how far it is between two points
+     * can use either Euclidean distance (uses pythagorean theorem) or
+     * Manhattan distance which is the diff. between the x values + diff. between the y values
+     * Manhattan distance shows all the real distances between sources and destination ie.
+     * multiple potential routes
+     * Euclidean distance - is the shortest path between source and destination
+     * for more info: https://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
+     * 
+     * will use Manhattan distance since it is standard for square grids 
+    */
+
+    function heuristic(position0, position1) {
+        let distance = Math.abs(position1.x - position0.x) + Math.abs(position1.y - position0.y);
+  
+        return distance;
     }
+    
+    // 4.) implement search algorithm
 
     // Function to delete element from the array
-    const removeFromArray = (arr, elt) => {
+    this.removeFromArray = function(arr, elt) {
         // Could use indexOf here instead to be more efficient
         for (var i = arr.length - 1; i >= 0; i--) {
             if (arr[i] == elt) {
@@ -46,89 +76,75 @@ const astar = (graph, start, end, allowDiagonals) => {
             }
         }
     }
+    
+    function search() {
+        f = 0; // total cost function
+        g = 0; // cost function from start to the current grid point
+        h = 0; // heuristic estimated cost function from current grid point to the goal
+        this.parent = undefined; // immediate source of the current grid point
 
-        //Run one finding step.
-    //returns 0 if search ongoing
-    //returns 1 if goal reached
-    //returns -1 if no solution
-    const step = () => {
-
-        if (this.openSet.length > 0) {
-
-            // Best next option
-            var winner = 0;
-            for (var i = 1; i < this.openSet.length; i++) {
-                if (this.openSet[i].f < this.openSet[winner].f) {
+        openSet.push(start);
+        while(openSet.length > 0) {
+            // find lowest cost node in openSet
+            let winner  = mapNode(start);
+            for (let i = 0; i < openSet.length; i++) {
+                if(openSet[i] < openSet[winner]) {
                     winner = i;
                 }
-                //if we have a tie according to the standard heuristic
-                if (this.openSet[i].f == this.openSet[winner].f) {
-                    //Prefer to explore options with longer known paths (closer to goal)
-                    if (this.openSet[i].g > this.openSet[winner].g) {
-                        winner = i;
-                    }
-                    //if we're using Manhattan distances then also break ties
-                    //of the known distance measure by using the visual heuristic.
-                    //This ensures that the search concentrates on routes that look
-                    //more direct. This makes no difference to the actual path distance
-                    //but improves the look for things like games or more closely
-                    //approximates the real shortest path if using grid sampled data for
-                    //planning natural paths.
-                    if (!this.allowDiagonals) {
-                        if (this.openSet[i].g == this.openSet[winner].g &&
-                            this.openSet[i].vh < this.openSet[winner].vh) {
-                            winner = i;
-                        }
-                    }
+            }
+            let current = openSet[winner];
+
+            // if current is final, return the successful path
+            if (current === end) {
+                let temp = current;
+                path.push(temp);
+                while (temp.parent) {
+                    path.push(temp.parent);
+                    temp = temp.parent;
                 }
-            }
-            var current = this.openSet[winner];
-            this.lastCheckedNode = current;
 
-            // Did I finish?
-            if (current === this.end) {
-                console.log("DONE!");
-                return 1;
+                return path.reverse();
             }
 
-            // Best option moves from openSet to closedSet
-            this.removeFromArray(this.openSet, current);
-            this.closedSet.push(current);
+            // remove current from openSet
+            openSet.slice(winner, 1);
+            // add current to closedSet
+            closedSet.push(current);
 
-            // Check all the neighbors
-            var neighbors = current.getNeighbors();
+            neighbors = mapNode(current.neighbors);
 
-            for (var i = 0; i < neighbors.length; i++) {
-                var neighbor = neighbors[i];
+            for (let i = 0; i < neighbors.length; i++) {
+                let neighbor = neighbors[i];
+                
+                // neighbors of current node
+                if (!closedSet.includes(neighbor)) {
+                    let possibleG = current.g + 1;
 
-                // Valid next spot?
-                if (!this.closedSet.includes(neighbor)) {
-                    // Is this a better path than before?
-                    var tempG = current.g + this.heuristic(neighbor, current);
+                    // if neighbor is not in openset save g, h, and f 
+                    // then save the current parent
 
-                    // Is this a better path than before?
-                    if (!this.openSet.includes(neighbor)) {
-                        this.openSet.push(neighbor);
-                    } else if (tempG >= neighbor.g) {
-                        // No, it's not a better path
+                    if (!openSet.includes(neighbor)) {
+                        neighbor.g = possibleG;
+                        neighbor.h = heuristic(neighbor, end);
+                        neighbor.f = neighbor.g + neighbor.h;
+                        neighbor.parent = current;
+                        // add neighbor to openset
+                        openSet.push(neighbor);
+                    } else if (possibleG >= neighbor.g) {
+                        // if neighbor is in openSet but the current g is better than 
+                        // previous g { save g and f, then save the current parent}
+                        neighbor.g = possibleG;
+                        neighbor.h = heuristic(neighbor, end);
+                        neighbor.f = neighbor.g + neighbor.h;
+                        neighbor.parent = current;
                         continue;
                     }
-
-                    neighbor.g = tempG;
-                    neighbor.h = this.heuristic(neighbor, end);
-                    if (!allowDiagonals) {
-                        neighbor.vh = this.visualDist(neighbor, end);
-                    }
-                    neighbor.f = neighbor.g + neighbor.h;
-                    neighbor.previous = current;
                 }
-
             }
-            return 0;
-        } else {
-            console.log('no solution');
-            return -1;
         }
+         // no solution by default
+         return [];
     }
+    console.log(search());
 }
-export default astar;
+module.exports = astar;
