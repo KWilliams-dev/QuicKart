@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TextInput, Pressable, Alert } from 'react-native'
+import { View, Text, TextInput, Pressable, Alert, ImageBackground } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation, gql } from '@apollo/client';
+import { styles } from '../styles/ShoppingList.styles';
 
 const SIGN_IN_MUTATION = gql`
 mutation signIn($email: String!, $password: String!) {
@@ -47,7 +48,9 @@ const SignInScreen = ({navigation}) => {
   }
 
   return (
-    <View style={{ padding: 20 }}>
+    <ImageBackground source={require('../assets/background.png')} style={styles.backgroundImage}>
+    <View style={{ padding: 20, marginTop: 30 }}>
+    <Text style={styles.welcomeText}>Sign In</Text>
       <TextInput 
         placeholder="aoliver14@ggc.edu"
         value={email}
@@ -76,7 +79,7 @@ const SignInScreen = ({navigation}) => {
         onPress={onSubmit} 
         disabled={loading}
         style={{ 
-          backgroundColor: '#e33062',
+          backgroundColor: '#000000',
           height: 50,
           borderRadius: 5,
           alignItems: 'center',
@@ -114,6 +117,7 @@ const SignInScreen = ({navigation}) => {
         </Text>
       </Pressable>
     </View>
+    </ImageBackground>
   )
 }
 
