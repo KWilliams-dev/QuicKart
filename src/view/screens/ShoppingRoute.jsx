@@ -13,7 +13,6 @@ import CardData from "../components/CardCarousel/CardData/index";
 import { Button, Text } from "react-native-paper";
 import { styles } from '../styles/ShoppingList.styles';
 
-
 export const ShoppingRouteScreen = ({ navigation }) => {
   //import { white } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 

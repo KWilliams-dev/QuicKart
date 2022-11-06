@@ -2,7 +2,14 @@
 const { ApolloServer, gql } = require('apollo-server');
 const { MongoClient, ObjectID } = require('mongodb');
 
+const graph = require('../routing/graph');
+const dijkstra = require('../routing/dijkstra');
+
 const dotenv = require('dotenv');
+const Db = require('mongodb/lib/db');
+const { assertValidSDLExtension } = require('graphql/validation/validate');
+const astar = require('../routing/astar');
+
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 dotenv.config();
@@ -40,7 +47,7 @@ const typeDefs = gql`
 
       getMap(id: ID!): StoreMap
 
-      getAllMapCoords(id: ID!): [[Int]]
+      getMapElements(id: ID!): [[Int]]  #TESTING PURPOSES ONLY
     }
 
     type Mutation {
@@ -186,19 +193,37 @@ const resolvers = {
       return await db.collection('Map').findOne({ _id: ObjectID(id) });
     },
   
-    getAllMapCoords: async (_, { id }, { db}) => {
+      // Testing output for Dijkstra algorithm
+      // Delete after testing
+    getMapElements: async (_, { id }, { db}) => {
       const map = await db.collection('Map').findOne({ _id: ObjectID(id) })
       if(!map) {
-        throw new Error('Map not found');
+          throw new Error('Map not found');
       }
-      const data = [];
-      for(let x = 0; x < width; x++) {
-        for(let y = 0; y < length; y++) {
-          data.push([x,y]);
-        }        
-      }
-      return data;
-    },
+      console.log(graph(map))
+      const source = { x: 15, y: 15 }
+      const destination = { x: 0, y: 0 }
+      const shortestPath = dijkstra(graph(map), source, destination);
+
+      let count = 1;
+      shortestPath.forEach(node => {
+        console.log(`Step ${count} → (${node.x},${node.y})`)
+        count++;
+      });
+
+      
+      // const start = { x: 27, y: 27 }
+      // const end = { x: 25, y: 15 }
+      // const shortestPath2 = astar(graph(map), start, end);
+
+      // // Testing output for A* Search
+      // let count2 = 1;
+      // shortestPath2.forEach(node => {
+      //   console.log(`Step ${count2} -> (${node.x},${node.y})`)
+      //   count2++;
+      // });
+      
+    }
 
   },
 
@@ -360,27 +385,6 @@ const resolvers = {
     validateObject(aisles, "Aisle")
     validateObject(checkoutLanes, "Checkout lane")
     validateObject(entrances, "Entrance")
-
-    // aisles.forEach(aisle => {
-    //   if(!(validateRange(aisle.xStartVal, aisle.xEndVal, 0, width)
-    //       && validateRange(aisle.yStartVal, aisle.yEndVal, 0, length))) { 
-    //         throw new Error(`Aisle dimensions exceed map dimensions`)
-    //       }
-    // });
-
-    // checkoutLanes.forEach(cLane => {
-    //   if(!(validateRange(cLane.xStartVal, cLane.xEndVal, 0, width)
-    //       && validateRange(cLane.yStartVal, cLane.yEndVal, 0, length))) { 
-    //         throw new Error(`Checkout lane dimensions exceed map dimensions`)
-    //       }
-    // });
-
-    // entrances.forEach(door => {
-    //   if(!(validateRange(door.xStartVal, door.xEndVal, 0, width)
-    //       && validateRange(door.yStartVal, door.yEndVal, 0, length))) { 
-    //         throw new Error(`Entrance dimensions exceed map dimensions`)
-    //       }
-    // });
     
     const newMap = {
       title,
