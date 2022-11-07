@@ -16,6 +16,7 @@ import CardData from "../components/CardCarousel/CardData/index";
 import { Button, Text } from "react-native-paper";
 import { styles } from "../styles/ShoppingList.styles";
 import { CheckBox } from "../components/Checkbox";
+import { id } from "../jest.config";
 
 export const ShoppingRouteScreen = ({ navigation }) => {
   //import { white } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
@@ -32,9 +33,10 @@ export const ShoppingRouteScreen = ({ navigation }) => {
   const [isChecked, setCheck] = useState(false);
   const [currentItem, setCurrentItem] = useState(groceryList[0]);
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
-
+  const [id, setId] = useState(0);
+  const [isActive, setActive]=useState(false);
+  
   const dispatch = useDispatch();
-
   const length = groceryList.length - 1;
 
   let timer;
@@ -91,6 +93,12 @@ export const ShoppingRouteScreen = ({ navigation }) => {
     index += 1;
     setCurrentItemIndex(index);
     setCurrentItem(groceryList[index]);
+    if(id < currentItemIndex ){
+      setId(id++);
+  setActive(true);
+  }else{
+    setActive(false);
+  }
   };
 
   //console.log(cardData)
@@ -125,8 +133,11 @@ export const ShoppingRouteScreen = ({ navigation }) => {
 
           <Button
             onPress={() => {
+              
               nextCard();
-              setCheck(!isChecked);
+    
+          
+
             }}
             style={routeStyles.nextButton}
             mode="contained"
@@ -143,7 +154,7 @@ export const ShoppingRouteScreen = ({ navigation }) => {
             return (
               <View style={styles.inline}>
                 <View style={routeStyles.checkbox}>
-                  <CheckBox isChecked={isChecked} />
+                  <CheckBox isChecked={isActive}  />
                 </View>
 
                 <View style={styles.itemName}>

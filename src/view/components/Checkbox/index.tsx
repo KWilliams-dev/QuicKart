@@ -5,11 +5,9 @@ import{Pressable} from "react-native";
 
 
 
-interface CheckBoxProps { 
-    
+interface CheckBoxProps {   
     isChecked: boolean,
     onPress:()=>void,
- 
    
 }
 
