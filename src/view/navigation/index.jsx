@@ -20,7 +20,7 @@ export default function Navigation() {
 
 function RootNavigator() {
     return(
-        <Stack.Navigator initialRouteName="SignUp">
+        <Stack.Navigator initialRouteName="Home">
             <Stack.Screen name="Home" component={Welcome} options={{headerShown: false}}/>
             <Stack.Screen name="ShoppingList" component={ShoppingListScreen} options={{headerShown: false}}/>
             <Stack.Screen name="SignIn" component={SignInScreen} options={{headerShown: false}}/*options={{title: 'Please Sign In!'}}*//>
