@@ -85,7 +85,7 @@ learned to begin building QuickKart.
 - YouTube tutorial Part 2 (Frontend): https://www.youtube.com/watch?v=GFQDJlVEXRg&list=RDCMUCYSa_YLoJokZAwHhlwJntIA&index=1
 
 ## Usage
-This app is intended to be used by consumers who enjoy shopping in a physical grocery store but don't enjoy how long it takes. Our app is based off a store map with coordinates and each item in inventory belongs to a corrdinate on the map. Our algorithm uses the coordinates to determine the fastest shopping route the user can take, starting from the entrance. Once calculated, we display those items to the user in a user friendly manner.
+This app is intended to be used by consumers who enjoy shopping in a physical grocery store but don't enjoy how long it takes. Our app is based off a store map with coordinates and each item in inventory belongs to a coordinate on the map. Our algorithm uses the coordinates to determine the fastest shopping route the user can take, starting from the entrance. Once calculated, we display those items to the user in a user friendly manner.
 
 ![image](https://user-images.githubusercontent.com/74102531/200415550-4f204e93-7065-4d8c-a432-bf2579acda9b.png)
 
