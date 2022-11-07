@@ -93,11 +93,9 @@ export const ShoppingRouteScreen = ({ navigation }) => {
     index += 1;
     setCurrentItemIndex(index);
     setCurrentItem(groceryList[index]);
-    if(id < currentItemIndex ){
+    if(id < currentItem ){
       setId(id++);
   setActive(true);
-  }else{
-    setActive(false);
   }
   };
 
@@ -135,7 +133,7 @@ export const ShoppingRouteScreen = ({ navigation }) => {
             onPress={() => {
               
               nextCard();
-    
+              setActive(true);
           
 
             }}
