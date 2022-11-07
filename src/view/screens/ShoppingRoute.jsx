@@ -29,9 +29,9 @@ export const ShoppingRouteScreen = ({ navigation }) => {
 
   const [seconds, setSeconds] = useState(0);
 
-  const [modalVisible, setModalVisible] = useState(false);
-
   const { total } = useSelector((state) => state.totalReducer);
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   const [totalPrice, setPrice] = useState(0.0);
 
@@ -90,12 +90,13 @@ export const ShoppingRouteScreen = ({ navigation }) => {
   const nextCard = () => {
 
     if(currentItemIndex === length){
+      // setModalVisible(true);
+      // return(
       // <View style={styles.information}>
       //   <Modal
       //   animationType="slide"
       //   transparent={true}
-      //   visible={modalVisible}
-      //   >
+      //   visible={modalVisible}>
       //     {/* This is the info inside the pop-up window */}
       //     <View style={styles.information}>
       //       <View style={styles.modalView}>
@@ -111,6 +112,7 @@ export const ShoppingRouteScreen = ({ navigation }) => {
       //     </View>
       //   </Modal>
       // </View>
+      // );
       Alert.alert("You have reached the end of the list");
       return;
     }
@@ -142,7 +144,6 @@ export const ShoppingRouteScreen = ({ navigation }) => {
 
       <View style={{ marginVertical: 20, flexDirection: "row" }}>
        
-
         <Button
           style={routeStyles.nextButton}
           onPress={() => {
