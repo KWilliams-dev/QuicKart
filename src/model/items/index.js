@@ -39,6 +39,7 @@ const typeDefs = gql`
       items:[Item!]!
 
       #gets a specific item by its ID
+
       getItem (id:ID!):Item
 
       getInventory (id: Int!): [Item]!
@@ -57,6 +58,7 @@ const typeDefs = gql`
 
       #creates an item
       createItem(name: String!,aisle:String!,bay:String!,price:Float!,xVal:Int!,yVal:Int!): Item!
+      deleteItem(id: ID!):Boolean!
 
       createAisle(
         number: Int!
@@ -284,6 +286,14 @@ const resolvers = {
       const result = await db.collection('Item').insert(newItem);
       return result.ops[0];
       },
+
+      deleteItem: async(_, {id}, {db}) => {
+  
+        //TODO only collaboratrs of this task should be able to deltete
+        await db.collection('Item').removeOne({_id: ObjectID(id) }); 
+  
+        return true;
+        },
 
     createAisle: async(_, { number, name, xStartVal, xEndVal, yStartVal, yEndVal }, { db }) => {
 
