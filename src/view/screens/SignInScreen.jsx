@@ -98,7 +98,7 @@ const SignInScreen = ({navigation}) => {
       </Pressable>
 
       <Pressable 
-        onPress={() => {console.warn('navigate'); navigation.navigate('SignUp')}} 
+        onPress={() => {navigation.navigate('SignUp')}} 
         style={{ 
           height: 50,
           borderRadius: 5,

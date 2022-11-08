@@ -28,9 +28,9 @@ mutation signUp($email: String!, $password: String!, $name: String!) {
 `;
 
 const SignUpScreen = ({navigation}) => {
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState();
+  const [name, setName] = useState();
+  const [password, setPassword] = useState();
 
   //const navigation = useNavigation();
 
