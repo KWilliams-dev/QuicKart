@@ -111,8 +111,8 @@ The team used JIRA as our project progess tracking tool alongside Discord and Mi
    - _**Testing Lead**_
 5. Add Name Here :bar_chart:
     - _**Add Role or Roles**_
-6. Add Name Here :memo:
-    - _**Add Role or Roles**_
+6. TreMya Sheats :mag:
+    - _**Doucumentation Lead**_
 7. Add Name Here :mag:
     - _**Add Role or Roles**_
 
