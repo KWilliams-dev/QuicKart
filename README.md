@@ -4,9 +4,14 @@
 ![languageCount](https://img.shields.io/github/languages/count/KWilliams-dev/QuicKart?label=language%20count)
 
 # QuicKart
-This is the GitHub repo for the team working on the QuicKart mobile android application. The goal is to enable users to enhance their shopping experience with an app that can give them the fastest route to their items within the store.
+This GitHub repository belongs to the 'RapidCode-Innovators' team, currently working on the QuicKart mobile android application. Our primary goal is to revolutionize the shopping experience for users by providing them with a powerful app that offers two key benefits:
 
-The project repository can be found [here](https://github.com/KWilliams-dev/QuicKart).
+**1. Optimized Shopping Routes:**
+     - Provide users the fastest route to their items within the store.
+**2. Time-Saving Features:**
+     - Beyond just navigation, our app incorporates an array of innovative features designed to reduce overall shopping time.
+       
+The project repository can be found [here](https://github.com/ctbernard/QuicKart-RapidCode-Innovators).
 
 ## Build Instructions
  
@@ -94,11 +99,21 @@ This app is intended to be used by consumers who enjoy shopping in a physical gr
 The team used JIRA as our project progess tracking tool alongside Discord and Microsft Teams as our primary communication tool and meeting platform.
 
 ## Authors
-1. ReAnn Hollins :alien: - **Team Manager** - **UX/UI Lead**
-2. Khamilah Nixon :page_with_curl: - **Documentation Lead**
-3. Benjamin Caron & Christopher Bernard :fire: - **Code Architect**
-4. Christopher Bernard 🕴️ - **Team Manager**
-5. Dion Del Rosario :hatching_chick: - **Testing Lead**
-6. Raven Gardner :seedling: - **UX/UI Lead**
+1. ReAnn Hollins 🕴️:sparkler:
+   - **Team Manager**
+   - **UX/UI Lead**
+2. Benjamin Caron :computer:
+   - **Code Architect**
+3. Christopher Bernard 🕴️:computer:
+   - **Team Manager**
+   - **Code Architect**
+4. Dion Del Rosario :mag:
+   - **Testing Lead**
+5. Add Name Here :bar_chart: :computer:
+    - **Add Role or Roles**
+6. Add Name Here :memo:
+    - **Add Role or Roles**
+7. Add Name Here :mag:
+    - **Add Role or Roles**
 
 ## License
