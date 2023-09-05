@@ -6,10 +6,10 @@
 # QuicKart
 This GitHub repository belongs to the 'RapidCode-Innovators' team, currently working on the QuicKart mobile android application. Our primary goal is to revolutionize the shopping experience for users by providing them with a powerful app that offers two key benefits:
 
-**1. Optimized Shopping Routes:**
-     - Provide users the fastest route to their items within the store.
-**2. Time-Saving Features:**
-     - Beyond just navigation, our app incorporates an array of innovative features designed to reduce overall shopping time.
+**1. Optimized Shopping Routes:**<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Provide users the fastest route to their items within the store.<br>
+**2. Time-Saving Features:**<br>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Beyond just navigation, our app incorporates an array of innovative features designed to reduce overall shopping time.
        
 The project repository can be found [here](https://github.com/ctbernard/QuicKart-RapidCode-Innovators).
 
@@ -99,21 +99,21 @@ This app is intended to be used by consumers who enjoy shopping in a physical gr
 The team used JIRA as our project progess tracking tool alongside Discord and Microsft Teams as our primary communication tool and meeting platform.
 
 ## Authors
-1. ReAnn Hollins 🕴️:sparkler:
-   - **Team Manager**
-   - **UX/UI Lead**
+1. ReAnn Hollins 🕴️
+   - _**Team Manager**_
+   - _**UX/UI Lead**_
 2. Benjamin Caron :computer:
-   - **Code Architect**
-3. Christopher Bernard 🕴️:computer:
-   - **Team Manager**
-   - **Code Architect**
+   - _**Code Architect**_
+3. Christopher Bernard 🕴️
+   - _**Team Manager**_
+   - _**Code Architect**_
 4. Dion Del Rosario :mag:
-   - **Testing Lead**
-5. Add Name Here :bar_chart: :computer:
-    - **Add Role or Roles**
+   - _**Testing Lead**_
+5. Add Name Here :bar_chart:
+    - _**Add Role or Roles**_
 6. Add Name Here :memo:
-    - **Add Role or Roles**
+    - _**Add Role or Roles**_
 7. Add Name Here :mag:
-    - **Add Role or Roles**
+    - _**Add Role or Roles**_
 
 ## License
