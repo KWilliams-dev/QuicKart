@@ -96,8 +96,8 @@ The team used JIRA as our project progess tracking tool alongside Discord and Mi
 ## Authors
 1. Abdullahi Munye :alien: - **Data Modeler**
 2. Khamilah Nixon :page_with_curl: - **Documentation Lead**
-3. Benjamin Caron :fire: - **Code Architect**
-4. Alan Oliver 🕴️ - **Team Manager**
+3. Benjamin Caron & Christopher Bernard :fire: - **Code Architect**
+4. Christopher Bernard 🕴️ - **Team Manager**
 5. Dion Del Rosario :hatching_chick: - **Testing Lead**
 6. Raven Gardner :seedling: - **UX/UI Lead**
 
