@@ -94,7 +94,7 @@ This app is intended to be used by consumers who enjoy shopping in a physical gr
 The team used JIRA as our project progess tracking tool alongside Discord and Microsft Teams as our primary communication tool and meeting platform.
 
 ## Authors
-1. Abdullahi Munye :alien: - **Data Modeler**
+1. ReAnn Hollins :alien: - **Team Manager** - **UX/UI Lead**
 2. Khamilah Nixon :page_with_curl: - **Documentation Lead**
 3. Benjamin Caron & Christopher Bernard :fire: - **Code Architect**
 4. Christopher Bernard 🕴️ - **Team Manager**
