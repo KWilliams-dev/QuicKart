@@ -109,11 +109,13 @@ The team used JIRA as our project progess tracking tool alongside Discord and Mi
    - _**Code Architect**_
 4. Dion Del Rosario :mag:
    - _**Testing Lead**_
-5. Add Name Here :bar_chart:
-    - _**Add Role or Roles**_
-6. TreMya Sheats :mag:
+5. Anthony Wallace 
+   **Database modelist**
+   **Programmer**
+    
+7. TreMya Sheats :mag:
     - _**Documentation Lead**_
-7. Add Name Here :mag:
+8. Add Name Here :mag:
     - _**Add Role or Roles**_
 
 ## License
