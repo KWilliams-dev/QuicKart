@@ -114,7 +114,6 @@ The team used JIRA as our project progess tracking tool alongside Discord and Mi
 6. Anthony Wallace :bar_chart:
     - _**Data Modelist**_
     - _**Code Architect**_
-7. Add Name Here :mag:
-    - _**Add Role or Roles**_
-
+7. Luke Akridge
+    - _**Testing Lead**_
 ## License
