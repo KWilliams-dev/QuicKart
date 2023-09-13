@@ -1,0 +1,57 @@
+quickart/
+│
+├── backend/
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   ├── com/
+│   │   │   │   │   ├── quickart/
+│   │   │   │   │   │   ├── controllers/
+│   │   │   │   │   │   │   ├── UserController.java
+│   │   │   │   │   │   │   ├── ProductController.java
+│   │   │   │   │   │   ├── services/
+│   │   │   │   │   │   │   ├── UserService.java
+│   │   │   │   │   │   │   ├── ProductService.java
+│   │   │   │   │   │   ├── models/
+│   │   │   │   │   │   │   ├── User.java
+│   │   │   │   │   │   │   ├── Product.java
+│   │   │   │   │   │   ├── repositories/
+│   │   │   │   │   │   │   ├── UserRepository.java
+│   │   │   │   │   │   │   ├── ProductRepository.java
+│   │   │   │   ├── resources/
+│   │   │   │   │   ├── application.properties
+│   │   │   │   ├── test/
+│   │   │   │   │   ├── java/
+│   │   │   │   │   │   ├── com/
+│   │   │   │   │   │   │   ├── quickart/
+│   │   │   │   │   │   │   │   ├── UserControllerTest.java
+│   │   │   │   │   │   │   │   ├── ProductServiceTest.java
+│   │   │   │   ├── Dockerfile
+│   │   ├── target/
+│   │   ├── Dockerfile
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── ProductList.js
+│   │   │   ├── ShoppingCart.js
+│   │   ├── App.js
+│   │   ├── index.js
+│   │   ├── index.css
+│
+├── database/
+│   ├── migrations/
+│   │   ├── 20230912000000_create_users_table.sql
+│   │   ├── 20230912000001_create_products_table.sql
+│   ├── seeds/
+│   │   ├── seed_users.sql
+│   │   ├── seed_products.sql
+│
+├── config/
+│   ├── application.properties
+│   ├── docker-compose.yml
+│   ├── nginx.conf
+│
+├── .gitignore
+├── README.md
+├── Jenkinsfile

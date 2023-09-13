@@ -1,0 +1,24 @@
+   +------------------------------------+
+   |        Quickart Software           |
+   |                                    |
+   |   +------------+    +----------+   |
+   |   |  FrontEnd  |    |  BackEnd |   |
+   |   | (frontend) |    | (backend)|   |
+   |   +------------+    +----------+   |
+   |    |              |                |
+   |    v              v                |
+   |   React        Microservices       |
+   |   Components   (Spring Boot)       |
+   |                                    |
+   |   +------------+                  |
+   |   |  Database  |                  |
+   |   | (database) |                  |
+   |   +------------+                  |
+   |    |              |               |
+   |    v              |               |
+   |   MongoDB         |               |
+   |   Data            |               |
+   |   (Migration/     |               |
+   |    Seeding)      |               |
+   |                                    |
+   +------------------------------------+
