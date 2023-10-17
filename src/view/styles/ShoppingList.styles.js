@@ -49,6 +49,8 @@ export const styles = StyleSheet.create({
     inline:{
         flexDirection:"row",
         justifyContent:'space-evenly',
+        borderBottomWidth: 1,           // Add a bottom border
+        borderColor: '#ccc',            // Border color
     },
     itemPrice:{
         marginVertical:5,
@@ -62,7 +64,7 @@ export const styles = StyleSheet.create({
         paddingLeft: 25,
         paddingTop: 15,
         padding: 10,
-        fontSize: 20,
+        fontSize: 16, // fixes clipping issues within shopping list
         height: 44,
         color: '#5A5A5A',
     },
@@ -86,8 +88,8 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     priceText: {
-        fontSize: 20,
-        color:"#dcdcdc",
+        fontSize: 16, // made snaller
+        color:"#a9a9a9", // changed to darker color
     },
     currency:{
         paddingTop:8,
@@ -178,9 +180,9 @@ export const styles = StyleSheet.create({
     },
 
     trashButton: {
-        paddingTop:10,
+        paddingTop:5,
         marginLeft:5,
-        marginTop: 10
+        marginTop: 5
         
     },
     trshbttn:{
