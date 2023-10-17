@@ -52,7 +52,7 @@ const Slide = ({item}) => {
         <Image
             source={item?.image}
             // image takes up 75% of the window for the slides
-            style={{height: '75%', width, resizeMode: 'contain'}}
+            style={{height: '65%', width, resizeMode: 'contain'}} // changing height to 65% fixed the clipping issue in welcome screens 2 & 3
         />
         <View>
           <Text style={styles.welcomeText}>{item?.title}</Text>
@@ -62,7 +62,8 @@ const Slide = ({item}) => {
   } else {
     return (
       // text takes up all the space in the window for the slides
-      <View style={{alignItems: 'center', margin: 50, marginTop: 80, justifyContent: 'space-evenly', height: '100%'}}>
+      // changing margin top to 55 fixed the clipping issue within welcome screen one.
+      <View style={{alignItems: 'center', margin: 50, marginTop: 55, justifyContent: 'space-evenly', height: '90%'}}>
           <Text style={[styles.welcomeText]}>{item?.title}</Text>
       </View>
     )
@@ -73,7 +74,7 @@ const Slide = ({item}) => {
  * this functional component is the 'i' icon on the screen at the top right
  * holds the information from the original home screen
 */
-const Information = () => {
+const Information = () => { // Get rid of this (REANN)
   // useState for the popup window (Modal)
   // useState is a react hook that allows us to add React state to this functional component
   // is the modal visible yes or no? initially the answer is no
