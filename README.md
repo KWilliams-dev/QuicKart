@@ -41,6 +41,10 @@ npm install
 cd src/model
 npm install
 ```
+<strong>6.</strong> Update Expo Go using Git Bash
+```
+npm install expo@^48.0.0
+```
 - ### <em><strong>Note</strong></em>
 &nbsp; &nbsp; &nbsp; After completing these steps, the project will not be running but you will have node_modules directory built and the dependencies that the
 project relies on ready to go.
