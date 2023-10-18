@@ -4,9 +4,14 @@
 ![languageCount](https://img.shields.io/github/languages/count/KWilliams-dev/QuicKart?label=language%20count)
 
 # QuicKart
-This is the GitHub repo for the team working on the QuicKart mobile android application. The goal is to enable users to enhance their shopping experience with an app that can give them the fastest route to their items within the store.
+This GitHub repository belongs to the 'RapidCode-Innovators' team, currently working on the QuicKart mobile android application. Our primary goal is to revolutionize the shopping experience for users by providing them with a powerful app that offers two key benefits:
 
-The project repository can be found [here](https://github.com/KWilliams-dev/QuicKart).
+**1. Optimized Shopping Routes:**<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Provide users the fastest route to their items within the store.<br>
+**2. Time-Saving Features:**<br>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Beyond just navigation, our app incorporates an array of innovative features designed to reduce overall shopping time.
+       
+The project repository can be found [here](https://github.com/ctbernard/QuicKart-RapidCode-Innovators).
 
 ## Build Instructions
  
@@ -35,6 +40,10 @@ npm install
 ```
 cd src/model
 npm install
+```
+<strong>6.</strong> Update Expo Go using Git Bash
+```
+npm install expo@^48.0.0
 ```
 - ### <em><strong>Note</strong></em>
 &nbsp; &nbsp; &nbsp; After completing these steps, the project will not be running but you will have node_modules directory built and the dependencies that the
@@ -94,11 +103,21 @@ This app is intended to be used by consumers who enjoy shopping in a physical gr
 The team used JIRA as our project progess tracking tool alongside Discord and Microsft Teams as our primary communication tool and meeting platform.
 
 ## Authors
-1. Abdullahi Munye :alien: - **Data Modeler**
-2. Khamilah Nixon :page_with_curl: - **Documentation Lead**
-3. Kyle Williams :fire: - **Code Architect**
-4. Alan Oliver 🕴️ - **Team Manager**
-5. Joe Nsengiyumva :hatching_chick: - **Testing Lead**
-6. Raven Gardner :seedling: - **UX/UI Lead**
-
+1. ReAnn Hollins 🕴️
+   - _**Team Manager**_
+   - _**UX/UI Lead**_
+2. Benjamin Caron :computer:
+   - _**Code Architect**_
+3. Christopher Bernard 🕴️
+   - _**Team Manager**_
+   - _**Code Architect**_
+4. Dion Del Rosario :mag:
+   - _**Testing Lead**_
+5. TreMya Sheats 📝
+    - _**Documentation Lead**_
+6. Anthony Wallace :bar_chart:
+    - _**Data Modelist**_
+    - _**Code Architect**_
+7. Luke Akridge :mag:
+    - _**Testing Lead**_
 ## License
