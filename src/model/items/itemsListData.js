@@ -1,4 +1,7 @@
- const items = [{
+const startTimer = require('./Timer'); // Update the path based on your project structure
+const items = require('./ItemsListData');
+
+const items = [{
     id: '000',
     name: 'apple',
     aisle: '1',
@@ -235,3 +238,7 @@
   ]
   module.exports =items
 
+startTimer(() => {
+  // Perform actions you want to do periodically
+  console.log('Timer callback - updating items or performing other actions');
+}, 5000);
