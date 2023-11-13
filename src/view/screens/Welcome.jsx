@@ -32,7 +32,7 @@ const slides = [
   {
     id: '3',
     image: require('../assets/cards.png'),
-    title: '... and we’ll \nlead the way!'
+    title: '... and we’ll \nlead the \nway!'
   }
 ]
 
@@ -52,9 +52,9 @@ const Slide = ({item}) => {
         <Image
             source={item?.image}
             // image takes up 75% of the window for the slides
-            style={{height: '75%', width, resizeMode: 'contain'}}
+            style={{height: '70%', width, margin: -8, resizeMode: 'contain'}} // changing height to 65% fixed the clipping issue in welcome screens 2 & 3
         />
-        <View>
+        <View style={{marginTop: -85, height: '80%'}}>
           <Text style={styles.welcomeText}>{item?.title}</Text>
         </View>
       </View>
@@ -62,60 +62,12 @@ const Slide = ({item}) => {
   } else {
     return (
       // text takes up all the space in the window for the slides
-      <View style={{alignItems: 'center', margin: 50, marginTop: 80, justifyContent: 'space-evenly', height: '100%'}}>
+      // changing margin top to 55 fixed the clipping issue within welcome screen one.
+      <View style={{alignItems: 'center', margin: 65, marginTop: 40, justifyContent: 'space-evenly', height: '90%'}}>
           <Text style={[styles.welcomeText]}>{item?.title}</Text>
       </View>
     )
   }
-};
-
-/**
- * this functional component is the 'i' icon on the screen at the top right
- * holds the information from the original home screen
-*/
-const Information = () => {
-  // useState for the popup window (Modal)
-  // useState is a react hook that allows us to add React state to this functional component
-  // is the modal visible yes or no? initially the answer is no
-  const [modalVisible, setModalVisible] = useState(false);
-  return (
-    /**  Modal is a component that allows us to create custom "pop-up" windows
-     * using animationType prop for that smooth sliding effect
-     * transparent prop gives the window a transparent background
-     * when user clicks the 'i' icon the useState of modalVisible is set to true (can see window)
-     * 
-     */
-    <View style={styles.information}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-      >
-        {/* This is the info inside the pop-up window */}
-        <View style={styles.information}>
-          <View style={styles.modalView}>
-            <Text style={{fontWeight: 'bold'}}>Team QuickKart</Text>
-            <Text style={styles.modalText}>This app is the result of an idea from Sasa Mitrovich that landed in the hands of six awesome engineers who built the foundations.
-              Abdullahi Munye (Data Modeler), Khamilah Nixon (Documentation Lead), Kyle Williams (Code Architect), Joe Nsengiyumva (Testing Lead),
-              Raven Gardner (UI/UX Lead), Alan Oliver Santiesteban (Team Manager)</Text>
-              {/* when user clicks 'OK' the pop-up window disapeers */}
-            <Button
-              onPress={() => setModalVisible(!modalVisible)}
-              style={styles.bottomButton}
-            >
-             <Text style={styles.bottomText}>OK</Text>
-            </Button>
-          </View>
-        </View>
-      </Modal>
-      {/* When the user clicks the information 'i' icon the popup window is shown */}
-      <Button
-        icon="information-outline"
-        onPress={() => setModalVisible(true)}
-      >
-      </Button>
-    </View>
-  );
 };
 
 /**
@@ -159,23 +111,25 @@ export const Welcome = ({navigation}) => {
             height: height * 0.25,
             justifyContent: 'space-between',
             paddingHorizontal: 20,
+            alignItems: 'center', // Center buttons vertically
           }}>
           {/* Indicator container */}
           <View
             style={{
               flexDirection: 'row',
               justifyContent: 'center',
-              marginTop: 20,
+              marginTop: 60, // ReAnn
             }}>
-            {/* The indicator/ the three black lines */}
+            {/* The indicator/ the three circles (ReAnn)*/} 
             {slides.map((_, index) => (
               <View
-                key={index}
-                style={[
-                  welcomeStyles.indicator,
-                  currentSlideIndex == index && {
-                    backgroundColor: COLORS.black,
-                    width: 25,
+              key={index}
+              style={[
+                welcomeStyles.circleIndicator,
+                {
+                  backgroundColor: currentSlideIndex === index ? '#50A060' : 'black',
+                  width: currentSlideIndex === index ? 25 : 25,
+                  borderColor: currentSlideIndex === index ? '#50A060' : 'black' 
                   },
                 ]}
               />
@@ -183,7 +137,7 @@ export const Welcome = ({navigation}) => {
           </View>
   
           {/* Shows the buttons */}
-          <View style={{marginBottom: 30}}>
+          <View style={{marginLeft: 10, marginBottom: 30}}>
             {/* Ternary operator which is basically an if-else statement */}
             {/* If the current slide is the last slide then display the button that navigates to the shopping list page */}
             {/* Else: display the skip and next buttons  */}
@@ -231,16 +185,15 @@ export const Welcome = ({navigation}) => {
     return(
       // the ImageBackground allows us to add a background image to the screen
       // background-image was deprecated
-        <ImageBackground source={require('../assets/welcomeBG.png')} style={styles.backgroundImage}>
+        <ImageBackground source={require('../assets/welcomeBG2.png')} style={styles.backgroundImage}>
 
         {/* SafeAreaView component renders everything that was created onto the phone screen */}
         <SafeAreaView style={styles.container}>
           {/* places information, a flatlist (scrollable list) for the slides, and the footer (the black lines) */}
-            <Information/>
             <FlatList 
                ref={ref} // renders once but allows us to see different views given by useState hooks
                onMomentumScrollEnd={updateCurrentSlideIndex} // allows us to scroll left and right
-               contentContainerStyle={{height: height * 0.55}} // takes up 55% of the screen
+               contentContainerStyle={{height: height * 0.80}} // takes up 80% of the screen
                showsHorizontalScrollIndicator={false} // will not see the horizontal scroll bar
                showsVerticalScrollIndicator={false} // will not see the vertical scroll bar
                horizontal={true} // can scroll left and right
@@ -262,11 +215,11 @@ const welcomeStyles = StyleSheet.create({
     width: '100%',
     resizeMode: 'contain',
   },
-  indicator: {
-    height: 2.5,
-    width: 10,
-    backgroundColor: 'black',
-    marginHorizontal: 3,
-    borderRadius: 2,
+  circleIndicator: {
+    height: 25,
+    width: 25,
+    borderRadius: 20, // for creating circles
+    marginHorizontal: 30,
+    borderWidth: 1,
   },
 });

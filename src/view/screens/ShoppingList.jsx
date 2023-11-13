@@ -9,6 +9,7 @@ import { styles } from '../styles/ShoppingList.styles';
 import {useDispatch, useSelector} from 'react-redux'
 import { setGroceryList } from '../redux/groceryListAction'
 import { setTotal } from '../redux/totalActions';
+import totalReducer from '../redux/totalReducer';
 
 const GET_ITEMS = gql`
   query GetInventory($id: Int!) {
@@ -35,7 +36,6 @@ export const ShoppingListScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const totalHandler = () => {
-    
     dispatch(setTotal(totalPrice));
   };
 
@@ -150,20 +150,21 @@ export const ShoppingListScreen = ({ navigation }) => {
 
     routedList.forEach((el) => {
       console.log("Name: " + el.name);
+      console.log("Price: " + el.price);
     });
 
     dispatch(setGroceryList(routedList));
   };
 
-  useEffect(() => {
+  useEffect(() => { //ReAnn
     let subTotal = 0.0;
     groceryList.forEach((item) => {
       subTotal += item.price;
     });
     subTotal = subTotal.toFixed(2);
+    console.log('Subtotal:', subTotal);
     setPrice(subTotal);
-    
-  }, [groceryList]);
+  }, [groceryList, totalHandler]);
 
   useEffect(() => {
     if (error) {
@@ -270,7 +271,7 @@ export const ShoppingListScreen = ({ navigation }) => {
 
           <View style={styles.bottomContainer}>
             <Text style={styles.bottomText} variant="titleLarge">
-              Total Cost:
+              Total Cost: 
             </Text>
             <NativeText style={styles.price}>${totalPrice}</NativeText>
             <Text style={styles.bottomText} variant="titleLarge">

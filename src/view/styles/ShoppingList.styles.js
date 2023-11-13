@@ -49,6 +49,8 @@ export const styles = StyleSheet.create({
     inline:{
         flexDirection:"row",
         justifyContent:'space-evenly',
+        borderBottomWidth: 2,           // Add a bottom border
+        borderColor: '#ccc',            // Border color
     },
     itemPrice:{
         marginVertical:5,
@@ -62,8 +64,8 @@ export const styles = StyleSheet.create({
         paddingLeft: 25,
         paddingTop: 15,
         padding: 10,
-        fontSize: 20,
-        height: 44,
+        fontSize: 16, // fixes clipping issues within shopping list
+        height: 50, // fixed clipping issues as well
         color: '#5A5A5A',
     },
     bottomContainer: {
@@ -83,11 +85,11 @@ export const styles = StyleSheet.create({
     },
     bottomText: {
         color: 'white',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     priceText: {
-        fontSize: 20,
-        color:"#dcdcdc",
+        fontSize: 16, // made snaller
+        color:"#a9a9a9", // changed to darker color
     },
     currency:{
         paddingTop:8,
@@ -102,7 +104,7 @@ export const styles = StyleSheet.create({
     },
    
     bottomButton: {
-        marginTop: 50,
+        marginTop: 30,
         backgroundColor: '#000000',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
@@ -178,25 +180,25 @@ export const styles = StyleSheet.create({
     },
 
     trashButton: {
-        paddingTop:10,
+        paddingTop:1,
         marginLeft:5,
-        marginTop: 10
+        marginTop: 5
         
     },
     trshbttn:{
-        paddingTop:2,
+        paddingTop:1,
         paddingLeft:2,
         justifyContent:'space-evenly',
         
     },
     welcomeText:{
         color: "#000000",
-        fontSize: 60,
+        fontSize: 55,
         fontWeight: 'bold',
         flexWrap: 'wrap',
         textAlign: 'center',
         textShadowColor: 'rgba(0.50, 0, 0, 0.65)',
-        textShadowOffset: { width: -1, height: 1 },
+        textShadowOffset: { width: 1, height: 1 },
         textShadowRadius: 5,
     },
     modalView: {
