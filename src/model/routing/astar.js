@@ -1,147 +1,91 @@
 /**
- * A* Search Algorithm builds ontop of the Dijkstra's Algorithm
- * The only difference is the addition of a heuristic
- * @param {Array} graph 
- * @param {Object} start 
- * @param {Object} end 
- * @returns {Array} shortest path using A* search
+ * A* Search Algorithm for pathfinding on a grid-based map
+ * @param {Array} gridMap A 2D array representing the grid/map
+ * @param {Object} start Starting node with coordinates (x, y)
+ * @param {Object} end Ending node with coordinates (x, y)
+ * @returns {Array} Shortest path using A* search
  */
 
-const astar = (graph, start, end) => {
-    /** What needs to be done:
-     * 
-     * 1.) reference nodes from the map
-     * 2.) create variables
-     * 3.) create heuristic
-     * 4.) implement search algorithm
-     * 
-     * Pseudocode:
+const astar = (gridMap, start, end) => {
+  // Helper function to calculate heuristic (Manhattan distance)
+  const calculateHeuristic = (nodeA, nodeB) => {
+    return Math.abs(nodeB.x - nodeA.x) + Math.abs(nodeB.y - nodeA.y);
+  };
 
-        push start onto openSet
-        while(openSet is not empty) {
-            currentNode = find lowest f in openSet
-            if currentNode is final, return the successful path
-            push currentNode onto closedSet and remove from openSet
-            foreach neighbor of currentNode {
-                if neighbor is not in openSet {
-                save g, h, and f then save the current parent
-                add neighbor to openSet
-            }
-            if neighbor is in openSetbut the current g is better than previous g {
-                save g and f, then save the current parent
-            }
-        }
-     */
-    
-    // 1.) refrences nodes from the map
+  // Define data structures and variables
+  const openSet = [];
+  const closedSet = new Set();
+  const cameFrom = {};
+  const gScore = {}; // Actual cost from start to a node
+  const fScore = {}; // Estimated total cost from start to goal through node
 
-    const map = [...graph];
+  // Initialize scores for start node
+  gScore[start] = 0;
+  fScore[start] = calculateHeuristic(start, end);
 
-    const mapNode = (node) => map[node.x][node.y];
+  openSet.push(start);
 
-    // 2.) create variables
-    //let path = [];
-    //let neighbors = []; // neighbors of the current grid point
+  while (openSet.length > 0) {
+    // Find the node in openSet with the lowest fScore
+    let currentNode = openSet.reduce((minNode, node) =>
+      fScore[node] < fScore[minNode] ? node : minNode
+    );
 
-    // 3.) create heuristic
-
-    /** heuristic-- an educated guess of how far it is between two points
-     * can use either Euclidean distance (uses pythagorean theorem) or
-     * Manhattan distance which is the diff. between the x values + diff. between the y values
-     * Manhattan distance shows all the real distances between sources and destination ie.
-     * multiple potential routes
-     * Euclidean distance - is the shortest path between source and destination
-     * for more info: https://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
-     * 
-     * will use Manhattan distance since it is standard for square grids 
-    */
-
-    const heuristic = (position0, position1) => {
-        let distance = Math.abs(position1.x - position0.x) + Math.abs(position1.y - position0.y);
-  
-        return distance;
+    if (currentNode.x === end.x && currentNode.y === end.y) {
+      // Reconstruct path if reached the goal
+      const path = [];
+      let traceNode = end;
+      while (traceNode) {
+        path.push(traceNode);
+        traceNode = cameFrom[traceNode];
+      }
+      return path.reverse();
     }
-    
-    // 4.) implement search algorithm
 
-    /** Author: Khamilah Nixon
-     * find lowest cost node in openSet
-     * @param {Array} openSet array containing unevaluated grid points
-     */
+    openSet.splice(openSet.indexOf(currentNode), 1);
+    closedSet.add(currentNode);
 
-    const lowestCostNode = (openSet) => {
-        let lowestCost = Infinity;
-        let winner = null;
+    // Explore neighbors
+    const neighbors = [
+      { x: currentNode.x - 1, y: currentNode.y },
+      { x: currentNode.x + 1, y: currentNode.y },
+      { x: currentNode.x, y: currentNode.y - 1 },
+      { x: currentNode.x, y: currentNode.y + 1 },
+    ];
 
-        openSet.forEach(node => {
-            if(node.srcDistance < lowestCost) {
-                lowestCost = node.srcDistance;
-                winner = node;
-            }
-        });
-        return mapNode(winner);
-    };
-    
-    const search = () => {
-        const source = mapNode(start);
-        const destination = mapNode(end);
-        const openSet = []; // array containing unvaluated grid points
-        const closedSet = []; // array containing completely evaluated grid points
+    for (const neighbor of neighbors) {
+      if (
+        neighbor.x < 0 ||
+        neighbor.x >= gridMap.length ||
+        neighbor.y < 0 ||
+        neighbor.y >= gridMap[0].length ||
+        gridMap[neighbor.x][neighbor.y].logic === 1 ||
+        closedSet.has(neighbor)
+      ) {
+        continue; // Skip invalid or already evaluated nodes
+      }
 
-        let current = source;
+      const tentativeGScore = gScore[currentNode] + 1;
 
-        source.srcDistance = 0;
-        source.logic = 0;
-        destination.logic = 0;
+      if (
+        !openSet.includes(neighbor) ||
+        tentativeGScore < gScore[neighbor]
+      ) {
+        // Found a better path to this neighbor
+        cameFrom[neighbor] = currentNode;
+        gScore[neighbor] = tentativeGScore;
+        fScore[neighbor] =
+          gScore[neighbor] + calculateHeuristic(neighbor, end);
 
-        f = 0; // total cost function
-        g = 0; // cost function from start to the current grid point
-        h = 0; // heuristic estimated cost function from current grid point to the goal
-        this.parent = undefined; // immediate source of the current grid point
+        if (!openSet.includes(neighbor)) {
+          openSet.push(neighbor);
+        }
+      }
+    }
+  }
 
-        openSet.push(source);
+  // No path found
+  return [];
+};
 
-        while(!openSet.includes(mapNode(destination))) {
-            // find lowest cost node in openSet
-           current = lowestCostNode(openSet);
-                       
-           // if current is final, return the successful path
-            current.path.push(current);
-
-            // remove current from openSet
-            openSet.slice(openSet.indexOf(current), 1);
-
-            current.neighbors.forEach(neighbor => {
-                // neighbors of current node
-                if (!closedSet.includes(neighbor)) {
-                    let possibleG = current.g + 1;
-
-                    // if neighbor is not in openset save g, h, and f 
-                    // then save the current parent
-
-                    if (!openSet.includes(neighbor)) {
-                        neighbor.g = possibleG;
-                        neighbor.h = heuristic(neighbor, destination);
-                        neighbor.f = neighbor.g + neighbor.h;
-                        neighbor.parent = current;
-                        // add neighbor to openset
-                        openSet.push(neighbor);
-                    } else if (possibleG >= neighbor.g) {
-                        // if neighbor is in openSet but the current g is better than 
-                        // previous g { save g and f, then save the current parent}
-                        neighbor.g = possibleG;
-                        neighbor.h = heuristic(neighbor, destination);
-                        neighbor.f = neighbor.g + neighbor.h;
-                        neighbor.parent = current;
-                    }
-                }
-            });
-            // add current to closedSet
-            closedSet.push(current);
-        };
-         return destination.path;
-    };
-
-    return search();
-}
 module.exports = astar;
