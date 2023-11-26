@@ -1,77 +1,18 @@
 import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        //backgroundColor: '#F2FFFF',
-        alignItems: 'center',
-        width: '100%',
-        height: '100%',
-        paddingTop:25,
-    },
-    information: {
-        alignSelf: 'flex-end',
-        marginTop: 1,
+    actionText: {
+        color: 'white',
+        fontWeight: 'light',
     },
     backgroundImage: {
         flex: 1,
         resizeMode: 'cover',
     },
-    titleText: {
-        color: 'white',
-        fontSize: 52,
-        fontWeight: 'bold',
-        textShadowColor: 'rgba(0, 0, 0, 0.75)',
-        textShadowOffset: { width: -1, height: 1 },
-        textShadowRadius: 5,
-        marginTop: 20
-    },
-    button: {
-        height: '100%'
-    },
-    flatList: {
-        backgroundColor: 'white',
-        marginTop: 20,
-        width: '85%',
-        height: '50%',
-        borderRadius: 15,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,  
-        elevation: 5,
-    },
-    itemName:{
-        flex:1,
-        marginRight:10,
-        paddingRight:10
-    },
-    inline:{
-        flexDirection:"row",
-        justifyContent:'space-evenly',
-        borderBottomWidth: 2,           // Add a bottom border
-        borderColor: '#ccc',            // Border color
-    },
-    itemPrice:{
-        marginVertical:5,
-        marginRight:20 ,
-        fontSize: 20,
-        height: 44,
-        flexWrap:"wrap",
-        width:"10%"
-    },
-    item: {
-        paddingLeft: 25,
-        paddingTop: 15,
-        padding: 10,
-        fontSize: 16, // fixes clipping issues within shopping list
-        height: 50, // fixed clipping issues as well
-        color: '#5A5A5A',
-    },
     bottomContainer: {
         height: '7%',
         borderRadius: 15,
-        backgroundColor: '#db601b',
+        backgroundColor: 'white',
         flexDirection: 'row',
         width: '95%',
         alignItems: 'center',
@@ -80,47 +21,63 @@ export const styles = StyleSheet.create({
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.8,
-        shadowRadius: 2,  
+        shadowRadius: 2,
+        elevation: 5
+    },
+    bottomButton: {
+        marginTop: 35,
+        backgroundColor: '#000000',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
         elevation: 5
     },
     bottomText: {
         color: 'white',
         fontWeight: 'bold',
     },
-    priceText: {
-        fontSize: 16, // made snaller
-        color:"#a9a9a9", // changed to darker color
+    button: {
+        height: '100%'
     },
-    currency:{
-        paddingTop:8,
-        fontSize:20,
-        color:"#dcdcdc",
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        width: '100%',
+        height: '100%',
+        paddingTop: 25,
     },
-    price:{
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize:20,
-        padding:5,
-    },
-   
-    bottomButton: {
-        marginTop: 30,
-        backgroundColor: '#000000',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,  
-        elevation: 5
+    currency: {
+        paddingTop: 8,
+        fontSize: 20,
+        color: "#dcdcdc",
     },
     dropdown: {
         width: '85%',
-        marginTop: 30,
-        backgroundColor: 'white',
+        marginTop: 10,
+        backgroundColor: '#EDEDED',
+        borderColor: "black",
+        borderWidth: 1,
+        borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.5,
-        shadowRadius: 2,  
+        shadowRadius: 2,
         elevation: 5
+    },
+    flatList: {
+        backgroundColor: '#EDEDED',
+        marginTop: 20,
+        width: '85%',
+        height: '40%',
+        borderRadius: 20,
+        borderColor: 'black',
+        borderWidth: 1,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 5,
     },
     finishShoppingTitle: {
         color: 'white',
@@ -132,45 +89,47 @@ export const styles = StyleSheet.create({
         marginTop: 20
     },
     finishShoppingTimerView: {
-        backgroundColor: 'white',
+        backgroundColor: '#D9D9D9',
         height: '25%',
-        width: '84%',
-        marginTop: 25,
+        width: '75%',
+        marginTop: 95,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 15,
+        borderRadius: 20,
         borderWidth: 2,
-        borderColor: '#e0e0e0'
+        borderColor: 'black'
     },
     finishShoppingTimerText: {
-        fontSize: 48,
+        fontSize: 40,
         fontWeight: 'bold',
         textShadowColor: 'rgba(0, 0, 0, 0.50)',
-        textShadowOffset: { width: 0, height: 5 },
+        textShadowOffset: { width: 0, height: 3 },
         textShadowRadius: 10,
     },
     finishShoppingFlatList: {
-        backgroundColor: 'white',
-        marginTop: 20,
+        backgroundColor: '#EDEDED',
+        marginTop: 50,
         width: '85%',
-        height: '45%',
-        borderRadius: 15,
+        height: '30%',
+        borderRadius: 20,
+        borderColor: 'black',
+        borderWidth: 1,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.8,
-        shadowRadius: 2,  
+        shadowRadius: 2,
         elevation: 5,
     },
     finishShoppingListContainer: {
         backgroundColor: 'white',
-        marginTop: 20,
+        marginTop: 40,
         width: '85%',
         height: '40%',
         borderRadius: 15,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.8,
-        shadowRadius: 2,  
+        shadowRadius: 2,
         elevation: 5
     },
     finishShoppingBottomText: {
@@ -178,40 +137,59 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 28,
     },
-
-    trashButton: {
-        paddingTop:1,
-        marginLeft:5,
-        marginTop: 5
-        
+    information: {
+        alignSelf: 'flex-end',
+        marginTop: -1,
+        marginLeft: 45,
+        marginRight: -5,
     },
-    trshbttn:{
-        paddingTop:1,
-        paddingLeft:2,
-        justifyContent:'space-evenly',
-        
+    itemName: {
+        flex: 1,
+        marginRight: 10,
+        paddingRight: 10,
     },
-    welcomeText:{
-        color: "#000000",
-        fontSize: 55,
-        fontWeight: 'bold',
+    inline: {
+        flexDirection: "row",
+        borderWidth: 1,          
+        borderRadius: 20,
+        borderColor: 'black',           
+    },
+    itemPrice: {
+        marginVertical: 8,
+        marginRight: 35, 
+        marginLeft: 20,
+        fontSize: 16,
+        height: 44,
+        flexWrap: "wrap",
+        width: "10%"
+    },
+    item: {
+        flex: 1,
         flexWrap: 'wrap',
-        textAlign: 'center',
-        textShadowColor: 'rgba(0.50, 0, 0, 0.65)',
-        textShadowOffset: { width: 1, height: 1 },
-        textShadowRadius: 5,
+        paddingTop: 8,
+        paddingLeft: 9,
+        fontSize: 16,
+        color: 'black',
+        fontWeight: 'bold',
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 10,
     },
     modalView: {
-        margin: 20,
-        marginTop: 80,
+        marginTop: 85,
+        marginLeft: 30,
+        marginRight: 30,
         backgroundColor: "#ffffff",
         borderRadius: 20,
-        padding: 35,
+        borderWidth: 1,
+        padding: 25,
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
-          width: 0,
-          height: 2
+            width: 0,
+            height: 2
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
@@ -221,6 +199,101 @@ export const styles = StyleSheet.create({
         textAlign: "center",
         marginTop: 10,
         marginBottom: -25
-    }
-    
+    },
+    price: {
+        color: 'black',
+        fontWeight: 'bold',
+        fontSize: 19,
+        padding: 5,
+    },
+    priceText: {
+        fontSize: 18,
+        color: "green",
+    },
+    quantityButtons: {
+        flex: 1,
+        alignItems: 'flex-end',
+        marginTop: -20,
+        marginBottom: -30,
+        marginRight: -30,
+        paddingRight: 10,
+        paddingLeft: 5,
+    },
+    startButton: {
+        marginTop: 30,
+        backgroundColor: '#000000',
+        shadowColor: '#000',
+        borderRadius: 8,
+        width: 325,
+        height: 50,
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 5
+    },
+    textInput: {
+        flex: 1,
+        height: 40,
+        borderColor: 'black',
+        borderWidth: 1,
+        borderRadius: 10,
+        paddingHorizontal: 10,
+        backgroundColor: '#F5F5F5',
+        marginRight: 30,
+        textAlign: 'center',
+        fontSize: 18,
+    },
+    titleText: {
+        color: 'white',
+        fontSize: 52,
+        fontWeight: 'bold',
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: { width: -1, height: 1 },
+        textShadowRadius: 5,
+        marginTop: 20
+    },
+    titleText: {
+        marginRight: 10,
+        color: 'black',
+        fontSize: 18,
+        marginLeft: 30,
+    },
+    totalContainer: {
+        flex: 1,
+        backgroundColor: '#EDEDED',
+        marginBottom: -10,
+        margin: 15,
+        alignItems: 'center',
+        paddingTop: -5,
+        borderRadius: 15,
+        borderWidth: 1,
+        borderColor: 'black',
+    },
+    totalText: {
+        color: 'black',
+        fontWeight: 'bold',
+        fontSize: 18,
+        padding: 2,
+    },
+    trashButton: {
+        paddingTop: 1,
+        marginLeft: 5,
+        marginTop: 5
+
+    },
+    trshbttn: {
+        paddingTop: 1,
+        paddingLeft: 2,
+        justifyContent: 'space-evenly',
+    },
+    welcomeText: {
+        color: "#000000",
+        fontSize: 55,
+        fontWeight: 'bold',
+        flexWrap: 'wrap',
+        textAlign: 'center',
+        textShadowColor: 'rgba(0.50, 0, 0, 0.65)',
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 5,
+    },
 });
