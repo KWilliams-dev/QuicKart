@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, TextInput, Pressable, Alert, ImageBackground } from 'react-native'
-import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation, gql } from '@apollo/client';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
