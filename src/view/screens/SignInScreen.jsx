@@ -20,12 +20,10 @@ mutation signIn($email: String!, $password: String!) {
 `;
 
 
-const SignInScreen = ({navigation}) => {
+const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-
-  //const navigation = useNavigation();
 
   const [signIn, { data, error, loading }] = useMutation(SIGN_IN_MUTATION);
 
@@ -36,22 +34,22 @@ const SignInScreen = ({navigation}) => {
   }, [error])
 
   if (data) {
-    // save token
+    // Save token
     AsyncStorage
       .setItem('token', data.signIn.token)
       .then(() => {
-        // redirect home
+        // Redirect home
         navigation.navigate('ShoppingList')
       })
   }
 
   const onSubmit = () => {
-    signIn({ variables: { email, password }})
+    signIn({ variables: { email, password } })
   }
 
   // For Sign In Image
   const logoImageWidth = 120; // Adjust this value as needed
-  const logoImageHeight = 110; 
+  const logoImageHeight = 110;
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -60,18 +58,19 @@ const SignInScreen = ({navigation}) => {
   return (
     <ImageBackground source={require('../assets/background.png')} style={styles.backgroundImage}>
       <View style={{ padding: 20, marginTop: 30 }}>
-      <View style={{ alignItems: 'center', marginBottom: 1 }}>
-        <ImageBackground
-          source={require('../assets/signin.png')}
-          style={{ width: logoImageWidth, height: logoImageHeight, resizeMode: 'contain' }}
-        />
-      </View>
+        <View style={{ alignItems: 'center', marginBottom: 1 }}>
+          <ImageBackground
+            source={require('../assets/signin.png')}
+            style={{ width: logoImageWidth, height: logoImageHeight, resizeMode: 'contain' }}
+          />
+        </View>
 
         <Text style={styles.welcomeText}>Sign In</Text>
 
+        {/* Envelope icon  */}
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
           <MaterialCommunityIcons name="email-outline" size={24} color="black" />
-          <TextInput 
+          <TextInput
             placeholder="example@example.com"
             value={email}
             onChangeText={setEmail}
@@ -79,9 +78,10 @@ const SignInScreen = ({navigation}) => {
           />
         </View>
 
+        {/* Lock icon  */}
         <View style={{ position: 'relative', flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
           <Feather name="lock" size={24} color="black" />
-          <TextInput 
+          <TextInput
             placeholder="password"
             value={password}
             onChangeText={setPassword}
@@ -94,11 +94,11 @@ const SignInScreen = ({navigation}) => {
             <Feather name={showPassword ? 'eye' : 'eye-off'} size={24} color="black" />
           </Pressable>
         </View>
-    
-        <Pressable 
-          onPress={onSubmit} 
+
+        <Pressable
+          onPress={onSubmit}
           disabled={loading}
-          style={{ 
+          style={{
             backgroundColor: '#000000',
             height: 50,
             borderRadius: 5,
@@ -107,14 +107,14 @@ const SignInScreen = ({navigation}) => {
             marginTop: 30,
           }}
         >
-          
+
           <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>
             Sign In
           </Text>
         </Pressable>
 
-        <Pressable 
-          style={{ 
+        <Pressable
+          style={{
             height: 30,
             borderRadius: 5,
             alignItems: 'flex-end',
@@ -127,7 +127,7 @@ const SignInScreen = ({navigation}) => {
           </Text>
         </Pressable>
 
-         {/* For the "or" horizontal line (ReAnn) */}
+        {/* For the "or" horizontal line */}
         <View
           style={{
             flexDirection: 'row',
@@ -170,11 +170,11 @@ const SignInScreen = ({navigation}) => {
               marginLeft: 10,
             }}
           />
-         </View>
+        </View>
 
-        <Pressable 
-          onPress={() => {navigation.navigate('SignUp')}} 
-          style={{ 
+        <Pressable
+          onPress={() => { navigation.navigate('SignUp') }}
+          style={{
             height: 50,
             borderRadius: 5,
             alignItems: 'center',
