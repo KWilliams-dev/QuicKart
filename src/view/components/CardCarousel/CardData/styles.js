@@ -1,5 +1,7 @@
+// Import StyleSheet from React Native to create styles
 import { StyleSheet } from "react-native"
 
+// Define and export a function that generates styles based on a font scale
 export const styles = (fontScale) => StyleSheet.create({
     container: {
         flex: 1,
@@ -11,7 +13,7 @@ export const styles = (fontScale) => StyleSheet.create({
     },
     labelData: {
         padding: 7,
-        fontSize: fontScale,
+        fontSize: 24,
         color: "#000000",
     },
     label: {
@@ -27,5 +29,8 @@ export const styles = (fontScale) => StyleSheet.create({
     },
 })
 
+// Define and export a function that composes two styles
 export const composeStyles = (style1, style2) => StyleSheet.compose(style1, style2);
-export const fadeStyle = (activated) => activated ? { opacity: 1 } : { opacity: .1 } 
+
+// Define and export a function that applies fade effect based on activation status
+export const fadeStyle = (activated) => activated ? { opacity: 1 } : { opacity: .1 }
