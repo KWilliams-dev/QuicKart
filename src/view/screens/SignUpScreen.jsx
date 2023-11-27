@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  TextInput, 
-  Pressable, 
-  ActivityIndicator, 
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  ActivityIndicator,
   Alert,
   ImageBackground
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
 import { useMutation, gql } from '@apollo/client';
 import { Feather, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import { styles } from '../styles/ShoppingList.styles';
@@ -27,17 +26,12 @@ mutation signUp($email: String!, $password: String!, $name: String!) {
 }
 `;
 
-const SignUpScreen = ({navigation}) => {
+const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState();
   const [name, setName] = useState();
   const [password, setPassword] = useState();
   const [showPassword, setShowPassword] = useState(false);
 
-  //const navigation = useNavigation();
-
-  // mutation[0] : A function to trigger the mutation
-  // mutation[1] : result object 
-  //    { data,error, loading }
   const [signUp, { data, error, loading }] = useMutation(SIGN_UP_MUTATION);
 
   if (error) {
@@ -55,12 +49,12 @@ const SignUpScreen = ({navigation}) => {
   }
 
   const onSubmit = () => {
-    signUp({variables: { name, email, password }})
+    signUp({ variables: { name, email, password } })
   }
 
   // For Sign Up Image
   const logoImageWidth = 110; // Adjust this value as needed
-  const logoImageHeight = 100; 
+  const logoImageHeight = 100;
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -68,51 +62,51 @@ const SignUpScreen = ({navigation}) => {
 
   return (
     <ImageBackground source={require('../assets/background.png')} style={styles.backgroundImage}>
-      <View style={{ padding: 20, marginTop: 30}}>
-      <View style={{ alignItems: 'center', marginBottom: 1 }}>
+      <View style={{ padding: 20, marginTop: 30 }}>
+        <View style={{ alignItems: 'center', marginBottom: 1 }}>
           <ImageBackground
             source={require('../assets/signup.png')}
             style={{ width: logoImageWidth, height: logoImageHeight, resizeMode: 'contain' }}
           />
-      </View>
+        </View>
 
-      <Text style={styles.welcomeText}>Sign Up</Text>
+        <Text style={styles.welcomeText}>Sign Up</Text>
 
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-        <AntDesign name="user" size={24} color="black" />
-        <TextInput 
-          placeholder="name"
-          value={name}
-          onChangeText={setName}
-          style={{
-            color: 'black',
-            fontSize: 18,
-            width: '100%',
-            marginVertical: 25, 
-            marginLeft: 10
-          }}
-        />
-      </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+          <AntDesign name="user" size={24} color="black" />
+          <TextInput
+            placeholder="name"
+            value={name}
+            onChangeText={setName}
+            style={{
+              color: 'black',
+              fontSize: 18,
+              width: '100%',
+              marginVertical: 25,
+              marginLeft: 10
+            }}
+          />
+        </View>
 
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 1 }}>
-        <MaterialCommunityIcons name="email-outline" size={24} color="black" />
-        <TextInput 
-          placeholder="example@example.com"
-          value={email}
-          onChangeText={setEmail}
-          style={{
-            color: 'black',
-            fontSize: 18,
-            width: '100%',
-            marginVertical: 25,
-            marginLeft: 10 
-          }}
-        />
-      </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 1 }}>
+          <MaterialCommunityIcons name="email-outline" size={24} color="black" />
+          <TextInput
+            placeholder="example@example.com"
+            value={email}
+            onChangeText={setEmail}
+            style={{
+              color: 'black',
+              fontSize: 18,
+              width: '100%',
+              marginVertical: 25,
+              marginLeft: 10
+            }}
+          />
+        </View>
 
-      <View style={{ position: 'relative', flexDirection: 'row', alignItems: 'center', marginTop: 1 }}>
+        <View style={{ position: 'relative', flexDirection: 'row', alignItems: 'center', marginTop: 1 }}>
           <Feather name="lock" size={24} color="black" />
-          <TextInput 
+          <TextInput
             placeholder="password"
             value={password}
             onChangeText={setPassword}
@@ -121,7 +115,7 @@ const SignUpScreen = ({navigation}) => {
               color: 'black',
               fontSize: 18,
               width: '100%',
-              marginVertical: 25, 
+              marginVertical: 25,
               marginLeft: 10
             }}
           />
@@ -130,33 +124,33 @@ const SignUpScreen = ({navigation}) => {
           <Pressable onPress={togglePasswordVisibility} style={{ position: 'absolute', right: 10, top: 22 }}>
             <Feather name={showPassword ? 'eye' : 'eye-off'} size={24} color="black" />
           </Pressable>
-      </View>
+        </View>
 
-      <Pressable 
-        onPress={onSubmit} 
-        style={{ 
-          backgroundColor: '#000000',
-          height: 50,
-          borderRadius: 5,
-          alignItems: 'center',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          marginTop: 30,
-        }}
-      >
-        {loading && <ActivityIndicator />}
-        <Text 
+        <Pressable
+          onPress={onSubmit}
           style={{
-            color: 'white',
-            fontSize: 18,
-            fontWeight: 'bold'
-          }}>
+            backgroundColor: '#000000',
+            height: 50,
+            borderRadius: 5,
+            alignItems: 'center',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginTop: 30,
+          }}
+        >
+          {loading && <ActivityIndicator />}
+          <Text
+            style={{
+              color: 'white',
+              fontSize: 18,
+              fontWeight: 'bold'
+            }}>
             Sign up
-        </Text>
-      </Pressable>
+          </Text>
+        </Pressable>
 
-      {/* For the "or" horizontal line (ReAnn) */}
-      <View
+        {/* For the "or" horizontal line */}
+        <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
@@ -198,30 +192,30 @@ const SignUpScreen = ({navigation}) => {
               marginLeft: 10,
             }}
           />
-         </View>
+        </View>
 
-      <Pressable
-        disabled={loading}
-        onPress={() => { navigation.navigate('SignIn')} } 
-        style={{ 
-          height: 50,
-          borderRadius: 5,
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginTop: 30,
-        }}
-      >
-        <Text 
+        <Pressable
+          disabled={loading}
+          onPress={() => { navigation.navigate('SignIn') }}
           style={{
-            color: 'white',
-            fontSize: 18,
-            fontWeight: 'bold'
-          }}>
-            Already Have an account?{' '} 
+            height: 50,
+            borderRadius: 5,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 30,
+          }}
+        >
+          <Text
+            style={{
+              color: 'white',
+              fontSize: 18,
+              fontWeight: 'bold'
+            }}>
+            Already Have an account?{' '}
             <Text style={{ textDecorationLine: 'underline' }}>Sign In</Text>
-        </Text>
-      </Pressable>
-    </View>
+          </Text>
+        </Pressable>
+      </View>
     </ImageBackground>
   )
 }
