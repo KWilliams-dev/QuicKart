@@ -1,5 +1,10 @@
 {
   "devDependencies": {
     "jest": "^29.1.2"
+  },
+  "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "react-native-gesture-handler": "^2.13.4",
+    "react-native-reanimated": "^3.5.4"
   }
 }
